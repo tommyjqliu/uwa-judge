@@ -1,4 +1,4 @@
 #!/bin/bash
 docker-compose down
-rm ./admin.secret
-rm ./restapi.secret
+rm ./password.admin
+rm ./password.judgehost

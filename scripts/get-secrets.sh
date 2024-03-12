@@ -1,6 +1,6 @@
 #!/bin/bash
 # empty file
-> admin.secret
-> restapi.secret
-docker-compose exec domserver cat /opt/domjudge/domserver/etc/initial_admin_password.secret > admin.secret
-docker-compose exec domserver cat /opt/domjudge/domserver/etc/restapi.secret | grep '^[^#]' | awk '{print $4}'  >  restapi.secret
+> password.admin
+> password.judgehost
+docker-compose exec domserver cat /opt/domjudge/domserver/etc/initial_admin_password.secret > password.admin
+docker-compose exec domserver cat /opt/domjudge/domserver/etc/restapi.secret | grep '^[^#]' | awk '{print $4}'  >  password.judgehost

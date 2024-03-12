@@ -1,12 +1,14 @@
 {
-  "name": "my-app",
+  "name": "uwa-judge",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "docker:start": "sh ./scripts/start-docker.sh",
+    "docker:reset": "sh ./scripts/reset-docker.sh"
   },
   "dependencies": {
     "react": "^18",

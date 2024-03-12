@@ -8,8 +8,6 @@ services:
       - .env
     ports:
       - "13306:3306"
-    volumes:
-      - ./restapi.secret:/etc/restapi.secret:ro
   # Database Management
   phpmyadmin:
     image: phpmyadmin
@@ -37,9 +35,9 @@ services:
     privileged: true
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
-      - ./restapi.secret:/etc/restapi.password:ro
+      - ./password.judgehost:/etc/password.judgehost:ro
     environment:
       DAEMON_ID: 0
-      JUDGEDAEMON_PASSWORD_FILE: /etc/restapi.password
+      JUDGEDAEMON_PASSWORD_FILE: /etc/password.judgehost
     depends_on:
       - domserver

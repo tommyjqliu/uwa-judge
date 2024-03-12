@@ -36,5 +36,5 @@ next-env.d.ts
 .env*
 
 # secrets
-restapi.secret
-admin.secret
+password.judgehost
+password.admin
