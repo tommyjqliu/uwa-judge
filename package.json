@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "docker:start": "sh ./scripts/start-docker.sh",
-    "docker:reset": "sh ./scripts/reset-docker.sh"
+    "docker:reset": "sh ./scripts/reset-docker.sh",
+    "docker:build": "docker build -t nextjs-docker --output type=tar,dest=./build/nextjs.tar . "
   },
   "dependencies": {
     "@azure/msal-node": "^2.6.4",
