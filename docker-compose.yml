@@ -8,6 +8,9 @@ services:
       - .env
     ports:
       - "13306:3306"
+    volumes:
+      - ./mariadb:/var/lib/mysql  
+
   # Database Management
   phpmyadmin:
     image: phpmyadmin
