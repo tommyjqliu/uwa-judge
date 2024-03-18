@@ -1,12 +1,6 @@
 version: 0.0
 os: linux
-files:
-  - source: /
 hooks:
-  # BeforeInstall:
-  #   - location: scripts/install_dependencies.sh
-  #     timeout: 300
-  #     runas: root
   ApplicationStart:
     - location: scripts/start-docker.sh
     - location: scripts/start-next.sh
