@@ -2,6 +2,7 @@ version: 0.0
 os: linux
 files:
   - source: /
+    destination: /app/nextjs
 hooks:
   ApplicationStart:
     - location: scripts/start-docker.sh
