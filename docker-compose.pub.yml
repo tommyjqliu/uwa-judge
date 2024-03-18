@@ -9,7 +9,7 @@ services:
     ports:
       - "13306:3306"
     volumes:
-      - ./mariadb:/var/lib/mysql  
+      - ./.mariadb:/var/lib/mysql  
 
   domserver:
     image: domjudge/domserver:latest
@@ -27,7 +27,7 @@ services:
     restart: always # TODO: give warning when fail
     privileged: true
     volumes:
-      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+      # - /sys/fs/cgroup:/sys/fs/cgroup:ro
       - ./password.judgehost:/etc/password.judgehost:ro
     environment:
       DAEMON_ID: 0

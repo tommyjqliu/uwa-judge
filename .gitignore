@@ -38,3 +38,6 @@ next-env.d.ts
 # secrets
 password.judgehost
 password.admin
+
+#database
+.mariadb
