@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  # Database
+  mariadb:
+    image: mariadb
+    env_file:
+      - .env
+    ports:
+      - "13306:3306"
+    volumes:
+      - ./mariadb:/var/lib/mysql  
+
+  domserver:
+    image: domjudge/domserver:latest
+    env_file:
+      - .env
+    environment:
+      MYSQL_HOST: mariadb
+    ports:
+      - "12345:80"
+    depends_on:
+      - mariadb
+
+  judgehost:
+    image: domjudge/judgehost:latest
+    restart: always # TODO: give warning when fail
+    privileged: true
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+      - ./password.judgehost:/etc/password.judgehost:ro
+    environment:
+      DAEMON_ID: 0
+      JUDGEDAEMON_PASSWORD_FILE: /etc/password.judgehost
+    depends_on:
+      - domserver
+  
+  uwajudge:
+    image: uwajudge
+    ports:
+      - "80:3000"

@@ -6,7 +6,6 @@ files:
     destination: /app/nextjs
 hooks:
   ApplicationStart:
-    - location: scripts/start-docker.sh
-    - location: scripts/start-next.sh
+    - location: scripts/start-pub.sh
       timeout: 300
       runas: root
