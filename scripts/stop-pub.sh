@@ -1,2 +1,2 @@
-cd /app/nextjs
-docker-compose -f docker-compose.pub.yml down -d
+cd /app/uwajudge
+sudo docker-compose -f docker-compose.pub.yml down

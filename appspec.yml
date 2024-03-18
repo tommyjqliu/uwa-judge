@@ -3,8 +3,12 @@ version: 0.0
 os: linux
 files:
   - source: /
-    destination: /app/nextjs
+    destination: /app/uwajudge
 hooks:
+  ApplicationStop:
+    - location: scripts/stop-pub.sh
+      timeout: 300
+      runas: root
   ApplicationStart:
     - location: scripts/start-pub.sh
       timeout: 300
