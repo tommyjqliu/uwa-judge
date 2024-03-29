@@ -11,6 +11,7 @@ docker-compose -p $DOCKER_PROJECT exec domserver cat /opt/domjudge/domserver/etc
 # SQL queries to create the database and user
 SQL_QUERY_CREATE_DB="CREATE DATABASE IF NOT EXISTS $MySQL_DATABASE_UWAJUDGE;"
 SQL_QUERY_GRANT_PRIVILEGES="GRANT ALL PRIVILEGES ON $MySQL_DATABASE_UWAJUDGE.* TO '$MYSQL_USER'@'%';"
+SQL_QUERY_GRANT_DB="GRANT CREATE, DROP, ALTER ON *.* TO '$MYSQL_USER'@'%';"
 
 # Define number of retries and wait time
 MAX_TRIES=10
@@ -32,6 +33,7 @@ if [ $? -eq 0 ]; then
     echo "MariaDB connection successful, proceeding with database setup..."
     docker-compose -p $DOCKER_PROJECT exec mariadb mariadb -u"root" -p"$MYSQL_ROOT_PASSWORD" -e "$SQL_QUERY_CREATE_DB"
     docker-compose -p $DOCKER_PROJECT exec mariadb mariadb -u"root" -p"$MYSQL_ROOT_PASSWORD" -e "$SQL_QUERY_GRANT_PRIVILEGES"
+    docker-compose -p $DOCKER_PROJECT exec mariadb mariadb -u"root" -p"$MYSQL_ROOT_PASSWORD" -e "$SQL_QUERY_GRANT_DB"
     docker-compose -p $DOCKER_PROJECT exec mariadb mariadb -u"root" -p"$MYSQL_ROOT_PASSWORD" -e "FLUSH PRIVILEGES;"
 else
     echo "ERROR: Could not connect to MariaDB after $MAX_TRIES retries. Aborting."
