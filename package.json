@@ -7,10 +7,11 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "docker:start": "sh ./scripts/start-docker.sh",
-    "docker:reset": "sh ./scripts/reset-docker.sh",
-    "docker:build": "docker build -t uwajudge . ",
-    "docker:pub": "docker-compose -f docker-compose.pub.yml up"
+    "docker-dev-up": "sh ./scripts/docker-dev-up.sh",
+    "docker-dev-down": "sh ./scripts/docker-dev-down.sh",
+    "docker-dev-reset": "sh ./scripts/docker-dev-reset.sh",
+    "docker-pub-up": "sh ./scripts/docker-pub-up.sh",
+    "docker-pub-down": "sh ./scripts/docker-pub-down.sh"
   },
   "dependencies": {
     "@azure/msal-node": "^2.6.4",

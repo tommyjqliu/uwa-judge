@@ -6,10 +6,10 @@ files:
     destination: /app/uwajudge
 hooks:
   ApplicationStop:
-    - location: scripts/stop-pub.sh
+    - location: scripts/docker-pub-down.sh
       timeout: 300
       runas: root
   ApplicationStart:
-    - location: scripts/start-pub.sh
+    - location: scripts/docker-pub-up.sh
       timeout: 300
       runas: root
