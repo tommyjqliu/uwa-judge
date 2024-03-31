@@ -20,7 +20,7 @@ import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } fr
 import { InlineResponse20010 } from '../models';
 import { InlineResponse400 } from '../models';
 import { TeamAffiliation } from '../models';
-import { TeamAffiliation &amp; Logo } from '../models';
+import { TeamAffiliation , Logo } from '../models';
 /**
  * OrganizationsApi - axios parameter creator
  * @export

@@ -28,7 +28,7 @@ services:
     environment:
       MYSQL_HOST: mariadb
     ports:
-      - "12345:80"
+      - "8000:80"
     depends_on:
       - mariadb
 

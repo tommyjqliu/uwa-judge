@@ -1,3 +1,5 @@
+import * as fs from 'fs';
+
 /* tslint:disable */
 /* eslint-disable */
 /**
@@ -81,3 +83,14 @@ export class Configuration {
         this.baseOptions = param.baseOptions;
     }
 }
+
+// Read password from file
+const password = fs.readFileSync('./password.admin', 'utf8').trim();
+// Read DOMjudge URL from environment variable
+const domjudgeUrl = process.env.DOMJUDGE_URL ?? process.env.VITE_DOMJUDGE_URL;
+console.log(process.env)
+export const configuration = new Configuration({
+    basePath: domjudgeUrl,
+    username: 'admin',
+    password,
+});

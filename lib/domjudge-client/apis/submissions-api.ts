@@ -21,7 +21,7 @@ import { CidSubmissionsBody1 } from '../models';
 import { InlineResponse20012 } from '../models';
 import { InlineResponse400 } from '../models';
 import { SourceCodeList } from '../models';
-import { Submission &amp; Files } from '../models';
+import { Submission , Files } from '../models';
 import { SubmissionsIdBody1 } from '../models';
 /**
  * SubmissionsApi - axios parameter creator

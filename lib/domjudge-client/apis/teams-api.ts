@@ -20,7 +20,7 @@ import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } fr
 import { InlineResponse20013 } from '../models';
 import { InlineResponse400 } from '../models';
 import { Team } from '../models';
-import { Team &amp; Photo } from '../models';
+import { Team , Photo } from '../models';
 /**
  * TeamsApi - axios parameter creator
  * @export

@@ -19,7 +19,7 @@ import { Configuration } from '../configuration';
 import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } from '../base';
 import { InlineResponse20011 } from '../models';
 import { InlineResponse400 } from '../models';
-import { JudgingRun &amp; RunExtraFields } from '../models';
+import { JudgingRun, RunExtraFields } from '../models';
 /**
  * RunsApi - axios parameter creator
  * @export
