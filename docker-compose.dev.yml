@@ -22,7 +22,7 @@ services:
       - 8080:80
 
   domserver:
-    image: domjudge/domserver:latest
+    image: domjudge/domserver:8.2.2
     env_file:
       - .env
     environment:
@@ -33,7 +33,7 @@ services:
       - mariadb
 
   judgehost:
-    image: domjudge/judgehost:latest
+    image: domjudge/judgehost:8.2.2
     restart: always # TODO: give warning when fail
     privileged: true
     volumes:
