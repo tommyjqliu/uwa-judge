@@ -28,31 +28,31 @@ export interface Judging {
      * @type {string}
      * @memberof Judging
      */
-    startTime?: string | null;
+    start_time?: string | null;
 
     /**
      * @type {string}
      * @memberof Judging
      */
-    startContestTime?: string;
+    start_contest_time?: string;
 
     /**
      * @type {string}
      * @memberof Judging
      */
-    endTime?: string | null;
+    end_time?: string | null;
 
     /**
      * @type {string}
      * @memberof Judging
      */
-    endContestTime?: string | null;
+    end_contest_time?: string | null;
 
     /**
      * @type {string}
      * @memberof Judging
      */
-    submissionId?: string;
+    submission_id?: string;
 
     /**
      * @type {string}

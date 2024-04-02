@@ -180,17 +180,17 @@ export const JudgehostsApiAxiosParamCreator = function (configuration?: Configur
          * @summary Add one JudgingRun. When relevant, finalize the judging.
          * @param {string} runresult 
          * @param {number} runtime 
-         * @param {string} outputRun 
-         * @param {string} outputDiff 
-         * @param {string} outputError 
-         * @param {string} outputSystem 
+         * @param {string} output_run 
+         * @param {string} output_diff 
+         * @param {string} output_error 
+         * @param {string} output_system 
          * @param {string} metadata 
          * @param {string} hostname The hostname of the judgehost that wants to add the judging run
          * @param {number} judgeTaskId The ID of the judgetask to add
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        postV4AppApiJudgehostAddjudgingrunForm: async (runresult: string, runtime: number, outputRun: string, outputDiff: string, outputError: string, outputSystem: string, metadata: string, hostname: string, judgeTaskId: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        postV4AppApiJudgehostAddjudgingrunForm: async (runresult: string, runtime: number, output_run: string, output_diff: string, output_error: string, output_system: string, metadata: string, hostname: string, judgeTaskId: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'runresult' is not null or undefined
             if (runresult === null || runresult === undefined) {
                 throw new RequiredError('runresult','Required parameter runresult was null or undefined when calling postV4AppApiJudgehostAddjudgingrunForm.');
@@ -199,21 +199,21 @@ export const JudgehostsApiAxiosParamCreator = function (configuration?: Configur
             if (runtime === null || runtime === undefined) {
                 throw new RequiredError('runtime','Required parameter runtime was null or undefined when calling postV4AppApiJudgehostAddjudgingrunForm.');
             }
-            // verify required parameter 'outputRun' is not null or undefined
-            if (outputRun === null || outputRun === undefined) {
-                throw new RequiredError('outputRun','Required parameter outputRun was null or undefined when calling postV4AppApiJudgehostAddjudgingrunForm.');
+            // verify required parameter 'output_run' is not null or undefined
+            if (output_run === null || output_run === undefined) {
+                throw new RequiredError('output_run','Required parameter output_run was null or undefined when calling postV4AppApiJudgehostAddjudgingrunForm.');
             }
-            // verify required parameter 'outputDiff' is not null or undefined
-            if (outputDiff === null || outputDiff === undefined) {
-                throw new RequiredError('outputDiff','Required parameter outputDiff was null or undefined when calling postV4AppApiJudgehostAddjudgingrunForm.');
+            // verify required parameter 'output_diff' is not null or undefined
+            if (output_diff === null || output_diff === undefined) {
+                throw new RequiredError('output_diff','Required parameter output_diff was null or undefined when calling postV4AppApiJudgehostAddjudgingrunForm.');
             }
-            // verify required parameter 'outputError' is not null or undefined
-            if (outputError === null || outputError === undefined) {
-                throw new RequiredError('outputError','Required parameter outputError was null or undefined when calling postV4AppApiJudgehostAddjudgingrunForm.');
+            // verify required parameter 'output_error' is not null or undefined
+            if (output_error === null || output_error === undefined) {
+                throw new RequiredError('output_error','Required parameter output_error was null or undefined when calling postV4AppApiJudgehostAddjudgingrunForm.');
             }
-            // verify required parameter 'outputSystem' is not null or undefined
-            if (outputSystem === null || outputSystem === undefined) {
-                throw new RequiredError('outputSystem','Required parameter outputSystem was null or undefined when calling postV4AppApiJudgehostAddjudgingrunForm.');
+            // verify required parameter 'output_system' is not null or undefined
+            if (output_system === null || output_system === undefined) {
+                throw new RequiredError('output_system','Required parameter output_system was null or undefined when calling postV4AppApiJudgehostAddjudgingrunForm.');
             }
             // verify required parameter 'metadata' is not null or undefined
             if (metadata === null || metadata === undefined) {
@@ -256,20 +256,20 @@ export const JudgehostsApiAxiosParamCreator = function (configuration?: Configur
                 localVarFormParams.set('runtime', runtime as any);
             }
 
-            if (outputRun !== undefined) { 
-                localVarFormParams.set('output_run', outputRun as any);
+            if (output_run !== undefined) { 
+                localVarFormParams.set('output_run', output_run as any);
             }
 
-            if (outputDiff !== undefined) { 
-                localVarFormParams.set('output_diff', outputDiff as any);
+            if (output_diff !== undefined) { 
+                localVarFormParams.set('output_diff', output_diff as any);
             }
 
-            if (outputError !== undefined) { 
-                localVarFormParams.set('output_error', outputError as any);
+            if (output_error !== undefined) { 
+                localVarFormParams.set('output_error', output_error as any);
             }
 
-            if (outputSystem !== undefined) { 
-                localVarFormParams.set('output_system', outputSystem as any);
+            if (output_system !== undefined) { 
+                localVarFormParams.set('output_system', output_system as any);
             }
 
             if (metadata !== undefined) { 
@@ -513,31 +513,31 @@ export const JudgehostsApiAxiosParamCreator = function (configuration?: Configur
         /**
          * 
          * @summary Update the given judging for the given judgehost.
-         * @param {boolean} compileSuccess 
-         * @param {string} outputCompile 
-         * @param {string} entryPoint 
-         * @param {string} compileMetadata 
+         * @param {boolean} compile_success 
+         * @param {string} output_compile 
+         * @param {string} entry_point 
+         * @param {string} compile_metadata 
          * @param {string} hostname The hostname of the judgehost that wants to update the judging
          * @param {number} judgetaskid The ID of the judgetask to update
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        putV4AppApiJudgehostUpdatejudgingForm: async (compileSuccess: boolean, outputCompile: string, entryPoint: string, compileMetadata: string, hostname: string, judgetaskid: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'compileSuccess' is not null or undefined
-            if (compileSuccess === null || compileSuccess === undefined) {
-                throw new RequiredError('compileSuccess','Required parameter compileSuccess was null or undefined when calling putV4AppApiJudgehostUpdatejudgingForm.');
+        putV4AppApiJudgehostUpdatejudgingForm: async (compile_success: boolean, output_compile: string, entry_point: string, compile_metadata: string, hostname: string, judgetaskid: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'compile_success' is not null or undefined
+            if (compile_success === null || compile_success === undefined) {
+                throw new RequiredError('compile_success','Required parameter compile_success was null or undefined when calling putV4AppApiJudgehostUpdatejudgingForm.');
             }
-            // verify required parameter 'outputCompile' is not null or undefined
-            if (outputCompile === null || outputCompile === undefined) {
-                throw new RequiredError('outputCompile','Required parameter outputCompile was null or undefined when calling putV4AppApiJudgehostUpdatejudgingForm.');
+            // verify required parameter 'output_compile' is not null or undefined
+            if (output_compile === null || output_compile === undefined) {
+                throw new RequiredError('output_compile','Required parameter output_compile was null or undefined when calling putV4AppApiJudgehostUpdatejudgingForm.');
             }
-            // verify required parameter 'entryPoint' is not null or undefined
-            if (entryPoint === null || entryPoint === undefined) {
-                throw new RequiredError('entryPoint','Required parameter entryPoint was null or undefined when calling putV4AppApiJudgehostUpdatejudgingForm.');
+            // verify required parameter 'entry_point' is not null or undefined
+            if (entry_point === null || entry_point === undefined) {
+                throw new RequiredError('entry_point','Required parameter entry_point was null or undefined when calling putV4AppApiJudgehostUpdatejudgingForm.');
             }
-            // verify required parameter 'compileMetadata' is not null or undefined
-            if (compileMetadata === null || compileMetadata === undefined) {
-                throw new RequiredError('compileMetadata','Required parameter compileMetadata was null or undefined when calling putV4AppApiJudgehostUpdatejudgingForm.');
+            // verify required parameter 'compile_metadata' is not null or undefined
+            if (compile_metadata === null || compile_metadata === undefined) {
+                throw new RequiredError('compile_metadata','Required parameter compile_metadata was null or undefined when calling putV4AppApiJudgehostUpdatejudgingForm.');
             }
             // verify required parameter 'hostname' is not null or undefined
             if (hostname === null || hostname === undefined) {
@@ -568,20 +568,20 @@ export const JudgehostsApiAxiosParamCreator = function (configuration?: Configur
             }
 
 
-            if (compileSuccess !== undefined) { 
-                localVarFormParams.set('compile_success', compileSuccess as any);
+            if (compile_success !== undefined) { 
+                localVarFormParams.set('compile_success', compile_success as any);
             }
 
-            if (outputCompile !== undefined) { 
-                localVarFormParams.set('output_compile', outputCompile as any);
+            if (output_compile !== undefined) { 
+                localVarFormParams.set('output_compile', output_compile as any);
             }
 
-            if (entryPoint !== undefined) { 
-                localVarFormParams.set('entry_point', entryPoint as any);
+            if (entry_point !== undefined) { 
+                localVarFormParams.set('entry_point', entry_point as any);
             }
 
-            if (compileMetadata !== undefined) { 
-                localVarFormParams.set('compile_metadata', compileMetadata as any);
+            if (compile_metadata !== undefined) { 
+                localVarFormParams.set('compile_metadata', compile_metadata as any);
             }
             localVarHeaderParameter['Content-Type'] = 'application/x-www-form-urlencoded';
             const query = new URLSearchParams(localVarUrlObj.search);
@@ -659,18 +659,18 @@ export const JudgehostsApiFp = function(configuration?: Configuration) {
          * @summary Add one JudgingRun. When relevant, finalize the judging.
          * @param {string} runresult 
          * @param {number} runtime 
-         * @param {string} outputRun 
-         * @param {string} outputDiff 
-         * @param {string} outputError 
-         * @param {string} outputSystem 
+         * @param {string} output_run 
+         * @param {string} output_diff 
+         * @param {string} output_error 
+         * @param {string} output_system 
          * @param {string} metadata 
          * @param {string} hostname The hostname of the judgehost that wants to add the judging run
          * @param {number} judgeTaskId The ID of the judgetask to add
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async postV4AppApiJudgehostAddjudgingrunForm(runresult: string, runtime: number, outputRun: string, outputDiff: string, outputError: string, outputSystem: string, metadata: string, hostname: string, judgeTaskId: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<void>>> {
-            const localVarAxiosArgs = await JudgehostsApiAxiosParamCreator(configuration).postV4AppApiJudgehostAddjudgingrunForm(runresult, runtime, outputRun, outputDiff, outputError, outputSystem, metadata, hostname, judgeTaskId, options);
+        async postV4AppApiJudgehostAddjudgingrunForm(runresult: string, runtime: number, output_run: string, output_diff: string, output_error: string, output_system: string, metadata: string, hostname: string, judgeTaskId: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<void>>> {
+            const localVarAxiosArgs = await JudgehostsApiAxiosParamCreator(configuration).postV4AppApiJudgehostAddjudgingrunForm(runresult, runtime, output_run, output_diff, output_error, output_system, metadata, hostname, judgeTaskId, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -737,17 +737,17 @@ export const JudgehostsApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Update the given judging for the given judgehost.
-         * @param {boolean} compileSuccess 
-         * @param {string} outputCompile 
-         * @param {string} entryPoint 
-         * @param {string} compileMetadata 
+         * @param {boolean} compile_success 
+         * @param {string} output_compile 
+         * @param {string} entry_point 
+         * @param {string} compile_metadata 
          * @param {string} hostname The hostname of the judgehost that wants to update the judging
          * @param {number} judgetaskid The ID of the judgetask to update
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async putV4AppApiJudgehostUpdatejudgingForm(compileSuccess: boolean, outputCompile: string, entryPoint: string, compileMetadata: string, hostname: string, judgetaskid: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<void>>> {
-            const localVarAxiosArgs = await JudgehostsApiAxiosParamCreator(configuration).putV4AppApiJudgehostUpdatejudgingForm(compileSuccess, outputCompile, entryPoint, compileMetadata, hostname, judgetaskid, options);
+        async putV4AppApiJudgehostUpdatejudgingForm(compile_success: boolean, output_compile: string, entry_point: string, compile_metadata: string, hostname: string, judgetaskid: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<void>>> {
+            const localVarAxiosArgs = await JudgehostsApiAxiosParamCreator(configuration).putV4AppApiJudgehostUpdatejudgingForm(compile_success, output_compile, entry_point, compile_metadata, hostname, judgetaskid, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -799,18 +799,18 @@ export const JudgehostsApiFactory = function (configuration?: Configuration, bas
          * @summary Add one JudgingRun. When relevant, finalize the judging.
          * @param {string} runresult 
          * @param {number} runtime 
-         * @param {string} outputRun 
-         * @param {string} outputDiff 
-         * @param {string} outputError 
-         * @param {string} outputSystem 
+         * @param {string} output_run 
+         * @param {string} output_diff 
+         * @param {string} output_error 
+         * @param {string} output_system 
          * @param {string} metadata 
          * @param {string} hostname The hostname of the judgehost that wants to add the judging run
          * @param {number} judgeTaskId The ID of the judgetask to add
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async postV4AppApiJudgehostAddjudgingrunForm(runresult: string, runtime: number, outputRun: string, outputDiff: string, outputError: string, outputSystem: string, metadata: string, hostname: string, judgeTaskId: number, options?: AxiosRequestConfig): Promise<AxiosResponse<void>> {
-            return JudgehostsApiFp(configuration).postV4AppApiJudgehostAddjudgingrunForm(runresult, runtime, outputRun, outputDiff, outputError, outputSystem, metadata, hostname, judgeTaskId, options).then((request) => request(axios, basePath));
+        async postV4AppApiJudgehostAddjudgingrunForm(runresult: string, runtime: number, output_run: string, output_diff: string, output_error: string, output_system: string, metadata: string, hostname: string, judgeTaskId: number, options?: AxiosRequestConfig): Promise<AxiosResponse<void>> {
+            return JudgehostsApiFp(configuration).postV4AppApiJudgehostAddjudgingrunForm(runresult, runtime, output_run, output_diff, output_error, output_system, metadata, hostname, judgeTaskId, options).then((request) => request(axios, basePath));
         },
         /**
          * Also restarts (and returns) unfinished judgings.
@@ -857,17 +857,17 @@ export const JudgehostsApiFactory = function (configuration?: Configuration, bas
         /**
          * 
          * @summary Update the given judging for the given judgehost.
-         * @param {boolean} compileSuccess 
-         * @param {string} outputCompile 
-         * @param {string} entryPoint 
-         * @param {string} compileMetadata 
+         * @param {boolean} compile_success 
+         * @param {string} output_compile 
+         * @param {string} entry_point 
+         * @param {string} compile_metadata 
          * @param {string} hostname The hostname of the judgehost that wants to update the judging
          * @param {number} judgetaskid The ID of the judgetask to update
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async putV4AppApiJudgehostUpdatejudgingForm(compileSuccess: boolean, outputCompile: string, entryPoint: string, compileMetadata: string, hostname: string, judgetaskid: number, options?: AxiosRequestConfig): Promise<AxiosResponse<void>> {
-            return JudgehostsApiFp(configuration).putV4AppApiJudgehostUpdatejudgingForm(compileSuccess, outputCompile, entryPoint, compileMetadata, hostname, judgetaskid, options).then((request) => request(axios, basePath));
+        async putV4AppApiJudgehostUpdatejudgingForm(compile_success: boolean, output_compile: string, entry_point: string, compile_metadata: string, hostname: string, judgetaskid: number, options?: AxiosRequestConfig): Promise<AxiosResponse<void>> {
+            return JudgehostsApiFp(configuration).putV4AppApiJudgehostUpdatejudgingForm(compile_success, output_compile, entry_point, compile_metadata, hostname, judgetaskid, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -919,10 +919,10 @@ export class JudgehostsApi extends BaseAPI {
      * @summary Add one JudgingRun. When relevant, finalize the judging.
      * @param {string} runresult 
      * @param {number} runtime 
-     * @param {string} outputRun 
-     * @param {string} outputDiff 
-     * @param {string} outputError 
-     * @param {string} outputSystem 
+     * @param {string} output_run 
+     * @param {string} output_diff 
+     * @param {string} output_error 
+     * @param {string} output_system 
      * @param {string} metadata 
      * @param {string} hostname The hostname of the judgehost that wants to add the judging run
      * @param {number} judgeTaskId The ID of the judgetask to add
@@ -930,8 +930,8 @@ export class JudgehostsApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof JudgehostsApi
      */
-    public async postV4AppApiJudgehostAddjudgingrunForm(runresult: string, runtime: number, outputRun: string, outputDiff: string, outputError: string, outputSystem: string, metadata: string, hostname: string, judgeTaskId: number, options?: AxiosRequestConfig) : Promise<AxiosResponse<void>> {
-        return JudgehostsApiFp(this.configuration).postV4AppApiJudgehostAddjudgingrunForm(runresult, runtime, outputRun, outputDiff, outputError, outputSystem, metadata, hostname, judgeTaskId, options).then((request) => request(this.axios, this.basePath));
+    public async postV4AppApiJudgehostAddjudgingrunForm(runresult: string, runtime: number, output_run: string, output_diff: string, output_error: string, output_system: string, metadata: string, hostname: string, judgeTaskId: number, options?: AxiosRequestConfig) : Promise<AxiosResponse<void>> {
+        return JudgehostsApiFp(this.configuration).postV4AppApiJudgehostAddjudgingrunForm(runresult, runtime, output_run, output_diff, output_error, output_system, metadata, hostname, judgeTaskId, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * Also restarts (and returns) unfinished judgings.
@@ -982,17 +982,17 @@ export class JudgehostsApi extends BaseAPI {
     /**
      * 
      * @summary Update the given judging for the given judgehost.
-     * @param {boolean} compileSuccess 
-     * @param {string} outputCompile 
-     * @param {string} entryPoint 
-     * @param {string} compileMetadata 
+     * @param {boolean} compile_success 
+     * @param {string} output_compile 
+     * @param {string} entry_point 
+     * @param {string} compile_metadata 
      * @param {string} hostname The hostname of the judgehost that wants to update the judging
      * @param {number} judgetaskid The ID of the judgetask to update
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof JudgehostsApi
      */
-    public async putV4AppApiJudgehostUpdatejudgingForm(compileSuccess: boolean, outputCompile: string, entryPoint: string, compileMetadata: string, hostname: string, judgetaskid: number, options?: AxiosRequestConfig) : Promise<AxiosResponse<void>> {
-        return JudgehostsApiFp(this.configuration).putV4AppApiJudgehostUpdatejudgingForm(compileSuccess, outputCompile, entryPoint, compileMetadata, hostname, judgetaskid, options).then((request) => request(this.axios, this.basePath));
+    public async putV4AppApiJudgehostUpdatejudgingForm(compile_success: boolean, output_compile: string, entry_point: string, compile_metadata: string, hostname: string, judgetaskid: number, options?: AxiosRequestConfig) : Promise<AxiosResponse<void>> {
+        return JudgehostsApiFp(this.configuration).putV4AppApiJudgehostUpdatejudgingForm(compile_success, output_compile, entry_point, compile_metadata, hostname, judgetaskid, options).then((request) => request(this.axios, this.basePath));
     }
 }

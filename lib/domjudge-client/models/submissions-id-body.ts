@@ -54,5 +54,5 @@ export interface SubmissionsIdBody {
      * @type {string}
      * @memberof SubmissionsIdBody
      */
-    entryPoint?: string;
+    entry_point?: string;
 }

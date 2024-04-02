@@ -46,7 +46,7 @@ export interface HostnameJudgeTaskIdBody {
      * @type {string}
      * @memberof HostnameJudgeTaskIdBody
      */
-    outputRun: string;
+    output_run: string;
 
     /**
      * The (base64-encoded) output diff of the run
@@ -54,7 +54,7 @@ export interface HostnameJudgeTaskIdBody {
      * @type {string}
      * @memberof HostnameJudgeTaskIdBody
      */
-    outputDiff: string;
+    output_diff: string;
 
     /**
      * The (base64-encoded) error output of the run
@@ -62,7 +62,7 @@ export interface HostnameJudgeTaskIdBody {
      * @type {string}
      * @memberof HostnameJudgeTaskIdBody
      */
-    outputError: string;
+    output_error: string;
 
     /**
      * The (base64-encoded) system output of the run
@@ -70,7 +70,7 @@ export interface HostnameJudgeTaskIdBody {
      * @type {string}
      * @memberof HostnameJudgeTaskIdBody
      */
-    outputSystem: string;
+    output_system: string;
 
     /**
      * The (base64-encoded) metadata

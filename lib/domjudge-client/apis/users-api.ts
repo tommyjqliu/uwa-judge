@@ -30,11 +30,11 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
          * 
          * @summary Get all the users.
          * @param {Array<string>} [ids] Filter the objects to get on this list of ID&#x27;s
-         * @param {string} [teamId] Only show users for the given team
+         * @param {string} [team_id] Only show users for the given team
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getV4AppApiUserList: async (ids?: Array<string>, teamId?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getV4AppApiUserList: async (ids?: Array<string>, team_id?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/api/v4/users`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
@@ -56,8 +56,8 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
                 localVarQueryParameter['ids[]'] = ids;
             }
 
-            if (teamId !== undefined) {
-                localVarQueryParameter['team_id'] = teamId;
+            if (team_id !== undefined) {
+                localVarQueryParameter['team_id'] = team_id;
             }
 
             const query = new URLSearchParams(localVarUrlObj.search);
@@ -131,12 +131,12 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
          * @param {string} ip 
          * @param {string} password 
          * @param {boolean} enabled 
-         * @param {string} teamId 
+         * @param {string} team_id 
          * @param {Array<string>} roles 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        postV4AppApiUserAddForm: async (username: string, name: string, email: string, ip: string, password: string, enabled: boolean, teamId: string, roles: Array<string>, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        postV4AppApiUserAddForm: async (username: string, name: string, email: string, ip: string, password: string, enabled: boolean, team_id: string, roles: Array<string>, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'username' is not null or undefined
             if (username === null || username === undefined) {
                 throw new RequiredError('username','Required parameter username was null or undefined when calling postV4AppApiUserAddForm.');
@@ -161,9 +161,9 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
             if (enabled === null || enabled === undefined) {
                 throw new RequiredError('enabled','Required parameter enabled was null or undefined when calling postV4AppApiUserAddForm.');
             }
-            // verify required parameter 'teamId' is not null or undefined
-            if (teamId === null || teamId === undefined) {
-                throw new RequiredError('teamId','Required parameter teamId was null or undefined when calling postV4AppApiUserAddForm.');
+            // verify required parameter 'team_id' is not null or undefined
+            if (team_id === null || team_id === undefined) {
+                throw new RequiredError('team_id','Required parameter team_id was null or undefined when calling postV4AppApiUserAddForm.');
             }
             // verify required parameter 'roles' is not null or undefined
             if (roles === null || roles === undefined) {
@@ -212,8 +212,8 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
                 localVarFormParams.append('enabled', enabled as any);
             }
 
-            if (teamId !== undefined) { 
-                localVarFormParams.append('team_id', teamId as any);
+            if (team_id !== undefined) { 
+                localVarFormParams.append('team_id', team_id as any);
             }
             if (roles) {
                 roles.forEach((element) => {
@@ -550,12 +550,12 @@ export const UsersApiFp = function(configuration?: Configuration) {
          * 
          * @summary Get all the users.
          * @param {Array<string>} [ids] Filter the objects to get on this list of ID&#x27;s
-         * @param {string} [teamId] Only show users for the given team
+         * @param {string} [team_id] Only show users for the given team
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getV4AppApiUserList(ids?: Array<string>, teamId?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Array<User>>>> {
-            const localVarAxiosArgs = await UsersApiAxiosParamCreator(configuration).getV4AppApiUserList(ids, teamId, options);
+        async getV4AppApiUserList(ids?: Array<string>, team_id?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Array<User>>>> {
+            const localVarAxiosArgs = await UsersApiAxiosParamCreator(configuration).getV4AppApiUserList(ids, team_id, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -584,13 +584,13 @@ export const UsersApiFp = function(configuration?: Configuration) {
          * @param {string} ip 
          * @param {string} password 
          * @param {boolean} enabled 
-         * @param {string} teamId 
+         * @param {string} team_id 
          * @param {Array<string>} roles 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async postV4AppApiUserAddForm(username: string, name: string, email: string, ip: string, password: string, enabled: boolean, teamId: string, roles: Array<string>, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<User>>> {
-            const localVarAxiosArgs = await UsersApiAxiosParamCreator(configuration).postV4AppApiUserAddForm(username, name, email, ip, password, enabled, teamId, roles, options);
+        async postV4AppApiUserAddForm(username: string, name: string, email: string, ip: string, password: string, enabled: boolean, team_id: string, roles: Array<string>, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<User>>> {
+            const localVarAxiosArgs = await UsersApiAxiosParamCreator(configuration).postV4AppApiUserAddForm(username, name, email, ip, password, enabled, team_id, roles, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -683,12 +683,12 @@ export const UsersApiFactory = function (configuration?: Configuration, basePath
          * 
          * @summary Get all the users.
          * @param {Array<string>} [ids] Filter the objects to get on this list of ID&#x27;s
-         * @param {string} [teamId] Only show users for the given team
+         * @param {string} [team_id] Only show users for the given team
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getV4AppApiUserList(ids?: Array<string>, teamId?: string, options?: AxiosRequestConfig): Promise<AxiosResponse<Array<User>>> {
-            return UsersApiFp(configuration).getV4AppApiUserList(ids, teamId, options).then((request) => request(axios, basePath));
+        async getV4AppApiUserList(ids?: Array<string>, team_id?: string, options?: AxiosRequestConfig): Promise<AxiosResponse<Array<User>>> {
+            return UsersApiFp(configuration).getV4AppApiUserList(ids, team_id, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -709,13 +709,13 @@ export const UsersApiFactory = function (configuration?: Configuration, basePath
          * @param {string} ip 
          * @param {string} password 
          * @param {boolean} enabled 
-         * @param {string} teamId 
+         * @param {string} team_id 
          * @param {Array<string>} roles 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async postV4AppApiUserAddForm(username: string, name: string, email: string, ip: string, password: string, enabled: boolean, teamId: string, roles: Array<string>, options?: AxiosRequestConfig): Promise<AxiosResponse<User>> {
-            return UsersApiFp(configuration).postV4AppApiUserAddForm(username, name, email, ip, password, enabled, teamId, roles, options).then((request) => request(axios, basePath));
+        async postV4AppApiUserAddForm(username: string, name: string, email: string, ip: string, password: string, enabled: boolean, team_id: string, roles: Array<string>, options?: AxiosRequestConfig): Promise<AxiosResponse<User>> {
+            return UsersApiFp(configuration).postV4AppApiUserAddForm(username, name, email, ip, password, enabled, team_id, roles, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -785,13 +785,13 @@ export class UsersApi extends BaseAPI {
      * 
      * @summary Get all the users.
      * @param {Array<string>} [ids] Filter the objects to get on this list of ID&#x27;s
-     * @param {string} [teamId] Only show users for the given team
+     * @param {string} [team_id] Only show users for the given team
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof UsersApi
      */
-    public async getV4AppApiUserList(ids?: Array<string>, teamId?: string, options?: AxiosRequestConfig) : Promise<AxiosResponse<Array<User>>> {
-        return UsersApiFp(this.configuration).getV4AppApiUserList(ids, teamId, options).then((request) => request(this.axios, this.basePath));
+    public async getV4AppApiUserList(ids?: Array<string>, team_id?: string, options?: AxiosRequestConfig) : Promise<AxiosResponse<Array<User>>> {
+        return UsersApiFp(this.configuration).getV4AppApiUserList(ids, team_id, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * 
@@ -813,14 +813,14 @@ export class UsersApi extends BaseAPI {
      * @param {string} ip 
      * @param {string} password 
      * @param {boolean} enabled 
-     * @param {string} teamId 
+     * @param {string} team_id 
      * @param {Array<string>} roles 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof UsersApi
      */
-    public async postV4AppApiUserAddForm(username: string, name: string, email: string, ip: string, password: string, enabled: boolean, teamId: string, roles: Array<string>, options?: AxiosRequestConfig) : Promise<AxiosResponse<User>> {
-        return UsersApiFp(this.configuration).postV4AppApiUserAddForm(username, name, email, ip, password, enabled, teamId, roles, options).then((request) => request(this.axios, this.basePath));
+    public async postV4AppApiUserAddForm(username: string, name: string, email: string, ip: string, password: string, enabled: boolean, team_id: string, roles: Array<string>, options?: AxiosRequestConfig) : Promise<AxiosResponse<User>> {
+        return UsersApiFp(this.configuration).postV4AppApiUserAddForm(username, name, email, ip, password, enabled, team_id, roles, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

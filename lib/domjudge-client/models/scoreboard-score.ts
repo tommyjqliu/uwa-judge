@@ -28,11 +28,11 @@ export interface ScoreboardScore {
      * @type {number}
      * @memberof ScoreboardScore
      */
-    numSolved?: number;
+    num_solved?: number;
 
     /**
      * @type {number}
      * @memberof ScoreboardScore
      */
-    totalTime?: number;
+    total_time?: number;
 }

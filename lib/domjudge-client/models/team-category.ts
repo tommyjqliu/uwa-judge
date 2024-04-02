@@ -40,7 +40,7 @@ export interface TeamCategory {
      * @type {string}
      * @memberof TeamCategory
      */
-    icpcId?: string | null;
+    icpc_id?: string | null;
 
     /**
      * @type {string}

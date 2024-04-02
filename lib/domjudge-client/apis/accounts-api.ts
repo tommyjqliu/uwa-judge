@@ -81,12 +81,12 @@ export const AccountsApiAxiosParamCreator = function (configuration?: Configurat
          * @summary Get all the accounts.
          * @param {string} cid The contest ID
          * @param {Array<string>} [ids] Filter the objects to get on this list of ID&#x27;s
-         * @param {string} [teamId] Only show accounts for the given team
+         * @param {string} [team_id] Only show accounts for the given team
          * @param {boolean} [strict] Whether to only include CCS compliant properties in the response
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getV4AppApiAccountList: async (cid: string, ids?: Array<string>, teamId?: string, strict?: boolean, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getV4AppApiAccountList: async (cid: string, ids?: Array<string>, team_id?: string, strict?: boolean, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'cid' is not null or undefined
             if (cid === null || cid === undefined) {
                 throw new RequiredError('cid','Required parameter cid was null or undefined when calling getV4AppApiAccountList.');
@@ -113,8 +113,8 @@ export const AccountsApiAxiosParamCreator = function (configuration?: Configurat
                 localVarQueryParameter['ids[]'] = ids;
             }
 
-            if (teamId !== undefined) {
-                localVarQueryParameter['team_id'] = teamId;
+            if (team_id !== undefined) {
+                localVarQueryParameter['team_id'] = team_id;
             }
 
             if (strict !== undefined) {
@@ -223,13 +223,13 @@ export const AccountsApiFp = function(configuration?: Configuration) {
          * @summary Get all the accounts.
          * @param {string} cid The contest ID
          * @param {Array<string>} [ids] Filter the objects to get on this list of ID&#x27;s
-         * @param {string} [teamId] Only show accounts for the given team
+         * @param {string} [team_id] Only show accounts for the given team
          * @param {boolean} [strict] Whether to only include CCS compliant properties in the response
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getV4AppApiAccountList(cid: string, ids?: Array<string>, teamId?: string, strict?: boolean, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Array<User>>>> {
-            const localVarAxiosArgs = await AccountsApiAxiosParamCreator(configuration).getV4AppApiAccountList(cid, ids, teamId, strict, options);
+        async getV4AppApiAccountList(cid: string, ids?: Array<string>, team_id?: string, strict?: boolean, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Array<User>>>> {
+            const localVarAxiosArgs = await AccountsApiAxiosParamCreator(configuration).getV4AppApiAccountList(cid, ids, team_id, strict, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -276,13 +276,13 @@ export const AccountsApiFactory = function (configuration?: Configuration, baseP
          * @summary Get all the accounts.
          * @param {string} cid The contest ID
          * @param {Array<string>} [ids] Filter the objects to get on this list of ID&#x27;s
-         * @param {string} [teamId] Only show accounts for the given team
+         * @param {string} [team_id] Only show accounts for the given team
          * @param {boolean} [strict] Whether to only include CCS compliant properties in the response
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getV4AppApiAccountList(cid: string, ids?: Array<string>, teamId?: string, strict?: boolean, options?: AxiosRequestConfig): Promise<AxiosResponse<Array<User>>> {
-            return AccountsApiFp(configuration).getV4AppApiAccountList(cid, ids, teamId, strict, options).then((request) => request(axios, basePath));
+        async getV4AppApiAccountList(cid: string, ids?: Array<string>, team_id?: string, strict?: boolean, options?: AxiosRequestConfig): Promise<AxiosResponse<Array<User>>> {
+            return AccountsApiFp(configuration).getV4AppApiAccountList(cid, ids, team_id, strict, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -323,14 +323,14 @@ export class AccountsApi extends BaseAPI {
      * @summary Get all the accounts.
      * @param {string} cid The contest ID
      * @param {Array<string>} [ids] Filter the objects to get on this list of ID&#x27;s
-     * @param {string} [teamId] Only show accounts for the given team
+     * @param {string} [team_id] Only show accounts for the given team
      * @param {boolean} [strict] Whether to only include CCS compliant properties in the response
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof AccountsApi
      */
-    public async getV4AppApiAccountList(cid: string, ids?: Array<string>, teamId?: string, strict?: boolean, options?: AxiosRequestConfig) : Promise<AxiosResponse<Array<User>>> {
-        return AccountsApiFp(this.configuration).getV4AppApiAccountList(cid, ids, teamId, strict, options).then((request) => request(this.axios, this.basePath));
+    public async getV4AppApiAccountList(cid: string, ids?: Array<string>, team_id?: string, strict?: boolean, options?: AxiosRequestConfig) : Promise<AxiosResponse<Array<User>>> {
+        return AccountsApiFp(this.configuration).getV4AppApiAccountList(cid, ids, team_id, strict, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * 

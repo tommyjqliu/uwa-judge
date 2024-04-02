@@ -28,7 +28,7 @@ export interface JudgementExtraFields {
      * @type {string}
      * @memberof JudgementExtraFields
      */
-    judgementTypeId?: string | null;
+    judgement_type_id?: string | null;
 
     /**
      * @type {string}
@@ -40,5 +40,5 @@ export interface JudgementExtraFields {
      * @type {number}
      * @memberof JudgementExtraFields
      */
-    maxRunTime?: number | null;
+    max_run_time?: number | null;
 }

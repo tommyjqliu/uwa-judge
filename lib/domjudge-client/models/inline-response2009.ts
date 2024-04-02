@@ -30,7 +30,7 @@ export interface InlineResponse2009 extends Judging {
      * @type {string}
      * @memberof InlineResponse2009
      */
-    judgementTypeId?: string | null;
+    judgement_type_id?: string | null;
 
     /**
      * @type {string}
@@ -42,5 +42,5 @@ export interface InlineResponse2009 extends Judging {
      * @type {number}
      * @memberof InlineResponse2009
      */
-    maxRunTime?: number | null;
+    max_run_time?: number | null;
 }

@@ -30,7 +30,7 @@ export interface InlineResponse2007 {
      * @type {number}
      * @memberof InlineResponse2007
      */
-    problemId?: number;
+    problem_id?: number;
 
     /**
      * @type {Array<string>}

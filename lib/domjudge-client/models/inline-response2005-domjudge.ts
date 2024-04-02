@@ -30,7 +30,7 @@ export interface InlineResponse2005Domjudge {
      * @type {number}
      * @memberof InlineResponse2005Domjudge
      */
-    apiVersion?: number;
+    api_version?: number;
 
     /**
      * Version of DOMjudge
@@ -38,7 +38,7 @@ export interface InlineResponse2005Domjudge {
      * @type {string}
      * @memberof InlineResponse2005Domjudge
      */
-    domjudgeVersion?: string;
+    domjudge_version?: string;
 
     /**
      * Environment DOMjudge is running in
@@ -54,5 +54,5 @@ export interface InlineResponse2005Domjudge {
      * @type {string}
      * @memberof InlineResponse2005Domjudge
      */
-    docUrl?: string;
+    doc_url?: string;
 }

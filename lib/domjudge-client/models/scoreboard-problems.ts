@@ -34,19 +34,19 @@ export interface ScoreboardProblems {
      * @type {string}
      * @memberof ScoreboardProblems
      */
-    problemId?: string;
+    problem_id?: string;
 
     /**
      * @type {number}
      * @memberof ScoreboardProblems
      */
-    numJudged?: number;
+    num_judged?: number;
 
     /**
      * @type {number}
      * @memberof ScoreboardProblems
      */
-    numPending?: number;
+    num_pending?: number;
 
     /**
      * @type {boolean}
@@ -64,5 +64,5 @@ export interface ScoreboardProblems {
      * @type {boolean}
      * @memberof ScoreboardProblems
      */
-    firstToSolve?: boolean;
+    first_to_solve?: boolean;
 }

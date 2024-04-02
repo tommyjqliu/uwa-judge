@@ -30,5 +30,5 @@ export interface InlineResponse20011 extends JudgingRun {
      * @type {string}
      * @memberof InlineResponse20011
      */
-    judgementTypeId?: string;
+    judgement_type_id?: string;
 }

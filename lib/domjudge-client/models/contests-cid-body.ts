@@ -38,7 +38,7 @@ export interface ContestsCidBody {
      * @type {Date}
      * @memberof ContestsCidBody
      */
-    startTime: Date;
+    start_time: Date;
 
     /**
      * Force overwriting the start_time even when in next 30s

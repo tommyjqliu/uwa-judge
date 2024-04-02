@@ -31,7 +31,7 @@ export interface SubmissionsIdBody1 {
      * @type {string}
      * @memberof SubmissionsIdBody1
      */
-    problemId: string;
+    problem_id: string;
 
     /**
      * The language to submit a solution in
@@ -39,7 +39,7 @@ export interface SubmissionsIdBody1 {
      * @type {string}
      * @memberof SubmissionsIdBody1
      */
-    languageId: string;
+    language_id: string;
 
     /**
      * The team to submit a solution for. Only used when adding a submission as admin
@@ -47,7 +47,7 @@ export interface SubmissionsIdBody1 {
      * @type {string}
      * @memberof SubmissionsIdBody1
      */
-    teamId?: string;
+    team_id?: string;
 
     /**
      * The time to use for the submission. Only used when adding a submission as admin
@@ -79,5 +79,5 @@ export interface SubmissionsIdBody1 {
      * @type {string}
      * @memberof SubmissionsIdBody1
      */
-    entryPoint?: string;
+    entry_point?: string;
 }

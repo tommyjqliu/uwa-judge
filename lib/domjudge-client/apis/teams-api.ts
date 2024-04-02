@@ -20,7 +20,7 @@ import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } fr
 import { InlineResponse20013 } from '../models';
 import { InlineResponse400 } from '../models';
 import { Team } from '../models';
-import { Team , Photo } from '../models';
+import { Team &amp; Photo } from '../models';
 /**
  * TeamsApi - axios parameter creator
  * @export
@@ -514,33 +514,33 @@ export const TeamsApiAxiosParamCreator = function (configuration?: Configuration
         /**
          * 
          * @summary Add a new team.
-         * @param {string} organizationId 
+         * @param {string} organization_id 
          * @param {boolean} hidden 
-         * @param {Array<string>} groupIds 
+         * @param {Array<string>} group_ids 
          * @param {string} affiliation 
          * @param {string} nationality 
          * @param {string} id 
-         * @param {string} icpcId 
+         * @param {string} icpc_id 
          * @param {string} name 
-         * @param {string} displayName 
-         * @param {string} publicDescription 
+         * @param {string} display_name 
+         * @param {string} public_description 
          * @param {string} cid The contest ID
          * @param {boolean} [strict] Whether to only include CCS compliant properties in the response
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        postV4AppApiTeamAddForm: async (organizationId: string, hidden: boolean, groupIds: Array<string>, affiliation: string, nationality: string, id: string, icpcId: string, name: string, displayName: string, publicDescription: string, cid: string, strict?: boolean, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'organizationId' is not null or undefined
-            if (organizationId === null || organizationId === undefined) {
-                throw new RequiredError('organizationId','Required parameter organizationId was null or undefined when calling postV4AppApiTeamAddForm.');
+        postV4AppApiTeamAddForm: async (organization_id: string, hidden: boolean, group_ids: Array<string>, affiliation: string, nationality: string, id: string, icpc_id: string, name: string, display_name: string, public_description: string, cid: string, strict?: boolean, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'organization_id' is not null or undefined
+            if (organization_id === null || organization_id === undefined) {
+                throw new RequiredError('organization_id','Required parameter organization_id was null or undefined when calling postV4AppApiTeamAddForm.');
             }
             // verify required parameter 'hidden' is not null or undefined
             if (hidden === null || hidden === undefined) {
                 throw new RequiredError('hidden','Required parameter hidden was null or undefined when calling postV4AppApiTeamAddForm.');
             }
-            // verify required parameter 'groupIds' is not null or undefined
-            if (groupIds === null || groupIds === undefined) {
-                throw new RequiredError('groupIds','Required parameter groupIds was null or undefined when calling postV4AppApiTeamAddForm.');
+            // verify required parameter 'group_ids' is not null or undefined
+            if (group_ids === null || group_ids === undefined) {
+                throw new RequiredError('group_ids','Required parameter group_ids was null or undefined when calling postV4AppApiTeamAddForm.');
             }
             // verify required parameter 'affiliation' is not null or undefined
             if (affiliation === null || affiliation === undefined) {
@@ -554,21 +554,21 @@ export const TeamsApiAxiosParamCreator = function (configuration?: Configuration
             if (id === null || id === undefined) {
                 throw new RequiredError('id','Required parameter id was null or undefined when calling postV4AppApiTeamAddForm.');
             }
-            // verify required parameter 'icpcId' is not null or undefined
-            if (icpcId === null || icpcId === undefined) {
-                throw new RequiredError('icpcId','Required parameter icpcId was null or undefined when calling postV4AppApiTeamAddForm.');
+            // verify required parameter 'icpc_id' is not null or undefined
+            if (icpc_id === null || icpc_id === undefined) {
+                throw new RequiredError('icpc_id','Required parameter icpc_id was null or undefined when calling postV4AppApiTeamAddForm.');
             }
             // verify required parameter 'name' is not null or undefined
             if (name === null || name === undefined) {
                 throw new RequiredError('name','Required parameter name was null or undefined when calling postV4AppApiTeamAddForm.');
             }
-            // verify required parameter 'displayName' is not null or undefined
-            if (displayName === null || displayName === undefined) {
-                throw new RequiredError('displayName','Required parameter displayName was null or undefined when calling postV4AppApiTeamAddForm.');
+            // verify required parameter 'display_name' is not null or undefined
+            if (display_name === null || display_name === undefined) {
+                throw new RequiredError('display_name','Required parameter display_name was null or undefined when calling postV4AppApiTeamAddForm.');
             }
-            // verify required parameter 'publicDescription' is not null or undefined
-            if (publicDescription === null || publicDescription === undefined) {
-                throw new RequiredError('publicDescription','Required parameter publicDescription was null or undefined when calling postV4AppApiTeamAddForm.');
+            // verify required parameter 'public_description' is not null or undefined
+            if (public_description === null || public_description === undefined) {
+                throw new RequiredError('public_description','Required parameter public_description was null or undefined when calling postV4AppApiTeamAddForm.');
             }
             // verify required parameter 'cid' is not null or undefined
             if (cid === null || cid === undefined) {
@@ -598,15 +598,15 @@ export const TeamsApiAxiosParamCreator = function (configuration?: Configuration
             }
 
 
-            if (organizationId !== undefined) { 
-                localVarFormParams.append('organization_id', organizationId as any);
+            if (organization_id !== undefined) { 
+                localVarFormParams.append('organization_id', organization_id as any);
             }
 
             if (hidden !== undefined) { 
                 localVarFormParams.append('hidden', hidden as any);
             }
-            if (groupIds) {
-                groupIds.forEach((element) => {
+            if (group_ids) {
+                group_ids.forEach((element) => {
                     localVarFormParams.append('group_ids', element as any);
                 })
             }
@@ -623,20 +623,20 @@ export const TeamsApiAxiosParamCreator = function (configuration?: Configuration
                 localVarFormParams.append('id', id as any);
             }
 
-            if (icpcId !== undefined) { 
-                localVarFormParams.append('icpc_id', icpcId as any);
+            if (icpc_id !== undefined) { 
+                localVarFormParams.append('icpc_id', icpc_id as any);
             }
 
             if (name !== undefined) { 
                 localVarFormParams.append('name', name as any);
             }
 
-            if (displayName !== undefined) { 
-                localVarFormParams.append('display_name', displayName as any);
+            if (display_name !== undefined) { 
+                localVarFormParams.append('display_name', display_name as any);
             }
 
-            if (publicDescription !== undefined) { 
-                localVarFormParams.append('public_description', publicDescription as any);
+            if (public_description !== undefined) { 
+                localVarFormParams.append('public_description', public_description as any);
             }
 
             localVarHeaderParameter['Content-Type'] = 'multipart/form-data';
@@ -721,33 +721,33 @@ export const TeamsApiAxiosParamCreator = function (configuration?: Configuration
         /**
          * 
          * @summary Add a new team.
-         * @param {string} organizationId 
+         * @param {string} organization_id 
          * @param {boolean} hidden 
-         * @param {Array<string>} groupIds 
+         * @param {Array<string>} group_ids 
          * @param {string} affiliation 
          * @param {string} nationality 
          * @param {string} id 
-         * @param {string} icpcId 
+         * @param {string} icpc_id 
          * @param {string} name 
-         * @param {string} displayName 
-         * @param {string} publicDescription 
+         * @param {string} display_name 
+         * @param {string} public_description 
          * @param {string} cid The contest ID
          * @param {boolean} [strict] Whether to only include CCS compliant properties in the response
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        postV4AppApiTeamAdd1Form: async (organizationId: string, hidden: boolean, groupIds: Array<string>, affiliation: string, nationality: string, id: string, icpcId: string, name: string, displayName: string, publicDescription: string, cid: string, strict?: boolean, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'organizationId' is not null or undefined
-            if (organizationId === null || organizationId === undefined) {
-                throw new RequiredError('organizationId','Required parameter organizationId was null or undefined when calling postV4AppApiTeamAdd1Form.');
+        postV4AppApiTeamAdd1Form: async (organization_id: string, hidden: boolean, group_ids: Array<string>, affiliation: string, nationality: string, id: string, icpc_id: string, name: string, display_name: string, public_description: string, cid: string, strict?: boolean, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'organization_id' is not null or undefined
+            if (organization_id === null || organization_id === undefined) {
+                throw new RequiredError('organization_id','Required parameter organization_id was null or undefined when calling postV4AppApiTeamAdd1Form.');
             }
             // verify required parameter 'hidden' is not null or undefined
             if (hidden === null || hidden === undefined) {
                 throw new RequiredError('hidden','Required parameter hidden was null or undefined when calling postV4AppApiTeamAdd1Form.');
             }
-            // verify required parameter 'groupIds' is not null or undefined
-            if (groupIds === null || groupIds === undefined) {
-                throw new RequiredError('groupIds','Required parameter groupIds was null or undefined when calling postV4AppApiTeamAdd1Form.');
+            // verify required parameter 'group_ids' is not null or undefined
+            if (group_ids === null || group_ids === undefined) {
+                throw new RequiredError('group_ids','Required parameter group_ids was null or undefined when calling postV4AppApiTeamAdd1Form.');
             }
             // verify required parameter 'affiliation' is not null or undefined
             if (affiliation === null || affiliation === undefined) {
@@ -761,21 +761,21 @@ export const TeamsApiAxiosParamCreator = function (configuration?: Configuration
             if (id === null || id === undefined) {
                 throw new RequiredError('id','Required parameter id was null or undefined when calling postV4AppApiTeamAdd1Form.');
             }
-            // verify required parameter 'icpcId' is not null or undefined
-            if (icpcId === null || icpcId === undefined) {
-                throw new RequiredError('icpcId','Required parameter icpcId was null or undefined when calling postV4AppApiTeamAdd1Form.');
+            // verify required parameter 'icpc_id' is not null or undefined
+            if (icpc_id === null || icpc_id === undefined) {
+                throw new RequiredError('icpc_id','Required parameter icpc_id was null or undefined when calling postV4AppApiTeamAdd1Form.');
             }
             // verify required parameter 'name' is not null or undefined
             if (name === null || name === undefined) {
                 throw new RequiredError('name','Required parameter name was null or undefined when calling postV4AppApiTeamAdd1Form.');
             }
-            // verify required parameter 'displayName' is not null or undefined
-            if (displayName === null || displayName === undefined) {
-                throw new RequiredError('displayName','Required parameter displayName was null or undefined when calling postV4AppApiTeamAdd1Form.');
+            // verify required parameter 'display_name' is not null or undefined
+            if (display_name === null || display_name === undefined) {
+                throw new RequiredError('display_name','Required parameter display_name was null or undefined when calling postV4AppApiTeamAdd1Form.');
             }
-            // verify required parameter 'publicDescription' is not null or undefined
-            if (publicDescription === null || publicDescription === undefined) {
-                throw new RequiredError('publicDescription','Required parameter publicDescription was null or undefined when calling postV4AppApiTeamAdd1Form.');
+            // verify required parameter 'public_description' is not null or undefined
+            if (public_description === null || public_description === undefined) {
+                throw new RequiredError('public_description','Required parameter public_description was null or undefined when calling postV4AppApiTeamAdd1Form.');
             }
             // verify required parameter 'cid' is not null or undefined
             if (cid === null || cid === undefined) {
@@ -805,15 +805,15 @@ export const TeamsApiAxiosParamCreator = function (configuration?: Configuration
             }
 
 
-            if (organizationId !== undefined) { 
-                localVarFormParams.append('organization_id', organizationId as any);
+            if (organization_id !== undefined) { 
+                localVarFormParams.append('organization_id', organization_id as any);
             }
 
             if (hidden !== undefined) { 
                 localVarFormParams.append('hidden', hidden as any);
             }
-            if (groupIds) {
-                groupIds.forEach((element) => {
+            if (group_ids) {
+                group_ids.forEach((element) => {
                     localVarFormParams.append('group_ids', element as any);
                 })
             }
@@ -830,20 +830,20 @@ export const TeamsApiAxiosParamCreator = function (configuration?: Configuration
                 localVarFormParams.append('id', id as any);
             }
 
-            if (icpcId !== undefined) { 
-                localVarFormParams.append('icpc_id', icpcId as any);
+            if (icpc_id !== undefined) { 
+                localVarFormParams.append('icpc_id', icpc_id as any);
             }
 
             if (name !== undefined) { 
                 localVarFormParams.append('name', name as any);
             }
 
-            if (displayName !== undefined) { 
-                localVarFormParams.append('display_name', displayName as any);
+            if (display_name !== undefined) { 
+                localVarFormParams.append('display_name', display_name as any);
             }
 
-            if (publicDescription !== undefined) { 
-                localVarFormParams.append('public_description', publicDescription as any);
+            if (public_description !== undefined) { 
+                localVarFormParams.append('public_description', public_description as any);
             }
 
             localVarHeaderParameter['Content-Type'] = 'multipart/form-data';
@@ -1351,23 +1351,23 @@ export const TeamsApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Add a new team.
-         * @param {string} organizationId 
+         * @param {string} organization_id 
          * @param {boolean} hidden 
-         * @param {Array<string>} groupIds 
+         * @param {Array<string>} group_ids 
          * @param {string} affiliation 
          * @param {string} nationality 
          * @param {string} id 
-         * @param {string} icpcId 
+         * @param {string} icpc_id 
          * @param {string} name 
-         * @param {string} displayName 
-         * @param {string} publicDescription 
+         * @param {string} display_name 
+         * @param {string} public_description 
          * @param {string} cid The contest ID
          * @param {boolean} [strict] Whether to only include CCS compliant properties in the response
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async postV4AppApiTeamAddForm(organizationId: string, hidden: boolean, groupIds: Array<string>, affiliation: string, nationality: string, id: string, icpcId: string, name: string, displayName: string, publicDescription: string, cid: string, strict?: boolean, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Team>>> {
-            const localVarAxiosArgs = await TeamsApiAxiosParamCreator(configuration).postV4AppApiTeamAddForm(organizationId, hidden, groupIds, affiliation, nationality, id, icpcId, name, displayName, publicDescription, cid, strict, options);
+        async postV4AppApiTeamAddForm(organization_id: string, hidden: boolean, group_ids: Array<string>, affiliation: string, nationality: string, id: string, icpc_id: string, name: string, display_name: string, public_description: string, cid: string, strict?: boolean, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Team>>> {
+            const localVarAxiosArgs = await TeamsApiAxiosParamCreator(configuration).postV4AppApiTeamAddForm(organization_id, hidden, group_ids, affiliation, nationality, id, icpc_id, name, display_name, public_description, cid, strict, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -1392,23 +1392,23 @@ export const TeamsApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Add a new team.
-         * @param {string} organizationId 
+         * @param {string} organization_id 
          * @param {boolean} hidden 
-         * @param {Array<string>} groupIds 
+         * @param {Array<string>} group_ids 
          * @param {string} affiliation 
          * @param {string} nationality 
          * @param {string} id 
-         * @param {string} icpcId 
+         * @param {string} icpc_id 
          * @param {string} name 
-         * @param {string} displayName 
-         * @param {string} publicDescription 
+         * @param {string} display_name 
+         * @param {string} public_description 
          * @param {string} cid The contest ID
          * @param {boolean} [strict] Whether to only include CCS compliant properties in the response
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async postV4AppApiTeamAdd1Form(organizationId: string, hidden: boolean, groupIds: Array<string>, affiliation: string, nationality: string, id: string, icpcId: string, name: string, displayName: string, publicDescription: string, cid: string, strict?: boolean, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Team>>> {
-            const localVarAxiosArgs = await TeamsApiAxiosParamCreator(configuration).postV4AppApiTeamAdd1Form(organizationId, hidden, groupIds, affiliation, nationality, id, icpcId, name, displayName, publicDescription, cid, strict, options);
+        async postV4AppApiTeamAdd1Form(organization_id: string, hidden: boolean, group_ids: Array<string>, affiliation: string, nationality: string, id: string, icpc_id: string, name: string, display_name: string, public_description: string, cid: string, strict?: boolean, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Team>>> {
+            const localVarAxiosArgs = await TeamsApiAxiosParamCreator(configuration).postV4AppApiTeamAdd1Form(organization_id, hidden, group_ids, affiliation, nationality, id, icpc_id, name, display_name, public_description, cid, strict, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -1612,23 +1612,23 @@ export const TeamsApiFactory = function (configuration?: Configuration, basePath
         /**
          * 
          * @summary Add a new team.
-         * @param {string} organizationId 
+         * @param {string} organization_id 
          * @param {boolean} hidden 
-         * @param {Array<string>} groupIds 
+         * @param {Array<string>} group_ids 
          * @param {string} affiliation 
          * @param {string} nationality 
          * @param {string} id 
-         * @param {string} icpcId 
+         * @param {string} icpc_id 
          * @param {string} name 
-         * @param {string} displayName 
-         * @param {string} publicDescription 
+         * @param {string} display_name 
+         * @param {string} public_description 
          * @param {string} cid The contest ID
          * @param {boolean} [strict] Whether to only include CCS compliant properties in the response
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async postV4AppApiTeamAddForm(organizationId: string, hidden: boolean, groupIds: Array<string>, affiliation: string, nationality: string, id: string, icpcId: string, name: string, displayName: string, publicDescription: string, cid: string, strict?: boolean, options?: AxiosRequestConfig): Promise<AxiosResponse<Team>> {
-            return TeamsApiFp(configuration).postV4AppApiTeamAddForm(organizationId, hidden, groupIds, affiliation, nationality, id, icpcId, name, displayName, publicDescription, cid, strict, options).then((request) => request(axios, basePath));
+        async postV4AppApiTeamAddForm(organization_id: string, hidden: boolean, group_ids: Array<string>, affiliation: string, nationality: string, id: string, icpc_id: string, name: string, display_name: string, public_description: string, cid: string, strict?: boolean, options?: AxiosRequestConfig): Promise<AxiosResponse<Team>> {
+            return TeamsApiFp(configuration).postV4AppApiTeamAddForm(organization_id, hidden, group_ids, affiliation, nationality, id, icpc_id, name, display_name, public_description, cid, strict, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -1645,23 +1645,23 @@ export const TeamsApiFactory = function (configuration?: Configuration, basePath
         /**
          * 
          * @summary Add a new team.
-         * @param {string} organizationId 
+         * @param {string} organization_id 
          * @param {boolean} hidden 
-         * @param {Array<string>} groupIds 
+         * @param {Array<string>} group_ids 
          * @param {string} affiliation 
          * @param {string} nationality 
          * @param {string} id 
-         * @param {string} icpcId 
+         * @param {string} icpc_id 
          * @param {string} name 
-         * @param {string} displayName 
-         * @param {string} publicDescription 
+         * @param {string} display_name 
+         * @param {string} public_description 
          * @param {string} cid The contest ID
          * @param {boolean} [strict] Whether to only include CCS compliant properties in the response
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async postV4AppApiTeamAdd1Form(organizationId: string, hidden: boolean, groupIds: Array<string>, affiliation: string, nationality: string, id: string, icpcId: string, name: string, displayName: string, publicDescription: string, cid: string, strict?: boolean, options?: AxiosRequestConfig): Promise<AxiosResponse<Team>> {
-            return TeamsApiFp(configuration).postV4AppApiTeamAdd1Form(organizationId, hidden, groupIds, affiliation, nationality, id, icpcId, name, displayName, publicDescription, cid, strict, options).then((request) => request(axios, basePath));
+        async postV4AppApiTeamAdd1Form(organization_id: string, hidden: boolean, group_ids: Array<string>, affiliation: string, nationality: string, id: string, icpc_id: string, name: string, display_name: string, public_description: string, cid: string, strict?: boolean, options?: AxiosRequestConfig): Promise<AxiosResponse<Team>> {
+            return TeamsApiFp(configuration).postV4AppApiTeamAdd1Form(organization_id, hidden, group_ids, affiliation, nationality, id, icpc_id, name, display_name, public_description, cid, strict, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -1850,24 +1850,24 @@ export class TeamsApi extends BaseAPI {
     /**
      * 
      * @summary Add a new team.
-     * @param {string} organizationId 
+     * @param {string} organization_id 
      * @param {boolean} hidden 
-     * @param {Array<string>} groupIds 
+     * @param {Array<string>} group_ids 
      * @param {string} affiliation 
      * @param {string} nationality 
      * @param {string} id 
-     * @param {string} icpcId 
+     * @param {string} icpc_id 
      * @param {string} name 
-     * @param {string} displayName 
-     * @param {string} publicDescription 
+     * @param {string} display_name 
+     * @param {string} public_description 
      * @param {string} cid The contest ID
      * @param {boolean} [strict] Whether to only include CCS compliant properties in the response
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof TeamsApi
      */
-    public async postV4AppApiTeamAddForm(organizationId: string, hidden: boolean, groupIds: Array<string>, affiliation: string, nationality: string, id: string, icpcId: string, name: string, displayName: string, publicDescription: string, cid: string, strict?: boolean, options?: AxiosRequestConfig) : Promise<AxiosResponse<Team>> {
-        return TeamsApiFp(this.configuration).postV4AppApiTeamAddForm(organizationId, hidden, groupIds, affiliation, nationality, id, icpcId, name, displayName, publicDescription, cid, strict, options).then((request) => request(this.axios, this.basePath));
+    public async postV4AppApiTeamAddForm(organization_id: string, hidden: boolean, group_ids: Array<string>, affiliation: string, nationality: string, id: string, icpc_id: string, name: string, display_name: string, public_description: string, cid: string, strict?: boolean, options?: AxiosRequestConfig) : Promise<AxiosResponse<Team>> {
+        return TeamsApiFp(this.configuration).postV4AppApiTeamAddForm(organization_id, hidden, group_ids, affiliation, nationality, id, icpc_id, name, display_name, public_description, cid, strict, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -1886,24 +1886,24 @@ export class TeamsApi extends BaseAPI {
     /**
      * 
      * @summary Add a new team.
-     * @param {string} organizationId 
+     * @param {string} organization_id 
      * @param {boolean} hidden 
-     * @param {Array<string>} groupIds 
+     * @param {Array<string>} group_ids 
      * @param {string} affiliation 
      * @param {string} nationality 
      * @param {string} id 
-     * @param {string} icpcId 
+     * @param {string} icpc_id 
      * @param {string} name 
-     * @param {string} displayName 
-     * @param {string} publicDescription 
+     * @param {string} display_name 
+     * @param {string} public_description 
      * @param {string} cid The contest ID
      * @param {boolean} [strict] Whether to only include CCS compliant properties in the response
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof TeamsApi
      */
-    public async postV4AppApiTeamAdd1Form(organizationId: string, hidden: boolean, groupIds: Array<string>, affiliation: string, nationality: string, id: string, icpcId: string, name: string, displayName: string, publicDescription: string, cid: string, strict?: boolean, options?: AxiosRequestConfig) : Promise<AxiosResponse<Team>> {
-        return TeamsApiFp(this.configuration).postV4AppApiTeamAdd1Form(organizationId, hidden, groupIds, affiliation, nationality, id, icpcId, name, displayName, publicDescription, cid, strict, options).then((request) => request(this.axios, this.basePath));
+    public async postV4AppApiTeamAdd1Form(organization_id: string, hidden: boolean, group_ids: Array<string>, affiliation: string, nationality: string, id: string, icpc_id: string, name: string, display_name: string, public_description: string, cid: string, strict?: boolean, options?: AxiosRequestConfig) : Promise<AxiosResponse<Team>> {
+        return TeamsApiFp(this.configuration).postV4AppApiTeamAdd1Form(organization_id, hidden, group_ids, affiliation, nationality, id, icpc_id, name, display_name, public_description, cid, strict, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

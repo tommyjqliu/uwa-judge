@@ -17,7 +17,7 @@ import { Configuration } from '../configuration';
 // Some imports not used depending on template conditions
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } from '../base';
-import { Contest, Banner } from '../models';
+import { Contest &amp; Banner } from '../models';
 import { ContestState } from '../models';
 import { InlineResponse2001 } from '../models';
 import { InlineResponse2002 } from '../models';
@@ -186,14 +186,14 @@ export const ContestsApiAxiosParamCreator = function (configuration?: Configurat
          * 
          * @summary Get the event feed for the given contest.
          * @param {string} cid The contest ID
-         * @param {string} [sinceId] Only get events after this event
+         * @param {string} [since_id] Only get events after this event
          * @param {Array<string>} [types] Types to filter the event feed on
          * @param {boolean} [stream] Whether to stream the output or stop immediately
          * @param {boolean} [strict] Whether to only include CCS compliant properties in the response
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getV4AppApiContestGeteventfeed: async (cid: string, sinceId?: string, types?: Array<string>, stream?: boolean, strict?: boolean, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getV4AppApiContestGeteventfeed: async (cid: string, since_id?: string, types?: Array<string>, stream?: boolean, strict?: boolean, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'cid' is not null or undefined
             if (cid === null || cid === undefined) {
                 throw new RequiredError('cid','Required parameter cid was null or undefined when calling getV4AppApiContestGeteventfeed.');
@@ -216,8 +216,8 @@ export const ContestsApiAxiosParamCreator = function (configuration?: Configurat
                 localVarRequestOptions["auth"] = { username: configuration.username, password: configuration.password };
             }
 
-            if (sinceId !== undefined) {
-                localVarQueryParameter['since_id'] = sinceId;
+            if (since_id !== undefined) {
+                localVarQueryParameter['since_id'] = since_id;
             }
 
             if (types) {
@@ -510,21 +510,21 @@ export const ContestsApiAxiosParamCreator = function (configuration?: Configurat
          * 
          * @summary Change the start time of the given contest.
          * @param {string} id 
-         * @param {Date} startTime 
+         * @param {Date} start_time 
          * @param {boolean} force 
          * @param {string} cid The ID of the contest to change the start time for
          * @param {boolean} [strict] Whether to only include CCS compliant properties in the response
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        patchV4AppApiContestChangestarttimeForm: async (id: string, startTime: Date, force: boolean, cid: string, strict?: boolean, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        patchV4AppApiContestChangestarttimeForm: async (id: string, start_time: Date, force: boolean, cid: string, strict?: boolean, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             if (id === null || id === undefined) {
                 throw new RequiredError('id','Required parameter id was null or undefined when calling patchV4AppApiContestChangestarttimeForm.');
             }
-            // verify required parameter 'startTime' is not null or undefined
-            if (startTime === null || startTime === undefined) {
-                throw new RequiredError('startTime','Required parameter startTime was null or undefined when calling patchV4AppApiContestChangestarttimeForm.');
+            // verify required parameter 'start_time' is not null or undefined
+            if (start_time === null || start_time === undefined) {
+                throw new RequiredError('start_time','Required parameter start_time was null or undefined when calling patchV4AppApiContestChangestarttimeForm.');
             }
             // verify required parameter 'force' is not null or undefined
             if (force === null || force === undefined) {
@@ -562,8 +562,8 @@ export const ContestsApiAxiosParamCreator = function (configuration?: Configurat
                 localVarFormParams.set('id', id as any);
             }
 
-            if (startTime !== undefined) { 
-                localVarFormParams.set('start_time', startTime as any);
+            if (start_time !== undefined) { 
+                localVarFormParams.set('start_time', start_time as any);
             }
 
             if (force !== undefined) { 
@@ -840,15 +840,15 @@ export const ContestsApiFp = function(configuration?: Configuration) {
          * 
          * @summary Get the event feed for the given contest.
          * @param {string} cid The contest ID
-         * @param {string} [sinceId] Only get events after this event
+         * @param {string} [since_id] Only get events after this event
          * @param {Array<string>} [types] Types to filter the event feed on
          * @param {boolean} [stream] Whether to stream the output or stop immediately
          * @param {boolean} [strict] Whether to only include CCS compliant properties in the response
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getV4AppApiContestGeteventfeed(cid: string, sinceId?: string, types?: Array<string>, stream?: boolean, strict?: boolean, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Array<InlineResponse2002>>>> {
-            const localVarAxiosArgs = await ContestsApiAxiosParamCreator(configuration).getV4AppApiContestGeteventfeed(cid, sinceId, types, stream, strict, options);
+        async getV4AppApiContestGeteventfeed(cid: string, since_id?: string, types?: Array<string>, stream?: boolean, strict?: boolean, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Array<InlineResponse2002>>>> {
+            const localVarAxiosArgs = await ContestsApiAxiosParamCreator(configuration).getV4AppApiContestGeteventfeed(cid, since_id, types, stream, strict, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -933,15 +933,15 @@ export const ContestsApiFp = function(configuration?: Configuration) {
          * 
          * @summary Change the start time of the given contest.
          * @param {string} id 
-         * @param {Date} startTime 
+         * @param {Date} start_time 
          * @param {boolean} force 
          * @param {string} cid The ID of the contest to change the start time for
          * @param {boolean} [strict] Whether to only include CCS compliant properties in the response
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async patchV4AppApiContestChangestarttimeForm(id: string, startTime: Date, force: boolean, cid: string, strict?: boolean, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<string>>> {
-            const localVarAxiosArgs = await ContestsApiAxiosParamCreator(configuration).patchV4AppApiContestChangestarttimeForm(id, startTime, force, cid, strict, options);
+        async patchV4AppApiContestChangestarttimeForm(id: string, start_time: Date, force: boolean, cid: string, strict?: boolean, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<string>>> {
+            const localVarAxiosArgs = await ContestsApiAxiosParamCreator(configuration).patchV4AppApiContestChangestarttimeForm(id, start_time, force, cid, strict, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -1041,15 +1041,15 @@ export const ContestsApiFactory = function (configuration?: Configuration, baseP
          * 
          * @summary Get the event feed for the given contest.
          * @param {string} cid The contest ID
-         * @param {string} [sinceId] Only get events after this event
+         * @param {string} [since_id] Only get events after this event
          * @param {Array<string>} [types] Types to filter the event feed on
          * @param {boolean} [stream] Whether to stream the output or stop immediately
          * @param {boolean} [strict] Whether to only include CCS compliant properties in the response
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getV4AppApiContestGeteventfeed(cid: string, sinceId?: string, types?: Array<string>, stream?: boolean, strict?: boolean, options?: AxiosRequestConfig): Promise<AxiosResponse<Array<InlineResponse2002>>> {
-            return ContestsApiFp(configuration).getV4AppApiContestGeteventfeed(cid, sinceId, types, stream, strict, options).then((request) => request(axios, basePath));
+        async getV4AppApiContestGeteventfeed(cid: string, since_id?: string, types?: Array<string>, stream?: boolean, strict?: boolean, options?: AxiosRequestConfig): Promise<AxiosResponse<Array<InlineResponse2002>>> {
+            return ContestsApiFp(configuration).getV4AppApiContestGeteventfeed(cid, since_id, types, stream, strict, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -1110,15 +1110,15 @@ export const ContestsApiFactory = function (configuration?: Configuration, baseP
          * 
          * @summary Change the start time of the given contest.
          * @param {string} id 
-         * @param {Date} startTime 
+         * @param {Date} start_time 
          * @param {boolean} force 
          * @param {string} cid The ID of the contest to change the start time for
          * @param {boolean} [strict] Whether to only include CCS compliant properties in the response
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async patchV4AppApiContestChangestarttimeForm(id: string, startTime: Date, force: boolean, cid: string, strict?: boolean, options?: AxiosRequestConfig): Promise<AxiosResponse<string>> {
-            return ContestsApiFp(configuration).patchV4AppApiContestChangestarttimeForm(id, startTime, force, cid, strict, options).then((request) => request(axios, basePath));
+        async patchV4AppApiContestChangestarttimeForm(id: string, start_time: Date, force: boolean, cid: string, strict?: boolean, options?: AxiosRequestConfig): Promise<AxiosResponse<string>> {
+            return ContestsApiFp(configuration).patchV4AppApiContestChangestarttimeForm(id, start_time, force, cid, strict, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -1206,7 +1206,7 @@ export class ContestsApi extends BaseAPI {
      * 
      * @summary Get the event feed for the given contest.
      * @param {string} cid The contest ID
-     * @param {string} [sinceId] Only get events after this event
+     * @param {string} [since_id] Only get events after this event
      * @param {Array<string>} [types] Types to filter the event feed on
      * @param {boolean} [stream] Whether to stream the output or stop immediately
      * @param {boolean} [strict] Whether to only include CCS compliant properties in the response
@@ -1214,8 +1214,8 @@ export class ContestsApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof ContestsApi
      */
-    public async getV4AppApiContestGeteventfeed(cid: string, sinceId?: string, types?: Array<string>, stream?: boolean, strict?: boolean, options?: AxiosRequestConfig) : Promise<AxiosResponse<Array<InlineResponse2002>>> {
-        return ContestsApiFp(this.configuration).getV4AppApiContestGeteventfeed(cid, sinceId, types, stream, strict, options).then((request) => request(this.axios, this.basePath));
+    public async getV4AppApiContestGeteventfeed(cid: string, since_id?: string, types?: Array<string>, stream?: boolean, strict?: boolean, options?: AxiosRequestConfig) : Promise<AxiosResponse<Array<InlineResponse2002>>> {
+        return ContestsApiFp(this.configuration).getV4AppApiContestGeteventfeed(cid, since_id, types, stream, strict, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * 
@@ -1281,7 +1281,7 @@ export class ContestsApi extends BaseAPI {
      * 
      * @summary Change the start time of the given contest.
      * @param {string} id 
-     * @param {Date} startTime 
+     * @param {Date} start_time 
      * @param {boolean} force 
      * @param {string} cid The ID of the contest to change the start time for
      * @param {boolean} [strict] Whether to only include CCS compliant properties in the response
@@ -1289,8 +1289,8 @@ export class ContestsApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof ContestsApi
      */
-    public async patchV4AppApiContestChangestarttimeForm(id: string, startTime: Date, force: boolean, cid: string, strict?: boolean, options?: AxiosRequestConfig) : Promise<AxiosResponse<string>> {
-        return ContestsApiFp(this.configuration).patchV4AppApiContestChangestarttimeForm(id, startTime, force, cid, strict, options).then((request) => request(this.axios, this.basePath));
+    public async patchV4AppApiContestChangestarttimeForm(id: string, start_time: Date, force: boolean, cid: string, strict?: boolean, options?: AxiosRequestConfig) : Promise<AxiosResponse<string>> {
+        return ContestsApiFp(this.configuration).patchV4AppApiContestChangestarttimeForm(id, start_time, force, cid, strict, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * 

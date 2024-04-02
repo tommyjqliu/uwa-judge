@@ -13,7 +13,9 @@
  */
 
 import { InlineResponse2005Domjudge } from './inline-response2005-domjudge';
-
+import {
+    InlineResponse2005Domjudge,
+} from ".";
 
 /**
  * 
@@ -37,7 +39,7 @@ export interface InlineResponse2005 {
      * @type {string}
      * @memberof InlineResponse2005
      */
-    versionUrl?: string;
+    version_url?: string;
 
     /**
      * @type {InlineResponse2005Domjudge}

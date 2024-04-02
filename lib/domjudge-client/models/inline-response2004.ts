@@ -28,5 +28,5 @@ export interface InlineResponse2004 {
      * @type {number}
      * @memberof InlineResponse2004
      */
-    apiVersion?: number;
+    api_version?: number;
 }

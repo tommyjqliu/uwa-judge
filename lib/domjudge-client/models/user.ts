@@ -28,19 +28,19 @@ export interface User {
      * @type {Date}
      * @memberof User
      */
-    lastLoginTime?: Date | null;
+    last_login_time?: Date | null;
 
     /**
      * @type {Date}
      * @memberof User
      */
-    lastApiLoginTime?: Date | null;
+    last_api_login_time?: Date | null;
 
     /**
      * @type {Date}
      * @memberof User
      */
-    firstLoginTime?: Date | null;
+    first_login_time?: Date | null;
 
     /**
      * @type {string}
@@ -52,7 +52,7 @@ export interface User {
      * @type {string}
      * @memberof User
      */
-    teamId?: string | null;
+    team_id?: string | null;
 
     /**
      * @type {Array<string>}
@@ -94,7 +94,7 @@ export interface User {
      * @type {string}
      * @memberof User
      */
-    lastIp?: string | null;
+    last_ip?: string | null;
 
     /**
      * @type {string}

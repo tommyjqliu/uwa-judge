@@ -148,7 +148,7 @@ export const GroupsApiAxiosParamCreator = function (configuration?: Configuratio
          * @summary Add a new group
          * @param {boolean} hidden 
          * @param {string} id 
-         * @param {string} icpcId 
+         * @param {string} icpc_id 
          * @param {string} name 
          * @param {number} sortorder 
          * @param {string} color 
@@ -157,7 +157,7 @@ export const GroupsApiAxiosParamCreator = function (configuration?: Configuratio
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        postV4AppApiGroupAddForm: async (hidden: boolean, id: string, icpcId: string, name: string, sortorder: number, color: string, cid: string, strict?: boolean, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        postV4AppApiGroupAddForm: async (hidden: boolean, id: string, icpc_id: string, name: string, sortorder: number, color: string, cid: string, strict?: boolean, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'hidden' is not null or undefined
             if (hidden === null || hidden === undefined) {
                 throw new RequiredError('hidden','Required parameter hidden was null or undefined when calling postV4AppApiGroupAddForm.');
@@ -166,9 +166,9 @@ export const GroupsApiAxiosParamCreator = function (configuration?: Configuratio
             if (id === null || id === undefined) {
                 throw new RequiredError('id','Required parameter id was null or undefined when calling postV4AppApiGroupAddForm.');
             }
-            // verify required parameter 'icpcId' is not null or undefined
-            if (icpcId === null || icpcId === undefined) {
-                throw new RequiredError('icpcId','Required parameter icpcId was null or undefined when calling postV4AppApiGroupAddForm.');
+            // verify required parameter 'icpc_id' is not null or undefined
+            if (icpc_id === null || icpc_id === undefined) {
+                throw new RequiredError('icpc_id','Required parameter icpc_id was null or undefined when calling postV4AppApiGroupAddForm.');
             }
             // verify required parameter 'name' is not null or undefined
             if (name === null || name === undefined) {
@@ -218,8 +218,8 @@ export const GroupsApiAxiosParamCreator = function (configuration?: Configuratio
                 localVarFormParams.append('id', id as any);
             }
 
-            if (icpcId !== undefined) { 
-                localVarFormParams.append('icpc_id', icpcId as any);
+            if (icpc_id !== undefined) { 
+                localVarFormParams.append('icpc_id', icpc_id as any);
             }
 
             if (name !== undefined) { 
@@ -360,7 +360,7 @@ export const GroupsApiFp = function(configuration?: Configuration) {
          * @summary Add a new group
          * @param {boolean} hidden 
          * @param {string} id 
-         * @param {string} icpcId 
+         * @param {string} icpc_id 
          * @param {string} name 
          * @param {number} sortorder 
          * @param {string} color 
@@ -369,8 +369,8 @@ export const GroupsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async postV4AppApiGroupAddForm(hidden: boolean, id: string, icpcId: string, name: string, sortorder: number, color: string, cid: string, strict?: boolean, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<TeamCategory>>> {
-            const localVarAxiosArgs = await GroupsApiAxiosParamCreator(configuration).postV4AppApiGroupAddForm(hidden, id, icpcId, name, sortorder, color, cid, strict, options);
+        async postV4AppApiGroupAddForm(hidden: boolean, id: string, icpc_id: string, name: string, sortorder: number, color: string, cid: string, strict?: boolean, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<TeamCategory>>> {
+            const localVarAxiosArgs = await GroupsApiAxiosParamCreator(configuration).postV4AppApiGroupAddForm(hidden, id, icpc_id, name, sortorder, color, cid, strict, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -431,7 +431,7 @@ export const GroupsApiFactory = function (configuration?: Configuration, basePat
          * @summary Add a new group
          * @param {boolean} hidden 
          * @param {string} id 
-         * @param {string} icpcId 
+         * @param {string} icpc_id 
          * @param {string} name 
          * @param {number} sortorder 
          * @param {string} color 
@@ -440,8 +440,8 @@ export const GroupsApiFactory = function (configuration?: Configuration, basePat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async postV4AppApiGroupAddForm(hidden: boolean, id: string, icpcId: string, name: string, sortorder: number, color: string, cid: string, strict?: boolean, options?: AxiosRequestConfig): Promise<AxiosResponse<TeamCategory>> {
-            return GroupsApiFp(configuration).postV4AppApiGroupAddForm(hidden, id, icpcId, name, sortorder, color, cid, strict, options).then((request) => request(axios, basePath));
+        async postV4AppApiGroupAddForm(hidden: boolean, id: string, icpc_id: string, name: string, sortorder: number, color: string, cid: string, strict?: boolean, options?: AxiosRequestConfig): Promise<AxiosResponse<TeamCategory>> {
+            return GroupsApiFp(configuration).postV4AppApiGroupAddForm(hidden, id, icpc_id, name, sortorder, color, cid, strict, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -497,7 +497,7 @@ export class GroupsApi extends BaseAPI {
      * @summary Add a new group
      * @param {boolean} hidden 
      * @param {string} id 
-     * @param {string} icpcId 
+     * @param {string} icpc_id 
      * @param {string} name 
      * @param {number} sortorder 
      * @param {string} color 
@@ -507,8 +507,8 @@ export class GroupsApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof GroupsApi
      */
-    public async postV4AppApiGroupAddForm(hidden: boolean, id: string, icpcId: string, name: string, sortorder: number, color: string, cid: string, strict?: boolean, options?: AxiosRequestConfig) : Promise<AxiosResponse<TeamCategory>> {
-        return GroupsApiFp(this.configuration).postV4AppApiGroupAddForm(hidden, id, icpcId, name, sortorder, color, cid, strict, options).then((request) => request(this.axios, this.basePath));
+    public async postV4AppApiGroupAddForm(hidden: boolean, id: string, icpc_id: string, name: string, sortorder: number, color: string, cid: string, strict?: boolean, options?: AxiosRequestConfig) : Promise<AxiosResponse<TeamCategory>> {
+        return GroupsApiFp(this.configuration).postV4AppApiGroupAddForm(hidden, id, icpc_id, name, sortorder, color, cid, strict, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

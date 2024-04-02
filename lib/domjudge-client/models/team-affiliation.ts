@@ -40,7 +40,7 @@ export interface TeamAffiliation {
      * @type {string}
      * @memberof TeamAffiliation
      */
-    icpcId?: string | null;
+    icpc_id?: string | null;
 
     /**
      * @type {string}
@@ -52,7 +52,7 @@ export interface TeamAffiliation {
      * @type {string}
      * @memberof TeamAffiliation
      */
-    formalName?: string;
+    formal_name?: string;
 
     /**
      * @type {string}

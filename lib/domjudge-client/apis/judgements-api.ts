@@ -19,7 +19,7 @@ import { Configuration } from '../configuration';
 import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } from '../base';
 import { InlineResponse2009 } from '../models';
 import { InlineResponse400 } from '../models';
-import { Judging, JudgementExtraFields } from '../models';
+import { Judging &amp; JudgementExtraFields } from '../models';
 /**
  * JudgementsApi - axios parameter creator
  * @export
@@ -32,12 +32,12 @@ export const JudgementsApiAxiosParamCreator = function (configuration?: Configur
          * @param {string} cid The contest ID
          * @param {Array<string>} [ids] Filter the objects to get on this list of ID&#x27;s
          * @param {string} [result] Only show judgements with the given result
-         * @param {string} [submissionId] Only show judgements for the given submission
+         * @param {string} [submission_id] Only show judgements for the given submission
          * @param {boolean} [strict] Whether to only include CCS compliant properties in the response
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getV4AppApiJudgementList: async (cid: string, ids?: Array<string>, result?: string, submissionId?: string, strict?: boolean, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getV4AppApiJudgementList: async (cid: string, ids?: Array<string>, result?: string, submission_id?: string, strict?: boolean, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'cid' is not null or undefined
             if (cid === null || cid === undefined) {
                 throw new RequiredError('cid','Required parameter cid was null or undefined when calling getV4AppApiJudgementList.');
@@ -68,8 +68,8 @@ export const JudgementsApiAxiosParamCreator = function (configuration?: Configur
                 localVarQueryParameter['result'] = result;
             }
 
-            if (submissionId !== undefined) {
-                localVarQueryParameter['submission_id'] = submissionId;
+            if (submission_id !== undefined) {
+                localVarQueryParameter['submission_id'] = submission_id;
             }
 
             if (strict !== undefined) {
@@ -98,12 +98,12 @@ export const JudgementsApiAxiosParamCreator = function (configuration?: Configur
          * @param {string} cid The contest ID
          * @param {Array<string>} [ids] Filter the objects to get on this list of ID&#x27;s
          * @param {string} [result] Only show judgements with the given result
-         * @param {string} [submissionId] Only show judgements for the given submission
+         * @param {string} [submission_id] Only show judgements for the given submission
          * @param {boolean} [strict] Whether to only include CCS compliant properties in the response
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getV4AppApiJudgementList1: async (cid: string, ids?: Array<string>, result?: string, submissionId?: string, strict?: boolean, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getV4AppApiJudgementList1: async (cid: string, ids?: Array<string>, result?: string, submission_id?: string, strict?: boolean, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'cid' is not null or undefined
             if (cid === null || cid === undefined) {
                 throw new RequiredError('cid','Required parameter cid was null or undefined when calling getV4AppApiJudgementList1.');
@@ -134,8 +134,8 @@ export const JudgementsApiAxiosParamCreator = function (configuration?: Configur
                 localVarQueryParameter['result'] = result;
             }
 
-            if (submissionId !== undefined) {
-                localVarQueryParameter['submission_id'] = submissionId;
+            if (submission_id !== undefined) {
+                localVarQueryParameter['submission_id'] = submission_id;
             }
 
             if (strict !== undefined) {
@@ -287,13 +287,13 @@ export const JudgementsApiFp = function(configuration?: Configuration) {
          * @param {string} cid The contest ID
          * @param {Array<string>} [ids] Filter the objects to get on this list of ID&#x27;s
          * @param {string} [result] Only show judgements with the given result
-         * @param {string} [submissionId] Only show judgements for the given submission
+         * @param {string} [submission_id] Only show judgements for the given submission
          * @param {boolean} [strict] Whether to only include CCS compliant properties in the response
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getV4AppApiJudgementList(cid: string, ids?: Array<string>, result?: string, submissionId?: string, strict?: boolean, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Array<Judging & JudgementExtraFields>>>> {
-            const localVarAxiosArgs = await JudgementsApiAxiosParamCreator(configuration).getV4AppApiJudgementList(cid, ids, result, submissionId, strict, options);
+        async getV4AppApiJudgementList(cid: string, ids?: Array<string>, result?: string, submission_id?: string, strict?: boolean, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Array<Judging & JudgementExtraFields>>>> {
+            const localVarAxiosArgs = await JudgementsApiAxiosParamCreator(configuration).getV4AppApiJudgementList(cid, ids, result, submission_id, strict, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -305,13 +305,13 @@ export const JudgementsApiFp = function(configuration?: Configuration) {
          * @param {string} cid The contest ID
          * @param {Array<string>} [ids] Filter the objects to get on this list of ID&#x27;s
          * @param {string} [result] Only show judgements with the given result
-         * @param {string} [submissionId] Only show judgements for the given submission
+         * @param {string} [submission_id] Only show judgements for the given submission
          * @param {boolean} [strict] Whether to only include CCS compliant properties in the response
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getV4AppApiJudgementList1(cid: string, ids?: Array<string>, result?: string, submissionId?: string, strict?: boolean, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Array<Judging & JudgementExtraFields>>>> {
-            const localVarAxiosArgs = await JudgementsApiAxiosParamCreator(configuration).getV4AppApiJudgementList1(cid, ids, result, submissionId, strict, options);
+        async getV4AppApiJudgementList1(cid: string, ids?: Array<string>, result?: string, submission_id?: string, strict?: boolean, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Array<Judging & JudgementExtraFields>>>> {
+            const localVarAxiosArgs = await JudgementsApiAxiosParamCreator(configuration).getV4AppApiJudgementList1(cid, ids, result, submission_id, strict, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -364,13 +364,13 @@ export const JudgementsApiFactory = function (configuration?: Configuration, bas
          * @param {string} cid The contest ID
          * @param {Array<string>} [ids] Filter the objects to get on this list of ID&#x27;s
          * @param {string} [result] Only show judgements with the given result
-         * @param {string} [submissionId] Only show judgements for the given submission
+         * @param {string} [submission_id] Only show judgements for the given submission
          * @param {boolean} [strict] Whether to only include CCS compliant properties in the response
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getV4AppApiJudgementList(cid: string, ids?: Array<string>, result?: string, submissionId?: string, strict?: boolean, options?: AxiosRequestConfig): Promise<AxiosResponse<Array<Judging & JudgementExtraFields>>> {
-            return JudgementsApiFp(configuration).getV4AppApiJudgementList(cid, ids, result, submissionId, strict, options).then((request) => request(axios, basePath));
+        async getV4AppApiJudgementList(cid: string, ids?: Array<string>, result?: string, submission_id?: string, strict?: boolean, options?: AxiosRequestConfig): Promise<AxiosResponse<Array<Judging & JudgementExtraFields>>> {
+            return JudgementsApiFp(configuration).getV4AppApiJudgementList(cid, ids, result, submission_id, strict, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -378,13 +378,13 @@ export const JudgementsApiFactory = function (configuration?: Configuration, bas
          * @param {string} cid The contest ID
          * @param {Array<string>} [ids] Filter the objects to get on this list of ID&#x27;s
          * @param {string} [result] Only show judgements with the given result
-         * @param {string} [submissionId] Only show judgements for the given submission
+         * @param {string} [submission_id] Only show judgements for the given submission
          * @param {boolean} [strict] Whether to only include CCS compliant properties in the response
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getV4AppApiJudgementList1(cid: string, ids?: Array<string>, result?: string, submissionId?: string, strict?: boolean, options?: AxiosRequestConfig): Promise<AxiosResponse<Array<Judging & JudgementExtraFields>>> {
-            return JudgementsApiFp(configuration).getV4AppApiJudgementList1(cid, ids, result, submissionId, strict, options).then((request) => request(axios, basePath));
+        async getV4AppApiJudgementList1(cid: string, ids?: Array<string>, result?: string, submission_id?: string, strict?: boolean, options?: AxiosRequestConfig): Promise<AxiosResponse<Array<Judging & JudgementExtraFields>>> {
+            return JudgementsApiFp(configuration).getV4AppApiJudgementList1(cid, ids, result, submission_id, strict, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -426,14 +426,14 @@ export class JudgementsApi extends BaseAPI {
      * @param {string} cid The contest ID
      * @param {Array<string>} [ids] Filter the objects to get on this list of ID&#x27;s
      * @param {string} [result] Only show judgements with the given result
-     * @param {string} [submissionId] Only show judgements for the given submission
+     * @param {string} [submission_id] Only show judgements for the given submission
      * @param {boolean} [strict] Whether to only include CCS compliant properties in the response
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof JudgementsApi
      */
-    public async getV4AppApiJudgementList(cid: string, ids?: Array<string>, result?: string, submissionId?: string, strict?: boolean, options?: AxiosRequestConfig) : Promise<AxiosResponse<Array<Judging & JudgementExtraFields>>> {
-        return JudgementsApiFp(this.configuration).getV4AppApiJudgementList(cid, ids, result, submissionId, strict, options).then((request) => request(this.axios, this.basePath));
+    public async getV4AppApiJudgementList(cid: string, ids?: Array<string>, result?: string, submission_id?: string, strict?: boolean, options?: AxiosRequestConfig) : Promise<AxiosResponse<Array<Judging & JudgementExtraFields>>> {
+        return JudgementsApiFp(this.configuration).getV4AppApiJudgementList(cid, ids, result, submission_id, strict, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * 
@@ -441,14 +441,14 @@ export class JudgementsApi extends BaseAPI {
      * @param {string} cid The contest ID
      * @param {Array<string>} [ids] Filter the objects to get on this list of ID&#x27;s
      * @param {string} [result] Only show judgements with the given result
-     * @param {string} [submissionId] Only show judgements for the given submission
+     * @param {string} [submission_id] Only show judgements for the given submission
      * @param {boolean} [strict] Whether to only include CCS compliant properties in the response
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof JudgementsApi
      */
-    public async getV4AppApiJudgementList1(cid: string, ids?: Array<string>, result?: string, submissionId?: string, strict?: boolean, options?: AxiosRequestConfig) : Promise<AxiosResponse<Array<Judging & JudgementExtraFields>>> {
-        return JudgementsApiFp(this.configuration).getV4AppApiJudgementList1(cid, ids, result, submissionId, strict, options).then((request) => request(this.axios, this.basePath));
+    public async getV4AppApiJudgementList1(cid: string, ids?: Array<string>, result?: string, submission_id?: string, strict?: boolean, options?: AxiosRequestConfig) : Promise<AxiosResponse<Array<Judging & JudgementExtraFields>>> {
+        return JudgementsApiFp(this.configuration).getV4AppApiJudgementList1(cid, ids, result, submission_id, strict, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * 

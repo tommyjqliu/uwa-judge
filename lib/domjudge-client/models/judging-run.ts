@@ -28,7 +28,7 @@ export interface JudgingRun {
      * @type {number}
      * @memberof JudgingRun
      */
-    runTime?: number;
+    run_time?: number;
 
     /**
      * @type {string}
@@ -40,13 +40,13 @@ export interface JudgingRun {
      * @type {string}
      * @memberof JudgingRun
      */
-    contestTime?: string;
+    contest_time?: string;
 
     /**
      * @type {string}
      * @memberof JudgingRun
      */
-    judgementId?: string;
+    judgement_id?: string;
 
     /**
      * @type {number}

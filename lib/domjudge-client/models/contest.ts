@@ -28,25 +28,25 @@ export interface Contest {
      * @type {string}
      * @memberof Contest
      */
-    formalName?: string;
+    formal_name?: string;
 
     /**
      * @type {number}
      * @memberof Contest
      */
-    penaltyTime?: number;
+    penalty_time?: number;
 
     /**
      * @type {Date}
      * @memberof Contest
      */
-    startTime?: Date;
+    start_time?: Date;
 
     /**
      * @type {Date}
      * @memberof Contest
      */
-    endTime?: Date;
+    end_time?: Date;
 
     /**
      * @type {string}
@@ -58,7 +58,7 @@ export interface Contest {
      * @type {string}
      * @memberof Contest
      */
-    scoreboardFreezeDuration?: string | null;
+    scoreboard_freeze_duration?: string | null;
 
     /**
      * @type {string}
@@ -70,7 +70,7 @@ export interface Contest {
      * @type {string}
      * @memberof Contest
      */
-    externalId?: string;
+    external_id?: string;
 
     /**
      * @type {string}
@@ -88,11 +88,11 @@ export interface Contest {
      * @type {boolean}
      * @memberof Contest
      */
-    allowSubmit?: boolean;
+    allow_submit?: boolean;
 
     /**
      * @type {string}
      * @memberof Contest
      */
-    warningMessage?: string | null;
+    warning_message?: string | null;
 }

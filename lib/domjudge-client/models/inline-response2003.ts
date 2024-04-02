@@ -28,17 +28,17 @@ export interface InlineResponse2003 {
      * @type {number}
      * @memberof InlineResponse2003
      */
-    numSubmissions?: number;
+    num_submissions?: number;
 
     /**
      * @type {number}
      * @memberof InlineResponse2003
      */
-    numQueued?: number;
+    num_queued?: number;
 
     /**
      * @type {number}
      * @memberof InlineResponse2003
      */
-    numJudging?: number;
+    num_judging?: number;
 }

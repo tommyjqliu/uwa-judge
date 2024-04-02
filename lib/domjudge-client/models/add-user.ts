@@ -64,7 +64,7 @@ export interface AddUser {
      * @type {string}
      * @memberof AddUser
      */
-    teamId?: string;
+    team_id?: string;
 
     /**
      * @type {Array<string>}

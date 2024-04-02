@@ -28,7 +28,7 @@ export interface Team {
      * @type {string}
      * @memberof Team
      */
-    organizationId?: string | null;
+    organization_id?: string | null;
 
     /**
      * @type {boolean}
@@ -40,7 +40,7 @@ export interface Team {
      * @type {Array<string>}
      * @memberof Team
      */
-    groupIds?: Array<string>;
+    group_ids?: Array<string>;
 
     /**
      * @type {string}
@@ -64,7 +64,7 @@ export interface Team {
      * @type {string}
      * @memberof Team
      */
-    icpcId?: string | null;
+    icpc_id?: string | null;
 
     /**
      * @type {string}
@@ -76,11 +76,11 @@ export interface Team {
      * @type {string}
      * @memberof Team
      */
-    displayName?: string | null;
+    display_name?: string | null;
 
     /**
      * @type {string}
      * @memberof Team
      */
-    publicDescription?: string | null;
+    public_description?: string | null;
 }

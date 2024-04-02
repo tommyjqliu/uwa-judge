@@ -36,7 +36,7 @@ export interface ScoreboardRows {
      * @type {string}
      * @memberof ScoreboardRows
      */
-    teamId?: string;
+    team_id?: string;
 
     /**
      * @type {ScoreboardScore}

@@ -38,7 +38,7 @@ export interface ClarificationPost {
      * @type {string}
      * @memberof ClarificationPost
      */
-    problemId?: string | null;
+    problem_id?: string | null;
 
     /**
      * The ID of the clarification this clarification is a reply to
@@ -46,7 +46,7 @@ export interface ClarificationPost {
      * @type {string}
      * @memberof ClarificationPost
      */
-    replyToId?: string | null;
+    reply_to_id?: string | null;
 
     /**
      * The team the clarification came from. Only used when adding a clarification as admin
@@ -54,7 +54,7 @@ export interface ClarificationPost {
      * @type {string}
      * @memberof ClarificationPost
      */
-    fromTeamId?: string | null;
+    from_team_id?: string | null;
 
     /**
      * The team the clarification must be sent to. Only used when adding a clarification as admin
@@ -62,7 +62,7 @@ export interface ClarificationPost {
      * @type {string}
      * @memberof ClarificationPost
      */
-    toTeamId?: string | null;
+    to_team_id?: string | null;
 
     /**
      * The time to use for the clarification. Only used when adding a clarification as admin

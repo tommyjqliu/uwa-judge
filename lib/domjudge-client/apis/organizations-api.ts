@@ -20,7 +20,7 @@ import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } fr
 import { InlineResponse20010 } from '../models';
 import { InlineResponse400 } from '../models';
 import { TeamAffiliation } from '../models';
-import { TeamAffiliation , Logo } from '../models';
+import { TeamAffiliation &amp; Logo } from '../models';
 /**
  * OrganizationsApi - axios parameter creator
  * @export
@@ -496,16 +496,16 @@ export const OrganizationsApiAxiosParamCreator = function (configuration?: Confi
          * @summary Add a new organization.
          * @param {string} shortname 
          * @param {string} id 
-         * @param {string} icpcId 
+         * @param {string} icpc_id 
          * @param {string} name 
-         * @param {string} formalName 
+         * @param {string} formal_name 
          * @param {string} country 
          * @param {string} cid The contest ID
          * @param {boolean} [strict] Whether to only include CCS compliant properties in the response
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        postV4AppApiOrganizationAddForm: async (shortname: string, id: string, icpcId: string, name: string, formalName: string, country: string, cid: string, strict?: boolean, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        postV4AppApiOrganizationAddForm: async (shortname: string, id: string, icpc_id: string, name: string, formal_name: string, country: string, cid: string, strict?: boolean, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'shortname' is not null or undefined
             if (shortname === null || shortname === undefined) {
                 throw new RequiredError('shortname','Required parameter shortname was null or undefined when calling postV4AppApiOrganizationAddForm.');
@@ -514,17 +514,17 @@ export const OrganizationsApiAxiosParamCreator = function (configuration?: Confi
             if (id === null || id === undefined) {
                 throw new RequiredError('id','Required parameter id was null or undefined when calling postV4AppApiOrganizationAddForm.');
             }
-            // verify required parameter 'icpcId' is not null or undefined
-            if (icpcId === null || icpcId === undefined) {
-                throw new RequiredError('icpcId','Required parameter icpcId was null or undefined when calling postV4AppApiOrganizationAddForm.');
+            // verify required parameter 'icpc_id' is not null or undefined
+            if (icpc_id === null || icpc_id === undefined) {
+                throw new RequiredError('icpc_id','Required parameter icpc_id was null or undefined when calling postV4AppApiOrganizationAddForm.');
             }
             // verify required parameter 'name' is not null or undefined
             if (name === null || name === undefined) {
                 throw new RequiredError('name','Required parameter name was null or undefined when calling postV4AppApiOrganizationAddForm.');
             }
-            // verify required parameter 'formalName' is not null or undefined
-            if (formalName === null || formalName === undefined) {
-                throw new RequiredError('formalName','Required parameter formalName was null or undefined when calling postV4AppApiOrganizationAddForm.');
+            // verify required parameter 'formal_name' is not null or undefined
+            if (formal_name === null || formal_name === undefined) {
+                throw new RequiredError('formal_name','Required parameter formal_name was null or undefined when calling postV4AppApiOrganizationAddForm.');
             }
             // verify required parameter 'country' is not null or undefined
             if (country === null || country === undefined) {
@@ -566,16 +566,16 @@ export const OrganizationsApiAxiosParamCreator = function (configuration?: Confi
                 localVarFormParams.append('id', id as any);
             }
 
-            if (icpcId !== undefined) { 
-                localVarFormParams.append('icpc_id', icpcId as any);
+            if (icpc_id !== undefined) { 
+                localVarFormParams.append('icpc_id', icpc_id as any);
             }
 
             if (name !== undefined) { 
                 localVarFormParams.append('name', name as any);
             }
 
-            if (formalName !== undefined) { 
-                localVarFormParams.append('formal_name', formalName as any);
+            if (formal_name !== undefined) { 
+                localVarFormParams.append('formal_name', formal_name as any);
             }
 
             if (country !== undefined) { 
@@ -666,16 +666,16 @@ export const OrganizationsApiAxiosParamCreator = function (configuration?: Confi
          * @summary Add a new organization.
          * @param {string} shortname 
          * @param {string} id 
-         * @param {string} icpcId 
+         * @param {string} icpc_id 
          * @param {string} name 
-         * @param {string} formalName 
+         * @param {string} formal_name 
          * @param {string} country 
          * @param {string} cid The contest ID
          * @param {boolean} [strict] Whether to only include CCS compliant properties in the response
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        postV4AppApiOrganizationAdd1Form: async (shortname: string, id: string, icpcId: string, name: string, formalName: string, country: string, cid: string, strict?: boolean, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        postV4AppApiOrganizationAdd1Form: async (shortname: string, id: string, icpc_id: string, name: string, formal_name: string, country: string, cid: string, strict?: boolean, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'shortname' is not null or undefined
             if (shortname === null || shortname === undefined) {
                 throw new RequiredError('shortname','Required parameter shortname was null or undefined when calling postV4AppApiOrganizationAdd1Form.');
@@ -684,17 +684,17 @@ export const OrganizationsApiAxiosParamCreator = function (configuration?: Confi
             if (id === null || id === undefined) {
                 throw new RequiredError('id','Required parameter id was null or undefined when calling postV4AppApiOrganizationAdd1Form.');
             }
-            // verify required parameter 'icpcId' is not null or undefined
-            if (icpcId === null || icpcId === undefined) {
-                throw new RequiredError('icpcId','Required parameter icpcId was null or undefined when calling postV4AppApiOrganizationAdd1Form.');
+            // verify required parameter 'icpc_id' is not null or undefined
+            if (icpc_id === null || icpc_id === undefined) {
+                throw new RequiredError('icpc_id','Required parameter icpc_id was null or undefined when calling postV4AppApiOrganizationAdd1Form.');
             }
             // verify required parameter 'name' is not null or undefined
             if (name === null || name === undefined) {
                 throw new RequiredError('name','Required parameter name was null or undefined when calling postV4AppApiOrganizationAdd1Form.');
             }
-            // verify required parameter 'formalName' is not null or undefined
-            if (formalName === null || formalName === undefined) {
-                throw new RequiredError('formalName','Required parameter formalName was null or undefined when calling postV4AppApiOrganizationAdd1Form.');
+            // verify required parameter 'formal_name' is not null or undefined
+            if (formal_name === null || formal_name === undefined) {
+                throw new RequiredError('formal_name','Required parameter formal_name was null or undefined when calling postV4AppApiOrganizationAdd1Form.');
             }
             // verify required parameter 'country' is not null or undefined
             if (country === null || country === undefined) {
@@ -736,16 +736,16 @@ export const OrganizationsApiAxiosParamCreator = function (configuration?: Confi
                 localVarFormParams.append('id', id as any);
             }
 
-            if (icpcId !== undefined) { 
-                localVarFormParams.append('icpc_id', icpcId as any);
+            if (icpc_id !== undefined) { 
+                localVarFormParams.append('icpc_id', icpc_id as any);
             }
 
             if (name !== undefined) { 
                 localVarFormParams.append('name', name as any);
             }
 
-            if (formalName !== undefined) { 
-                localVarFormParams.append('formal_name', formalName as any);
+            if (formal_name !== undefined) { 
+                localVarFormParams.append('formal_name', formal_name as any);
             }
 
             if (country !== undefined) { 
@@ -1255,17 +1255,17 @@ export const OrganizationsApiFp = function(configuration?: Configuration) {
          * @summary Add a new organization.
          * @param {string} shortname 
          * @param {string} id 
-         * @param {string} icpcId 
+         * @param {string} icpc_id 
          * @param {string} name 
-         * @param {string} formalName 
+         * @param {string} formal_name 
          * @param {string} country 
          * @param {string} cid The contest ID
          * @param {boolean} [strict] Whether to only include CCS compliant properties in the response
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async postV4AppApiOrganizationAddForm(shortname: string, id: string, icpcId: string, name: string, formalName: string, country: string, cid: string, strict?: boolean, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<TeamAffiliation>>> {
-            const localVarAxiosArgs = await OrganizationsApiAxiosParamCreator(configuration).postV4AppApiOrganizationAddForm(shortname, id, icpcId, name, formalName, country, cid, strict, options);
+        async postV4AppApiOrganizationAddForm(shortname: string, id: string, icpc_id: string, name: string, formal_name: string, country: string, cid: string, strict?: boolean, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<TeamAffiliation>>> {
+            const localVarAxiosArgs = await OrganizationsApiAxiosParamCreator(configuration).postV4AppApiOrganizationAddForm(shortname, id, icpc_id, name, formal_name, country, cid, strict, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -1292,17 +1292,17 @@ export const OrganizationsApiFp = function(configuration?: Configuration) {
          * @summary Add a new organization.
          * @param {string} shortname 
          * @param {string} id 
-         * @param {string} icpcId 
+         * @param {string} icpc_id 
          * @param {string} name 
-         * @param {string} formalName 
+         * @param {string} formal_name 
          * @param {string} country 
          * @param {string} cid The contest ID
          * @param {boolean} [strict] Whether to only include CCS compliant properties in the response
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async postV4AppApiOrganizationAdd1Form(shortname: string, id: string, icpcId: string, name: string, formalName: string, country: string, cid: string, strict?: boolean, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<TeamAffiliation>>> {
-            const localVarAxiosArgs = await OrganizationsApiAxiosParamCreator(configuration).postV4AppApiOrganizationAdd1Form(shortname, id, icpcId, name, formalName, country, cid, strict, options);
+        async postV4AppApiOrganizationAdd1Form(shortname: string, id: string, icpc_id: string, name: string, formal_name: string, country: string, cid: string, strict?: boolean, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<TeamAffiliation>>> {
+            const localVarAxiosArgs = await OrganizationsApiAxiosParamCreator(configuration).postV4AppApiOrganizationAdd1Form(shortname, id, icpc_id, name, formal_name, country, cid, strict, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -1504,17 +1504,17 @@ export const OrganizationsApiFactory = function (configuration?: Configuration, 
          * @summary Add a new organization.
          * @param {string} shortname 
          * @param {string} id 
-         * @param {string} icpcId 
+         * @param {string} icpc_id 
          * @param {string} name 
-         * @param {string} formalName 
+         * @param {string} formal_name 
          * @param {string} country 
          * @param {string} cid The contest ID
          * @param {boolean} [strict] Whether to only include CCS compliant properties in the response
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async postV4AppApiOrganizationAddForm(shortname: string, id: string, icpcId: string, name: string, formalName: string, country: string, cid: string, strict?: boolean, options?: AxiosRequestConfig): Promise<AxiosResponse<TeamAffiliation>> {
-            return OrganizationsApiFp(configuration).postV4AppApiOrganizationAddForm(shortname, id, icpcId, name, formalName, country, cid, strict, options).then((request) => request(axios, basePath));
+        async postV4AppApiOrganizationAddForm(shortname: string, id: string, icpc_id: string, name: string, formal_name: string, country: string, cid: string, strict?: boolean, options?: AxiosRequestConfig): Promise<AxiosResponse<TeamAffiliation>> {
+            return OrganizationsApiFp(configuration).postV4AppApiOrganizationAddForm(shortname, id, icpc_id, name, formal_name, country, cid, strict, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -1533,17 +1533,17 @@ export const OrganizationsApiFactory = function (configuration?: Configuration, 
          * @summary Add a new organization.
          * @param {string} shortname 
          * @param {string} id 
-         * @param {string} icpcId 
+         * @param {string} icpc_id 
          * @param {string} name 
-         * @param {string} formalName 
+         * @param {string} formal_name 
          * @param {string} country 
          * @param {string} cid The contest ID
          * @param {boolean} [strict] Whether to only include CCS compliant properties in the response
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async postV4AppApiOrganizationAdd1Form(shortname: string, id: string, icpcId: string, name: string, formalName: string, country: string, cid: string, strict?: boolean, options?: AxiosRequestConfig): Promise<AxiosResponse<TeamAffiliation>> {
-            return OrganizationsApiFp(configuration).postV4AppApiOrganizationAdd1Form(shortname, id, icpcId, name, formalName, country, cid, strict, options).then((request) => request(axios, basePath));
+        async postV4AppApiOrganizationAdd1Form(shortname: string, id: string, icpc_id: string, name: string, formal_name: string, country: string, cid: string, strict?: boolean, options?: AxiosRequestConfig): Promise<AxiosResponse<TeamAffiliation>> {
+            return OrganizationsApiFp(configuration).postV4AppApiOrganizationAdd1Form(shortname, id, icpc_id, name, formal_name, country, cid, strict, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -1730,9 +1730,9 @@ export class OrganizationsApi extends BaseAPI {
      * @summary Add a new organization.
      * @param {string} shortname 
      * @param {string} id 
-     * @param {string} icpcId 
+     * @param {string} icpc_id 
      * @param {string} name 
-     * @param {string} formalName 
+     * @param {string} formal_name 
      * @param {string} country 
      * @param {string} cid The contest ID
      * @param {boolean} [strict] Whether to only include CCS compliant properties in the response
@@ -1740,8 +1740,8 @@ export class OrganizationsApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof OrganizationsApi
      */
-    public async postV4AppApiOrganizationAddForm(shortname: string, id: string, icpcId: string, name: string, formalName: string, country: string, cid: string, strict?: boolean, options?: AxiosRequestConfig) : Promise<AxiosResponse<TeamAffiliation>> {
-        return OrganizationsApiFp(this.configuration).postV4AppApiOrganizationAddForm(shortname, id, icpcId, name, formalName, country, cid, strict, options).then((request) => request(this.axios, this.basePath));
+    public async postV4AppApiOrganizationAddForm(shortname: string, id: string, icpc_id: string, name: string, formal_name: string, country: string, cid: string, strict?: boolean, options?: AxiosRequestConfig) : Promise<AxiosResponse<TeamAffiliation>> {
+        return OrganizationsApiFp(this.configuration).postV4AppApiOrganizationAddForm(shortname, id, icpc_id, name, formal_name, country, cid, strict, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -1762,9 +1762,9 @@ export class OrganizationsApi extends BaseAPI {
      * @summary Add a new organization.
      * @param {string} shortname 
      * @param {string} id 
-     * @param {string} icpcId 
+     * @param {string} icpc_id 
      * @param {string} name 
-     * @param {string} formalName 
+     * @param {string} formal_name 
      * @param {string} country 
      * @param {string} cid The contest ID
      * @param {boolean} [strict] Whether to only include CCS compliant properties in the response
@@ -1772,8 +1772,8 @@ export class OrganizationsApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof OrganizationsApi
      */
-    public async postV4AppApiOrganizationAdd1Form(shortname: string, id: string, icpcId: string, name: string, formalName: string, country: string, cid: string, strict?: boolean, options?: AxiosRequestConfig) : Promise<AxiosResponse<TeamAffiliation>> {
-        return OrganizationsApiFp(this.configuration).postV4AppApiOrganizationAdd1Form(shortname, id, icpcId, name, formalName, country, cid, strict, options).then((request) => request(this.axios, this.basePath));
+    public async postV4AppApiOrganizationAdd1Form(shortname: string, id: string, icpc_id: string, name: string, formal_name: string, country: string, cid: string, strict?: boolean, options?: AxiosRequestConfig) : Promise<AxiosResponse<TeamAffiliation>> {
+        return OrganizationsApiFp(this.configuration).postV4AppApiOrganizationAdd1Form(shortname, id, icpc_id, name, formal_name, country, cid, strict, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

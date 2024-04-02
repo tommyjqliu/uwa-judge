@@ -40,5 +40,5 @@ export interface Award {
      * @type {Array<string>}
      * @memberof Award
      */
-    teamIds?: Array<string>;
+    team_ids?: Array<string>;
 }

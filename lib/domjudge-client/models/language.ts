@@ -28,7 +28,7 @@ export interface Language {
      * @type {string}
      * @memberof Language
      */
-    compileExecutableHash?: string | null;
+    compile_executable_hash?: string | null;
 
     /**
      * @type {string}
@@ -52,29 +52,29 @@ export interface Language {
      * @type {boolean}
      * @memberof Language
      */
-    filterCompilerFiles?: boolean;
+    filter_compiler_files?: boolean;
 
     /**
      * @type {boolean}
      * @memberof Language
      */
-    allowJudge?: boolean;
+    allow_judge?: boolean;
 
     /**
      * @type {number}
      * @memberof Language
      */
-    timeFactor: number;
+    time_factor: number;
 
     /**
      * @type {boolean}
      * @memberof Language
      */
-    entryPointRequired?: boolean;
+    entry_point_required?: boolean;
 
     /**
      * @type {string}
      * @memberof Language
      */
-    entryPointName?: string | null;
+    entry_point_name?: string | null;
 }

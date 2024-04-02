@@ -62,5 +62,5 @@ export interface ContestProblemPut {
      * @type {boolean}
      * @memberof ContestProblemPut
      */
-    lazyEvalResults?: boolean;
+    lazy_eval_results?: boolean;
 }

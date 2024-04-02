@@ -30,7 +30,7 @@ export interface HostnameJudgetaskidBody {
      * @type {boolean}
      * @memberof HostnameJudgetaskidBody
      */
-    compileSuccess?: boolean;
+    compile_success?: boolean;
 
     /**
      * The compile output
@@ -38,7 +38,7 @@ export interface HostnameJudgetaskidBody {
      * @type {string}
      * @memberof HostnameJudgetaskidBody
      */
-    outputCompile?: string;
+    output_compile?: string;
 
     /**
      * The determined entrypoint
@@ -46,7 +46,7 @@ export interface HostnameJudgetaskidBody {
      * @type {string}
      * @memberof HostnameJudgetaskidBody
      */
-    entryPoint?: string;
+    entry_point?: string;
 
     /**
      * The (base64-encoded) metadata of the compilation.
@@ -54,5 +54,5 @@ export interface HostnameJudgetaskidBody {
      * @type {string}
      * @memberof HostnameJudgetaskidBody
      */
-    compileMetadata?: string;
+    compile_metadata?: string;
 }

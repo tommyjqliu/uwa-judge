@@ -19,7 +19,7 @@ import { Configuration } from '../configuration';
 import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } from '../base';
 import { InlineResponse20011 } from '../models';
 import { InlineResponse400 } from '../models';
-import { JudgingRun, RunExtraFields } from '../models';
+import { JudgingRun &amp; RunExtraFields } from '../models';
 /**
  * RunsApi - axios parameter creator
  * @export
@@ -31,15 +31,15 @@ export const RunsApiAxiosParamCreator = function (configuration?: Configuration)
          * @summary Get all the runs for this contest.
          * @param {string} cid The contest ID
          * @param {Array<string>} [ids] Filter the objects to get on this list of ID&#x27;s
-         * @param {string} [firstId] Only show runs starting from this ID
-         * @param {string} [lastId] Only show runs until this ID
-         * @param {string} [judgingId] Only show runs for this judgement
+         * @param {string} [first_id] Only show runs starting from this ID
+         * @param {string} [last_id] Only show runs until this ID
+         * @param {string} [judging_id] Only show runs for this judgement
          * @param {number} [limit] Limit the number of returned runs to this amount
          * @param {boolean} [strict] Whether to only include CCS compliant properties in the response
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getV4AppApiRunList: async (cid: string, ids?: Array<string>, firstId?: string, lastId?: string, judgingId?: string, limit?: number, strict?: boolean, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getV4AppApiRunList: async (cid: string, ids?: Array<string>, first_id?: string, last_id?: string, judging_id?: string, limit?: number, strict?: boolean, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'cid' is not null or undefined
             if (cid === null || cid === undefined) {
                 throw new RequiredError('cid','Required parameter cid was null or undefined when calling getV4AppApiRunList.');
@@ -66,16 +66,16 @@ export const RunsApiAxiosParamCreator = function (configuration?: Configuration)
                 localVarQueryParameter['ids[]'] = ids;
             }
 
-            if (firstId !== undefined) {
-                localVarQueryParameter['first_id'] = firstId;
+            if (first_id !== undefined) {
+                localVarQueryParameter['first_id'] = first_id;
             }
 
-            if (lastId !== undefined) {
-                localVarQueryParameter['last_id'] = lastId;
+            if (last_id !== undefined) {
+                localVarQueryParameter['last_id'] = last_id;
             }
 
-            if (judgingId !== undefined) {
-                localVarQueryParameter['judging_id'] = judgingId;
+            if (judging_id !== undefined) {
+                localVarQueryParameter['judging_id'] = judging_id;
             }
 
             if (limit !== undefined) {
@@ -173,16 +173,16 @@ export const RunsApiFp = function(configuration?: Configuration) {
          * @summary Get all the runs for this contest.
          * @param {string} cid The contest ID
          * @param {Array<string>} [ids] Filter the objects to get on this list of ID&#x27;s
-         * @param {string} [firstId] Only show runs starting from this ID
-         * @param {string} [lastId] Only show runs until this ID
-         * @param {string} [judgingId] Only show runs for this judgement
+         * @param {string} [first_id] Only show runs starting from this ID
+         * @param {string} [last_id] Only show runs until this ID
+         * @param {string} [judging_id] Only show runs for this judgement
          * @param {number} [limit] Limit the number of returned runs to this amount
          * @param {boolean} [strict] Whether to only include CCS compliant properties in the response
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getV4AppApiRunList(cid: string, ids?: Array<string>, firstId?: string, lastId?: string, judgingId?: string, limit?: number, strict?: boolean, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Array<JudgingRun & RunExtraFields>>>> {
-            const localVarAxiosArgs = await RunsApiAxiosParamCreator(configuration).getV4AppApiRunList(cid, ids, firstId, lastId, judgingId, limit, strict, options);
+        async getV4AppApiRunList(cid: string, ids?: Array<string>, first_id?: string, last_id?: string, judging_id?: string, limit?: number, strict?: boolean, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Array<JudgingRun & RunExtraFields>>>> {
+            const localVarAxiosArgs = await RunsApiAxiosParamCreator(configuration).getV4AppApiRunList(cid, ids, first_id, last_id, judging_id, limit, strict, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -218,16 +218,16 @@ export const RunsApiFactory = function (configuration?: Configuration, basePath?
          * @summary Get all the runs for this contest.
          * @param {string} cid The contest ID
          * @param {Array<string>} [ids] Filter the objects to get on this list of ID&#x27;s
-         * @param {string} [firstId] Only show runs starting from this ID
-         * @param {string} [lastId] Only show runs until this ID
-         * @param {string} [judgingId] Only show runs for this judgement
+         * @param {string} [first_id] Only show runs starting from this ID
+         * @param {string} [last_id] Only show runs until this ID
+         * @param {string} [judging_id] Only show runs for this judgement
          * @param {number} [limit] Limit the number of returned runs to this amount
          * @param {boolean} [strict] Whether to only include CCS compliant properties in the response
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getV4AppApiRunList(cid: string, ids?: Array<string>, firstId?: string, lastId?: string, judgingId?: string, limit?: number, strict?: boolean, options?: AxiosRequestConfig): Promise<AxiosResponse<Array<JudgingRun & RunExtraFields>>> {
-            return RunsApiFp(configuration).getV4AppApiRunList(cid, ids, firstId, lastId, judgingId, limit, strict, options).then((request) => request(axios, basePath));
+        async getV4AppApiRunList(cid: string, ids?: Array<string>, first_id?: string, last_id?: string, judging_id?: string, limit?: number, strict?: boolean, options?: AxiosRequestConfig): Promise<AxiosResponse<Array<JudgingRun & RunExtraFields>>> {
+            return RunsApiFp(configuration).getV4AppApiRunList(cid, ids, first_id, last_id, judging_id, limit, strict, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -256,17 +256,17 @@ export class RunsApi extends BaseAPI {
      * @summary Get all the runs for this contest.
      * @param {string} cid The contest ID
      * @param {Array<string>} [ids] Filter the objects to get on this list of ID&#x27;s
-     * @param {string} [firstId] Only show runs starting from this ID
-     * @param {string} [lastId] Only show runs until this ID
-     * @param {string} [judgingId] Only show runs for this judgement
+     * @param {string} [first_id] Only show runs starting from this ID
+     * @param {string} [last_id] Only show runs until this ID
+     * @param {string} [judging_id] Only show runs for this judgement
      * @param {number} [limit] Limit the number of returned runs to this amount
      * @param {boolean} [strict] Whether to only include CCS compliant properties in the response
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof RunsApi
      */
-    public async getV4AppApiRunList(cid: string, ids?: Array<string>, firstId?: string, lastId?: string, judgingId?: string, limit?: number, strict?: boolean, options?: AxiosRequestConfig) : Promise<AxiosResponse<Array<JudgingRun & RunExtraFields>>> {
-        return RunsApiFp(this.configuration).getV4AppApiRunList(cid, ids, firstId, lastId, judgingId, limit, strict, options).then((request) => request(this.axios, this.basePath));
+    public async getV4AppApiRunList(cid: string, ids?: Array<string>, first_id?: string, last_id?: string, judging_id?: string, limit?: number, strict?: boolean, options?: AxiosRequestConfig) : Promise<AxiosResponse<Array<JudgingRun & RunExtraFields>>> {
+        return RunsApiFp(this.configuration).getV4AppApiRunList(cid, ids, first_id, last_id, judging_id, limit, strict, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * 

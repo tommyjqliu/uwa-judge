@@ -34,7 +34,7 @@ export interface SourceCodeListInner {
      * @type {string}
      * @memberof SourceCodeListInner
      */
-    submissionId?: string;
+    submission_id?: string;
 
     /**
      * Original file name

@@ -21,7 +21,7 @@ import { CidSubmissionsBody1 } from '../models';
 import { InlineResponse20012 } from '../models';
 import { InlineResponse400 } from '../models';
 import { SourceCodeList } from '../models';
-import { Submission , Files } from '../models';
+import { Submission &amp; Files } from '../models';
 import { SubmissionsIdBody1 } from '../models';
 /**
  * SubmissionsApi - axios parameter creator
@@ -91,12 +91,12 @@ export const SubmissionsApiAxiosParamCreator = function (configuration?: Configu
          * @summary Get all the submissions for this contest.
          * @param {string} cid The contest ID
          * @param {Array<string>} [ids] Filter the objects to get on this list of ID&#x27;s
-         * @param {string} [languageId] Only show submissions for the given language
+         * @param {string} [language_id] Only show submissions for the given language
          * @param {boolean} [strict] Whether to only include CCS compliant properties in the response
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getV4AppApiSubmissionList: async (cid: string, ids?: Array<string>, languageId?: string, strict?: boolean, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getV4AppApiSubmissionList: async (cid: string, ids?: Array<string>, language_id?: string, strict?: boolean, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'cid' is not null or undefined
             if (cid === null || cid === undefined) {
                 throw new RequiredError('cid','Required parameter cid was null or undefined when calling getV4AppApiSubmissionList.');
@@ -123,8 +123,8 @@ export const SubmissionsApiAxiosParamCreator = function (configuration?: Configu
                 localVarQueryParameter['ids[]'] = ids;
             }
 
-            if (languageId !== undefined) {
-                localVarQueryParameter['language_id'] = languageId;
+            if (language_id !== undefined) {
+                localVarQueryParameter['language_id'] = language_id;
             }
 
             if (strict !== undefined) {
@@ -152,12 +152,12 @@ export const SubmissionsApiAxiosParamCreator = function (configuration?: Configu
          * @summary Get all the submissions for this contest.
          * @param {string} cid The contest ID
          * @param {Array<string>} [ids] Filter the objects to get on this list of ID&#x27;s
-         * @param {string} [languageId] Only show submissions for the given language
+         * @param {string} [language_id] Only show submissions for the given language
          * @param {boolean} [strict] Whether to only include CCS compliant properties in the response
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getV4AppApiSubmissionList1: async (cid: string, ids?: Array<string>, languageId?: string, strict?: boolean, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getV4AppApiSubmissionList1: async (cid: string, ids?: Array<string>, language_id?: string, strict?: boolean, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'cid' is not null or undefined
             if (cid === null || cid === undefined) {
                 throw new RequiredError('cid','Required parameter cid was null or undefined when calling getV4AppApiSubmissionList1.');
@@ -184,8 +184,8 @@ export const SubmissionsApiAxiosParamCreator = function (configuration?: Configu
                 localVarQueryParameter['ids[]'] = ids;
             }
 
-            if (languageId !== undefined) {
-                localVarQueryParameter['language_id'] = languageId;
+            if (language_id !== undefined) {
+                localVarQueryParameter['language_id'] = language_id;
             }
 
             if (strict !== undefined) {
@@ -442,13 +442,13 @@ export const SubmissionsApiAxiosParamCreator = function (configuration?: Configu
          * @param {string} problem 
          * @param {string} language 
          * @param {Array<Blob>} code 
-         * @param {string} entryPoint 
+         * @param {string} entry_point 
          * @param {string} cid The contest ID
          * @param {boolean} [strict] Whether to only include CCS compliant properties in the response
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        postV4AppApiSubmissionAddsubmissionForm: async (problem: string, language: string, code: Array<Blob>, entryPoint: string, cid: string, strict?: boolean, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        postV4AppApiSubmissionAddsubmissionForm: async (problem: string, language: string, code: Array<Blob>, entry_point: string, cid: string, strict?: boolean, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'problem' is not null or undefined
             if (problem === null || problem === undefined) {
                 throw new RequiredError('problem','Required parameter problem was null or undefined when calling postV4AppApiSubmissionAddsubmissionForm.');
@@ -461,9 +461,9 @@ export const SubmissionsApiAxiosParamCreator = function (configuration?: Configu
             if (code === null || code === undefined) {
                 throw new RequiredError('code','Required parameter code was null or undefined when calling postV4AppApiSubmissionAddsubmissionForm.');
             }
-            // verify required parameter 'entryPoint' is not null or undefined
-            if (entryPoint === null || entryPoint === undefined) {
-                throw new RequiredError('entryPoint','Required parameter entryPoint was null or undefined when calling postV4AppApiSubmissionAddsubmissionForm.');
+            // verify required parameter 'entry_point' is not null or undefined
+            if (entry_point === null || entry_point === undefined) {
+                throw new RequiredError('entry_point','Required parameter entry_point was null or undefined when calling postV4AppApiSubmissionAddsubmissionForm.');
             }
             // verify required parameter 'cid' is not null or undefined
             if (cid === null || cid === undefined) {
@@ -506,8 +506,8 @@ export const SubmissionsApiAxiosParamCreator = function (configuration?: Configu
                 })
             }
 
-            if (entryPoint !== undefined) { 
-                localVarFormParams.append('entry_point', entryPoint as any);
+            if (entry_point !== undefined) { 
+                localVarFormParams.append('entry_point', entry_point as any);
             }
 
             localVarHeaderParameter['Content-Type'] = 'multipart/form-data';
@@ -595,14 +595,14 @@ export const SubmissionsApiAxiosParamCreator = function (configuration?: Configu
          * @param {string} problem 
          * @param {string} language 
          * @param {Array<Blob>} code 
-         * @param {string} entryPoint 
+         * @param {string} entry_point 
          * @param {string} cid The contest ID
          * @param {string} id 
          * @param {boolean} [strict] Whether to only include CCS compliant properties in the response
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        putV4AppApiSubmissionAddsubmission1Form: async (problem: string, language: string, code: Array<Blob>, entryPoint: string, cid: string, id: string, strict?: boolean, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        putV4AppApiSubmissionAddsubmission1Form: async (problem: string, language: string, code: Array<Blob>, entry_point: string, cid: string, id: string, strict?: boolean, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'problem' is not null or undefined
             if (problem === null || problem === undefined) {
                 throw new RequiredError('problem','Required parameter problem was null or undefined when calling putV4AppApiSubmissionAddsubmission1Form.');
@@ -615,9 +615,9 @@ export const SubmissionsApiAxiosParamCreator = function (configuration?: Configu
             if (code === null || code === undefined) {
                 throw new RequiredError('code','Required parameter code was null or undefined when calling putV4AppApiSubmissionAddsubmission1Form.');
             }
-            // verify required parameter 'entryPoint' is not null or undefined
-            if (entryPoint === null || entryPoint === undefined) {
-                throw new RequiredError('entryPoint','Required parameter entryPoint was null or undefined when calling putV4AppApiSubmissionAddsubmission1Form.');
+            // verify required parameter 'entry_point' is not null or undefined
+            if (entry_point === null || entry_point === undefined) {
+                throw new RequiredError('entry_point','Required parameter entry_point was null or undefined when calling putV4AppApiSubmissionAddsubmission1Form.');
             }
             // verify required parameter 'cid' is not null or undefined
             if (cid === null || cid === undefined) {
@@ -665,8 +665,8 @@ export const SubmissionsApiAxiosParamCreator = function (configuration?: Configu
                 })
             }
 
-            if (entryPoint !== undefined) { 
-                localVarFormParams.append('entry_point', entryPoint as any);
+            if (entry_point !== undefined) { 
+                localVarFormParams.append('entry_point', entry_point as any);
             }
 
             localVarHeaderParameter['Content-Type'] = 'multipart/form-data';
@@ -784,13 +784,13 @@ export const SubmissionsApiFp = function(configuration?: Configuration) {
          * @summary Get all the submissions for this contest.
          * @param {string} cid The contest ID
          * @param {Array<string>} [ids] Filter the objects to get on this list of ID&#x27;s
-         * @param {string} [languageId] Only show submissions for the given language
+         * @param {string} [language_id] Only show submissions for the given language
          * @param {boolean} [strict] Whether to only include CCS compliant properties in the response
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getV4AppApiSubmissionList(cid: string, ids?: Array<string>, languageId?: string, strict?: boolean, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Array<Submission & Files>>>> {
-            const localVarAxiosArgs = await SubmissionsApiAxiosParamCreator(configuration).getV4AppApiSubmissionList(cid, ids, languageId, strict, options);
+        async getV4AppApiSubmissionList(cid: string, ids?: Array<string>, language_id?: string, strict?: boolean, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Array<Submission & Files>>>> {
+            const localVarAxiosArgs = await SubmissionsApiAxiosParamCreator(configuration).getV4AppApiSubmissionList(cid, ids, language_id, strict, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -801,13 +801,13 @@ export const SubmissionsApiFp = function(configuration?: Configuration) {
          * @summary Get all the submissions for this contest.
          * @param {string} cid The contest ID
          * @param {Array<string>} [ids] Filter the objects to get on this list of ID&#x27;s
-         * @param {string} [languageId] Only show submissions for the given language
+         * @param {string} [language_id] Only show submissions for the given language
          * @param {boolean} [strict] Whether to only include CCS compliant properties in the response
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getV4AppApiSubmissionList1(cid: string, ids?: Array<string>, languageId?: string, strict?: boolean, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Array<Submission & Files>>>> {
-            const localVarAxiosArgs = await SubmissionsApiAxiosParamCreator(configuration).getV4AppApiSubmissionList1(cid, ids, languageId, strict, options);
+        async getV4AppApiSubmissionList1(cid: string, ids?: Array<string>, language_id?: string, strict?: boolean, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Array<Submission & Files>>>> {
+            const localVarAxiosArgs = await SubmissionsApiAxiosParamCreator(configuration).getV4AppApiSubmissionList1(cid, ids, language_id, strict, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -883,14 +883,14 @@ export const SubmissionsApiFp = function(configuration?: Configuration) {
          * @param {string} problem 
          * @param {string} language 
          * @param {Array<Blob>} code 
-         * @param {string} entryPoint 
+         * @param {string} entry_point 
          * @param {string} cid The contest ID
          * @param {boolean} [strict] Whether to only include CCS compliant properties in the response
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async postV4AppApiSubmissionAddsubmissionForm(problem: string, language: string, code: Array<Blob>, entryPoint: string, cid: string, strict?: boolean, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<InlineResponse20012>>> {
-            const localVarAxiosArgs = await SubmissionsApiAxiosParamCreator(configuration).postV4AppApiSubmissionAddsubmissionForm(problem, language, code, entryPoint, cid, strict, options);
+        async postV4AppApiSubmissionAddsubmissionForm(problem: string, language: string, code: Array<Blob>, entry_point: string, cid: string, strict?: boolean, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<InlineResponse20012>>> {
+            const localVarAxiosArgs = await SubmissionsApiAxiosParamCreator(configuration).postV4AppApiSubmissionAddsubmissionForm(problem, language, code, entry_point, cid, strict, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -918,15 +918,15 @@ export const SubmissionsApiFp = function(configuration?: Configuration) {
          * @param {string} problem 
          * @param {string} language 
          * @param {Array<Blob>} code 
-         * @param {string} entryPoint 
+         * @param {string} entry_point 
          * @param {string} cid The contest ID
          * @param {string} id 
          * @param {boolean} [strict] Whether to only include CCS compliant properties in the response
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async putV4AppApiSubmissionAddsubmission1Form(problem: string, language: string, code: Array<Blob>, entryPoint: string, cid: string, id: string, strict?: boolean, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<InlineResponse20012>>> {
-            const localVarAxiosArgs = await SubmissionsApiAxiosParamCreator(configuration).putV4AppApiSubmissionAddsubmission1Form(problem, language, code, entryPoint, cid, id, strict, options);
+        async putV4AppApiSubmissionAddsubmission1Form(problem: string, language: string, code: Array<Blob>, entry_point: string, cid: string, id: string, strict?: boolean, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<InlineResponse20012>>> {
+            const localVarAxiosArgs = await SubmissionsApiAxiosParamCreator(configuration).putV4AppApiSubmissionAddsubmission1Form(problem, language, code, entry_point, cid, id, strict, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -975,26 +975,26 @@ export const SubmissionsApiFactory = function (configuration?: Configuration, ba
          * @summary Get all the submissions for this contest.
          * @param {string} cid The contest ID
          * @param {Array<string>} [ids] Filter the objects to get on this list of ID&#x27;s
-         * @param {string} [languageId] Only show submissions for the given language
+         * @param {string} [language_id] Only show submissions for the given language
          * @param {boolean} [strict] Whether to only include CCS compliant properties in the response
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getV4AppApiSubmissionList(cid: string, ids?: Array<string>, languageId?: string, strict?: boolean, options?: AxiosRequestConfig): Promise<AxiosResponse<Array<Submission & Files>>> {
-            return SubmissionsApiFp(configuration).getV4AppApiSubmissionList(cid, ids, languageId, strict, options).then((request) => request(axios, basePath));
+        async getV4AppApiSubmissionList(cid: string, ids?: Array<string>, language_id?: string, strict?: boolean, options?: AxiosRequestConfig): Promise<AxiosResponse<Array<Submission & Files>>> {
+            return SubmissionsApiFp(configuration).getV4AppApiSubmissionList(cid, ids, language_id, strict, options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @summary Get all the submissions for this contest.
          * @param {string} cid The contest ID
          * @param {Array<string>} [ids] Filter the objects to get on this list of ID&#x27;s
-         * @param {string} [languageId] Only show submissions for the given language
+         * @param {string} [language_id] Only show submissions for the given language
          * @param {boolean} [strict] Whether to only include CCS compliant properties in the response
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getV4AppApiSubmissionList1(cid: string, ids?: Array<string>, languageId?: string, strict?: boolean, options?: AxiosRequestConfig): Promise<AxiosResponse<Array<Submission & Files>>> {
-            return SubmissionsApiFp(configuration).getV4AppApiSubmissionList1(cid, ids, languageId, strict, options).then((request) => request(axios, basePath));
+        async getV4AppApiSubmissionList1(cid: string, ids?: Array<string>, language_id?: string, strict?: boolean, options?: AxiosRequestConfig): Promise<AxiosResponse<Array<Submission & Files>>> {
+            return SubmissionsApiFp(configuration).getV4AppApiSubmissionList1(cid, ids, language_id, strict, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -1050,14 +1050,14 @@ export const SubmissionsApiFactory = function (configuration?: Configuration, ba
          * @param {string} problem 
          * @param {string} language 
          * @param {Array<Blob>} code 
-         * @param {string} entryPoint 
+         * @param {string} entry_point 
          * @param {string} cid The contest ID
          * @param {boolean} [strict] Whether to only include CCS compliant properties in the response
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async postV4AppApiSubmissionAddsubmissionForm(problem: string, language: string, code: Array<Blob>, entryPoint: string, cid: string, strict?: boolean, options?: AxiosRequestConfig): Promise<AxiosResponse<InlineResponse20012>> {
-            return SubmissionsApiFp(configuration).postV4AppApiSubmissionAddsubmissionForm(problem, language, code, entryPoint, cid, strict, options).then((request) => request(axios, basePath));
+        async postV4AppApiSubmissionAddsubmissionForm(problem: string, language: string, code: Array<Blob>, entry_point: string, cid: string, strict?: boolean, options?: AxiosRequestConfig): Promise<AxiosResponse<InlineResponse20012>> {
+            return SubmissionsApiFp(configuration).postV4AppApiSubmissionAddsubmissionForm(problem, language, code, entry_point, cid, strict, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -1077,15 +1077,15 @@ export const SubmissionsApiFactory = function (configuration?: Configuration, ba
          * @param {string} problem 
          * @param {string} language 
          * @param {Array<Blob>} code 
-         * @param {string} entryPoint 
+         * @param {string} entry_point 
          * @param {string} cid The contest ID
          * @param {string} id 
          * @param {boolean} [strict] Whether to only include CCS compliant properties in the response
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async putV4AppApiSubmissionAddsubmission1Form(problem: string, language: string, code: Array<Blob>, entryPoint: string, cid: string, id: string, strict?: boolean, options?: AxiosRequestConfig): Promise<AxiosResponse<InlineResponse20012>> {
-            return SubmissionsApiFp(configuration).putV4AppApiSubmissionAddsubmission1Form(problem, language, code, entryPoint, cid, id, strict, options).then((request) => request(axios, basePath));
+        async putV4AppApiSubmissionAddsubmission1Form(problem: string, language: string, code: Array<Blob>, entry_point: string, cid: string, id: string, strict?: boolean, options?: AxiosRequestConfig): Promise<AxiosResponse<InlineResponse20012>> {
+            return SubmissionsApiFp(configuration).putV4AppApiSubmissionAddsubmission1Form(problem, language, code, entry_point, cid, id, strict, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -1128,28 +1128,28 @@ export class SubmissionsApi extends BaseAPI {
      * @summary Get all the submissions for this contest.
      * @param {string} cid The contest ID
      * @param {Array<string>} [ids] Filter the objects to get on this list of ID&#x27;s
-     * @param {string} [languageId] Only show submissions for the given language
+     * @param {string} [language_id] Only show submissions for the given language
      * @param {boolean} [strict] Whether to only include CCS compliant properties in the response
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof SubmissionsApi
      */
-    public async getV4AppApiSubmissionList(cid: string, ids?: Array<string>, languageId?: string, strict?: boolean, options?: AxiosRequestConfig) : Promise<AxiosResponse<Array<Submission & Files>>> {
-        return SubmissionsApiFp(this.configuration).getV4AppApiSubmissionList(cid, ids, languageId, strict, options).then((request) => request(this.axios, this.basePath));
+    public async getV4AppApiSubmissionList(cid: string, ids?: Array<string>, language_id?: string, strict?: boolean, options?: AxiosRequestConfig) : Promise<AxiosResponse<Array<Submission & Files>>> {
+        return SubmissionsApiFp(this.configuration).getV4AppApiSubmissionList(cid, ids, language_id, strict, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * 
      * @summary Get all the submissions for this contest.
      * @param {string} cid The contest ID
      * @param {Array<string>} [ids] Filter the objects to get on this list of ID&#x27;s
-     * @param {string} [languageId] Only show submissions for the given language
+     * @param {string} [language_id] Only show submissions for the given language
      * @param {boolean} [strict] Whether to only include CCS compliant properties in the response
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof SubmissionsApi
      */
-    public async getV4AppApiSubmissionList1(cid: string, ids?: Array<string>, languageId?: string, strict?: boolean, options?: AxiosRequestConfig) : Promise<AxiosResponse<Array<Submission & Files>>> {
-        return SubmissionsApiFp(this.configuration).getV4AppApiSubmissionList1(cid, ids, languageId, strict, options).then((request) => request(this.axios, this.basePath));
+    public async getV4AppApiSubmissionList1(cid: string, ids?: Array<string>, language_id?: string, strict?: boolean, options?: AxiosRequestConfig) : Promise<AxiosResponse<Array<Submission & Files>>> {
+        return SubmissionsApiFp(this.configuration).getV4AppApiSubmissionList1(cid, ids, language_id, strict, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * 
@@ -1209,15 +1209,15 @@ export class SubmissionsApi extends BaseAPI {
      * @param {string} problem 
      * @param {string} language 
      * @param {Array<Blob>} code 
-     * @param {string} entryPoint 
+     * @param {string} entry_point 
      * @param {string} cid The contest ID
      * @param {boolean} [strict] Whether to only include CCS compliant properties in the response
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof SubmissionsApi
      */
-    public async postV4AppApiSubmissionAddsubmissionForm(problem: string, language: string, code: Array<Blob>, entryPoint: string, cid: string, strict?: boolean, options?: AxiosRequestConfig) : Promise<AxiosResponse<InlineResponse20012>> {
-        return SubmissionsApiFp(this.configuration).postV4AppApiSubmissionAddsubmissionForm(problem, language, code, entryPoint, cid, strict, options).then((request) => request(this.axios, this.basePath));
+    public async postV4AppApiSubmissionAddsubmissionForm(problem: string, language: string, code: Array<Blob>, entry_point: string, cid: string, strict?: boolean, options?: AxiosRequestConfig) : Promise<AxiosResponse<InlineResponse20012>> {
+        return SubmissionsApiFp(this.configuration).postV4AppApiSubmissionAddsubmissionForm(problem, language, code, entry_point, cid, strict, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -1239,7 +1239,7 @@ export class SubmissionsApi extends BaseAPI {
      * @param {string} problem 
      * @param {string} language 
      * @param {Array<Blob>} code 
-     * @param {string} entryPoint 
+     * @param {string} entry_point 
      * @param {string} cid The contest ID
      * @param {string} id 
      * @param {boolean} [strict] Whether to only include CCS compliant properties in the response
@@ -1247,8 +1247,8 @@ export class SubmissionsApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof SubmissionsApi
      */
-    public async putV4AppApiSubmissionAddsubmission1Form(problem: string, language: string, code: Array<Blob>, entryPoint: string, cid: string, id: string, strict?: boolean, options?: AxiosRequestConfig) : Promise<AxiosResponse<InlineResponse20012>> {
-        return SubmissionsApiFp(this.configuration).putV4AppApiSubmissionAddsubmission1Form(problem, language, code, entryPoint, cid, id, strict, options).then((request) => request(this.axios, this.basePath));
+    public async putV4AppApiSubmissionAddsubmission1Form(problem: string, language: string, code: Array<Blob>, entry_point: string, cid: string, id: string, strict?: boolean, options?: AxiosRequestConfig) : Promise<AxiosResponse<InlineResponse20012>> {
+        return SubmissionsApiFp(this.configuration).putV4AppApiSubmissionAddsubmission1Form(problem, language, code, entry_point, cid, id, strict, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

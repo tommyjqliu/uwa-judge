@@ -58,5 +58,5 @@ export interface ContestState {
      * @type {Date}
      * @memberof ContestState
      */
-    endOfUpdates?: Date | null;
+    end_of_updates?: Date | null;
 }

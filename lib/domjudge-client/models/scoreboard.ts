@@ -30,7 +30,7 @@ export interface Scoreboard {
      * @type {string}
      * @memberof Scoreboard
      */
-    eventId?: string;
+    event_id?: string;
 
     /**
      * @type {string}
@@ -42,7 +42,7 @@ export interface Scoreboard {
      * @type {string}
      * @memberof Scoreboard
      */
-    contestTime?: string;
+    contest_time?: string;
 
     /**
      * @type {ContestState}

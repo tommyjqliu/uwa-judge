@@ -148,10 +148,10 @@ export const ClarificationsApiAxiosParamCreator = function (configuration?: Conf
          * 
          * @summary Add a clarification to this contest
          * @param {string} text 
-         * @param {string} problemId 
-         * @param {string} replyToId 
-         * @param {string} fromTeamId 
-         * @param {string} toTeamId 
+         * @param {string} problem_id 
+         * @param {string} reply_to_id 
+         * @param {string} from_team_id 
+         * @param {string} to_team_id 
          * @param {Date} time 
          * @param {string} id 
          * @param {string} cid The contest ID
@@ -159,26 +159,26 @@ export const ClarificationsApiAxiosParamCreator = function (configuration?: Conf
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        postV4AppApiClarificationAddForm: async (text: string, problemId: string, replyToId: string, fromTeamId: string, toTeamId: string, time: Date, id: string, cid: string, strict?: boolean, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        postV4AppApiClarificationAddForm: async (text: string, problem_id: string, reply_to_id: string, from_team_id: string, to_team_id: string, time: Date, id: string, cid: string, strict?: boolean, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'text' is not null or undefined
             if (text === null || text === undefined) {
                 throw new RequiredError('text','Required parameter text was null or undefined when calling postV4AppApiClarificationAddForm.');
             }
-            // verify required parameter 'problemId' is not null or undefined
-            if (problemId === null || problemId === undefined) {
-                throw new RequiredError('problemId','Required parameter problemId was null or undefined when calling postV4AppApiClarificationAddForm.');
+            // verify required parameter 'problem_id' is not null or undefined
+            if (problem_id === null || problem_id === undefined) {
+                throw new RequiredError('problem_id','Required parameter problem_id was null or undefined when calling postV4AppApiClarificationAddForm.');
             }
-            // verify required parameter 'replyToId' is not null or undefined
-            if (replyToId === null || replyToId === undefined) {
-                throw new RequiredError('replyToId','Required parameter replyToId was null or undefined when calling postV4AppApiClarificationAddForm.');
+            // verify required parameter 'reply_to_id' is not null or undefined
+            if (reply_to_id === null || reply_to_id === undefined) {
+                throw new RequiredError('reply_to_id','Required parameter reply_to_id was null or undefined when calling postV4AppApiClarificationAddForm.');
             }
-            // verify required parameter 'fromTeamId' is not null or undefined
-            if (fromTeamId === null || fromTeamId === undefined) {
-                throw new RequiredError('fromTeamId','Required parameter fromTeamId was null or undefined when calling postV4AppApiClarificationAddForm.');
+            // verify required parameter 'from_team_id' is not null or undefined
+            if (from_team_id === null || from_team_id === undefined) {
+                throw new RequiredError('from_team_id','Required parameter from_team_id was null or undefined when calling postV4AppApiClarificationAddForm.');
             }
-            // verify required parameter 'toTeamId' is not null or undefined
-            if (toTeamId === null || toTeamId === undefined) {
-                throw new RequiredError('toTeamId','Required parameter toTeamId was null or undefined when calling postV4AppApiClarificationAddForm.');
+            // verify required parameter 'to_team_id' is not null or undefined
+            if (to_team_id === null || to_team_id === undefined) {
+                throw new RequiredError('to_team_id','Required parameter to_team_id was null or undefined when calling postV4AppApiClarificationAddForm.');
             }
             // verify required parameter 'time' is not null or undefined
             if (time === null || time === undefined) {
@@ -220,20 +220,20 @@ export const ClarificationsApiAxiosParamCreator = function (configuration?: Conf
                 localVarFormParams.append('text', text as any);
             }
 
-            if (problemId !== undefined) { 
-                localVarFormParams.append('problem_id', problemId as any);
+            if (problem_id !== undefined) { 
+                localVarFormParams.append('problem_id', problem_id as any);
             }
 
-            if (replyToId !== undefined) { 
-                localVarFormParams.append('reply_to_id', replyToId as any);
+            if (reply_to_id !== undefined) { 
+                localVarFormParams.append('reply_to_id', reply_to_id as any);
             }
 
-            if (fromTeamId !== undefined) { 
-                localVarFormParams.append('from_team_id', fromTeamId as any);
+            if (from_team_id !== undefined) { 
+                localVarFormParams.append('from_team_id', from_team_id as any);
             }
 
-            if (toTeamId !== undefined) { 
-                localVarFormParams.append('to_team_id', toTeamId as any);
+            if (to_team_id !== undefined) { 
+                localVarFormParams.append('to_team_id', to_team_id as any);
             }
 
             if (time !== undefined) { 
@@ -327,10 +327,10 @@ export const ClarificationsApiAxiosParamCreator = function (configuration?: Conf
          * 
          * @summary Add a clarification to this contest
          * @param {string} text 
-         * @param {string} problemId 
-         * @param {string} replyToId 
-         * @param {string} fromTeamId 
-         * @param {string} toTeamId 
+         * @param {string} problem_id 
+         * @param {string} reply_to_id 
+         * @param {string} from_team_id 
+         * @param {string} to_team_id 
          * @param {Date} time 
          * @param {string} id2 
          * @param {string} cid The contest ID
@@ -339,26 +339,26 @@ export const ClarificationsApiAxiosParamCreator = function (configuration?: Conf
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        putV4AppApiClarificationAdd1Form: async (text: string, problemId: string, replyToId: string, fromTeamId: string, toTeamId: string, time: Date, id2: string, cid: string, id: string, strict?: boolean, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        putV4AppApiClarificationAdd1Form: async (text: string, problem_id: string, reply_to_id: string, from_team_id: string, to_team_id: string, time: Date, id2: string, cid: string, id: string, strict?: boolean, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'text' is not null or undefined
             if (text === null || text === undefined) {
                 throw new RequiredError('text','Required parameter text was null or undefined when calling putV4AppApiClarificationAdd1Form.');
             }
-            // verify required parameter 'problemId' is not null or undefined
-            if (problemId === null || problemId === undefined) {
-                throw new RequiredError('problemId','Required parameter problemId was null or undefined when calling putV4AppApiClarificationAdd1Form.');
+            // verify required parameter 'problem_id' is not null or undefined
+            if (problem_id === null || problem_id === undefined) {
+                throw new RequiredError('problem_id','Required parameter problem_id was null or undefined when calling putV4AppApiClarificationAdd1Form.');
             }
-            // verify required parameter 'replyToId' is not null or undefined
-            if (replyToId === null || replyToId === undefined) {
-                throw new RequiredError('replyToId','Required parameter replyToId was null or undefined when calling putV4AppApiClarificationAdd1Form.');
+            // verify required parameter 'reply_to_id' is not null or undefined
+            if (reply_to_id === null || reply_to_id === undefined) {
+                throw new RequiredError('reply_to_id','Required parameter reply_to_id was null or undefined when calling putV4AppApiClarificationAdd1Form.');
             }
-            // verify required parameter 'fromTeamId' is not null or undefined
-            if (fromTeamId === null || fromTeamId === undefined) {
-                throw new RequiredError('fromTeamId','Required parameter fromTeamId was null or undefined when calling putV4AppApiClarificationAdd1Form.');
+            // verify required parameter 'from_team_id' is not null or undefined
+            if (from_team_id === null || from_team_id === undefined) {
+                throw new RequiredError('from_team_id','Required parameter from_team_id was null or undefined when calling putV4AppApiClarificationAdd1Form.');
             }
-            // verify required parameter 'toTeamId' is not null or undefined
-            if (toTeamId === null || toTeamId === undefined) {
-                throw new RequiredError('toTeamId','Required parameter toTeamId was null or undefined when calling putV4AppApiClarificationAdd1Form.');
+            // verify required parameter 'to_team_id' is not null or undefined
+            if (to_team_id === null || to_team_id === undefined) {
+                throw new RequiredError('to_team_id','Required parameter to_team_id was null or undefined when calling putV4AppApiClarificationAdd1Form.');
             }
             // verify required parameter 'time' is not null or undefined
             if (time === null || time === undefined) {
@@ -405,20 +405,20 @@ export const ClarificationsApiAxiosParamCreator = function (configuration?: Conf
                 localVarFormParams.append('text', text as any);
             }
 
-            if (problemId !== undefined) { 
-                localVarFormParams.append('problem_id', problemId as any);
+            if (problem_id !== undefined) { 
+                localVarFormParams.append('problem_id', problem_id as any);
             }
 
-            if (replyToId !== undefined) { 
-                localVarFormParams.append('reply_to_id', replyToId as any);
+            if (reply_to_id !== undefined) { 
+                localVarFormParams.append('reply_to_id', reply_to_id as any);
             }
 
-            if (fromTeamId !== undefined) { 
-                localVarFormParams.append('from_team_id', fromTeamId as any);
+            if (from_team_id !== undefined) { 
+                localVarFormParams.append('from_team_id', from_team_id as any);
             }
 
-            if (toTeamId !== undefined) { 
-                localVarFormParams.append('to_team_id', toTeamId as any);
+            if (to_team_id !== undefined) { 
+                localVarFormParams.append('to_team_id', to_team_id as any);
             }
 
             if (time !== undefined) { 
@@ -560,10 +560,10 @@ export const ClarificationsApiFp = function(configuration?: Configuration) {
          * 
          * @summary Add a clarification to this contest
          * @param {string} text 
-         * @param {string} problemId 
-         * @param {string} replyToId 
-         * @param {string} fromTeamId 
-         * @param {string} toTeamId 
+         * @param {string} problem_id 
+         * @param {string} reply_to_id 
+         * @param {string} from_team_id 
+         * @param {string} to_team_id 
          * @param {Date} time 
          * @param {string} id 
          * @param {string} cid The contest ID
@@ -571,8 +571,8 @@ export const ClarificationsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async postV4AppApiClarificationAddForm(text: string, problemId: string, replyToId: string, fromTeamId: string, toTeamId: string, time: Date, id: string, cid: string, strict?: boolean, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Clarification>>> {
-            const localVarAxiosArgs = await ClarificationsApiAxiosParamCreator(configuration).postV4AppApiClarificationAddForm(text, problemId, replyToId, fromTeamId, toTeamId, time, id, cid, strict, options);
+        async postV4AppApiClarificationAddForm(text: string, problem_id: string, reply_to_id: string, from_team_id: string, to_team_id: string, time: Date, id: string, cid: string, strict?: boolean, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Clarification>>> {
+            const localVarAxiosArgs = await ClarificationsApiAxiosParamCreator(configuration).postV4AppApiClarificationAddForm(text, problem_id, reply_to_id, from_team_id, to_team_id, time, id, cid, strict, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -598,10 +598,10 @@ export const ClarificationsApiFp = function(configuration?: Configuration) {
          * 
          * @summary Add a clarification to this contest
          * @param {string} text 
-         * @param {string} problemId 
-         * @param {string} replyToId 
-         * @param {string} fromTeamId 
-         * @param {string} toTeamId 
+         * @param {string} problem_id 
+         * @param {string} reply_to_id 
+         * @param {string} from_team_id 
+         * @param {string} to_team_id 
          * @param {Date} time 
          * @param {string} id2 
          * @param {string} cid The contest ID
@@ -610,8 +610,8 @@ export const ClarificationsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async putV4AppApiClarificationAdd1Form(text: string, problemId: string, replyToId: string, fromTeamId: string, toTeamId: string, time: Date, id2: string, cid: string, id: string, strict?: boolean, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Clarification>>> {
-            const localVarAxiosArgs = await ClarificationsApiAxiosParamCreator(configuration).putV4AppApiClarificationAdd1Form(text, problemId, replyToId, fromTeamId, toTeamId, time, id2, cid, id, strict, options);
+        async putV4AppApiClarificationAdd1Form(text: string, problem_id: string, reply_to_id: string, from_team_id: string, to_team_id: string, time: Date, id2: string, cid: string, id: string, strict?: boolean, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Clarification>>> {
+            const localVarAxiosArgs = await ClarificationsApiAxiosParamCreator(configuration).putV4AppApiClarificationAdd1Form(text, problem_id, reply_to_id, from_team_id, to_team_id, time, id2, cid, id, strict, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -672,10 +672,10 @@ export const ClarificationsApiFactory = function (configuration?: Configuration,
          * 
          * @summary Add a clarification to this contest
          * @param {string} text 
-         * @param {string} problemId 
-         * @param {string} replyToId 
-         * @param {string} fromTeamId 
-         * @param {string} toTeamId 
+         * @param {string} problem_id 
+         * @param {string} reply_to_id 
+         * @param {string} from_team_id 
+         * @param {string} to_team_id 
          * @param {Date} time 
          * @param {string} id 
          * @param {string} cid The contest ID
@@ -683,8 +683,8 @@ export const ClarificationsApiFactory = function (configuration?: Configuration,
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async postV4AppApiClarificationAddForm(text: string, problemId: string, replyToId: string, fromTeamId: string, toTeamId: string, time: Date, id: string, cid: string, strict?: boolean, options?: AxiosRequestConfig): Promise<AxiosResponse<Clarification>> {
-            return ClarificationsApiFp(configuration).postV4AppApiClarificationAddForm(text, problemId, replyToId, fromTeamId, toTeamId, time, id, cid, strict, options).then((request) => request(axios, basePath));
+        async postV4AppApiClarificationAddForm(text: string, problem_id: string, reply_to_id: string, from_team_id: string, to_team_id: string, time: Date, id: string, cid: string, strict?: boolean, options?: AxiosRequestConfig): Promise<AxiosResponse<Clarification>> {
+            return ClarificationsApiFp(configuration).postV4AppApiClarificationAddForm(text, problem_id, reply_to_id, from_team_id, to_team_id, time, id, cid, strict, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -702,10 +702,10 @@ export const ClarificationsApiFactory = function (configuration?: Configuration,
          * 
          * @summary Add a clarification to this contest
          * @param {string} text 
-         * @param {string} problemId 
-         * @param {string} replyToId 
-         * @param {string} fromTeamId 
-         * @param {string} toTeamId 
+         * @param {string} problem_id 
+         * @param {string} reply_to_id 
+         * @param {string} from_team_id 
+         * @param {string} to_team_id 
          * @param {Date} time 
          * @param {string} id2 
          * @param {string} cid The contest ID
@@ -714,8 +714,8 @@ export const ClarificationsApiFactory = function (configuration?: Configuration,
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async putV4AppApiClarificationAdd1Form(text: string, problemId: string, replyToId: string, fromTeamId: string, toTeamId: string, time: Date, id2: string, cid: string, id: string, strict?: boolean, options?: AxiosRequestConfig): Promise<AxiosResponse<Clarification>> {
-            return ClarificationsApiFp(configuration).putV4AppApiClarificationAdd1Form(text, problemId, replyToId, fromTeamId, toTeamId, time, id2, cid, id, strict, options).then((request) => request(axios, basePath));
+        async putV4AppApiClarificationAdd1Form(text: string, problem_id: string, reply_to_id: string, from_team_id: string, to_team_id: string, time: Date, id2: string, cid: string, id: string, strict?: boolean, options?: AxiosRequestConfig): Promise<AxiosResponse<Clarification>> {
+            return ClarificationsApiFp(configuration).putV4AppApiClarificationAdd1Form(text, problem_id, reply_to_id, from_team_id, to_team_id, time, id2, cid, id, strict, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -771,10 +771,10 @@ export class ClarificationsApi extends BaseAPI {
      * 
      * @summary Add a clarification to this contest
      * @param {string} text 
-     * @param {string} problemId 
-     * @param {string} replyToId 
-     * @param {string} fromTeamId 
-     * @param {string} toTeamId 
+     * @param {string} problem_id 
+     * @param {string} reply_to_id 
+     * @param {string} from_team_id 
+     * @param {string} to_team_id 
      * @param {Date} time 
      * @param {string} id 
      * @param {string} cid The contest ID
@@ -783,8 +783,8 @@ export class ClarificationsApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof ClarificationsApi
      */
-    public async postV4AppApiClarificationAddForm(text: string, problemId: string, replyToId: string, fromTeamId: string, toTeamId: string, time: Date, id: string, cid: string, strict?: boolean, options?: AxiosRequestConfig) : Promise<AxiosResponse<Clarification>> {
-        return ClarificationsApiFp(this.configuration).postV4AppApiClarificationAddForm(text, problemId, replyToId, fromTeamId, toTeamId, time, id, cid, strict, options).then((request) => request(this.axios, this.basePath));
+    public async postV4AppApiClarificationAddForm(text: string, problem_id: string, reply_to_id: string, from_team_id: string, to_team_id: string, time: Date, id: string, cid: string, strict?: boolean, options?: AxiosRequestConfig) : Promise<AxiosResponse<Clarification>> {
+        return ClarificationsApiFp(this.configuration).postV4AppApiClarificationAddForm(text, problem_id, reply_to_id, from_team_id, to_team_id, time, id, cid, strict, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -804,10 +804,10 @@ export class ClarificationsApi extends BaseAPI {
      * 
      * @summary Add a clarification to this contest
      * @param {string} text 
-     * @param {string} problemId 
-     * @param {string} replyToId 
-     * @param {string} fromTeamId 
-     * @param {string} toTeamId 
+     * @param {string} problem_id 
+     * @param {string} reply_to_id 
+     * @param {string} from_team_id 
+     * @param {string} to_team_id 
      * @param {Date} time 
      * @param {string} id2 
      * @param {string} cid The contest ID
@@ -817,8 +817,8 @@ export class ClarificationsApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof ClarificationsApi
      */
-    public async putV4AppApiClarificationAdd1Form(text: string, problemId: string, replyToId: string, fromTeamId: string, toTeamId: string, time: Date, id2: string, cid: string, id: string, strict?: boolean, options?: AxiosRequestConfig) : Promise<AxiosResponse<Clarification>> {
-        return ClarificationsApiFp(this.configuration).putV4AppApiClarificationAdd1Form(text, problemId, replyToId, fromTeamId, toTeamId, time, id2, cid, id, strict, options).then((request) => request(this.axios, this.basePath));
+    public async putV4AppApiClarificationAdd1Form(text: string, problem_id: string, reply_to_id: string, from_team_id: string, to_team_id: string, time: Date, id2: string, cid: string, id: string, strict?: boolean, options?: AxiosRequestConfig) : Promise<AxiosResponse<Clarification>> {
+        return ClarificationsApiFp(this.configuration).putV4AppApiClarificationAdd1Form(text, problem_id, reply_to_id, from_team_id, to_team_id, time, id2, cid, id, strict, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

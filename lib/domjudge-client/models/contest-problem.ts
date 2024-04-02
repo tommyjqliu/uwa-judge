@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { StatementList } from './statement-list';
+
 import {
     StatementList,
 } from ".";
@@ -41,7 +41,7 @@ export interface ContestProblem {
      * @type {string}
      * @memberof ContestProblem
      */
-    shortName?: string;
+    short_name?: string;
 
     /**
      * @type {string}
@@ -71,13 +71,13 @@ export interface ContestProblem {
      * @type {number}
      * @memberof ContestProblem
      */
-    timeLimit?: number;
+    time_limit?: number;
 
     /**
      * @type {number}
      * @memberof ContestProblem
      */
-    testDataCount?: number;
+    test_data_count?: number;
 
     /**
      * @type {StatementList}

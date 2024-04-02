@@ -34,31 +34,31 @@ export interface Clarification {
      * @type {string}
      * @memberof Clarification
      */
-    contestTime?: string;
+    contest_time?: string;
 
     /**
      * @type {string}
      * @memberof Clarification
      */
-    problemId?: string | null;
+    problem_id?: string | null;
 
     /**
      * @type {string}
      * @memberof Clarification
      */
-    replyToId?: string | null;
+    reply_to_id?: string | null;
 
     /**
      * @type {string}
      * @memberof Clarification
      */
-    fromTeamId?: string | null;
+    from_team_id?: string | null;
 
     /**
      * @type {string}
      * @memberof Clarification
      */
-    toTeamId?: string | null;
+    to_team_id?: string | null;
 
     /**
      * @type {string}

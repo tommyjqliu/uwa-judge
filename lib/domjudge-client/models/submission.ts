@@ -28,7 +28,7 @@ export interface Submission {
      * @type {string}
      * @memberof Submission
      */
-    languageId?: string;
+    language_id?: string;
 
     /**
      * @type {string}
@@ -40,19 +40,19 @@ export interface Submission {
      * @type {string}
      * @memberof Submission
      */
-    contestTime?: string;
+    contest_time?: string;
 
     /**
      * @type {string}
      * @memberof Submission
      */
-    teamId?: string;
+    team_id?: string;
 
     /**
      * @type {string}
      * @memberof Submission
      */
-    problemId?: string;
+    problem_id?: string;
 
     /**
      * @type {string}
@@ -64,11 +64,11 @@ export interface Submission {
      * @type {string}
      * @memberof Submission
      */
-    externalId?: string | null;
+    external_id?: string | null;
 
     /**
      * @type {string}
      * @memberof Submission
      */
-    entryPoint?: string | null;
+    entry_point?: string | null;
 }

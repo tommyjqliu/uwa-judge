@@ -34,17 +34,17 @@ export interface InlineResponse2006 {
      * @type {number}
      * @memberof InlineResponse2006
      */
-    numSubmissions?: number;
+    num_submissions?: number;
 
     /**
      * @type {number}
      * @memberof InlineResponse2006
      */
-    numQueued?: number;
+    num_queued?: number;
 
     /**
      * @type {number}
      * @memberof InlineResponse2006
      */
-    numJudging?: number;
+    num_judging?: number;
 }

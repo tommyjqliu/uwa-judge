@@ -28,5 +28,5 @@ export interface RunExtraFields {
      * @type {string}
      * @memberof RunExtraFields
      */
-    judgementTypeId?: string;
+    judgement_type_id?: string;
 }
