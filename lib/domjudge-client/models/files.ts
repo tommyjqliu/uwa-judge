@@ -13,9 +13,7 @@
  */
 
 import { ArchiveList } from './archive-list';
-import {
-    ArchiveList,
-} from ".";
+
 
 /**
  * 

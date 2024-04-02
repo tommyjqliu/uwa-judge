@@ -12,10 +12,10 @@
  * Do not edit the class manually.
  */
 
+import { Apiv4contestscidsubmissionsFiles } from "./apiv4contestscidsubmissions-files";
 
-import {
-    Apiv4contestscidsubmissionsFiles,
-} from ".";
+
+
 
 /**
  * 

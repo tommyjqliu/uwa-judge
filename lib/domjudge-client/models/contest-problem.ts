@@ -12,10 +12,10 @@
  * Do not edit the class manually.
  */
 
+import { StatementList } from "./statement-list";
 
-import {
-    StatementList,
-} from ".";
+
+
 
 /**
  * 

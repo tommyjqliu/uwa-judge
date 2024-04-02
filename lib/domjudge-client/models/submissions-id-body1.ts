@@ -13,9 +13,7 @@
  */
 
 import { Apiv4contestscidsubmissionsFiles } from './apiv4contestscidsubmissions-files';
-import {
-    Apiv4contestscidsubmissionsFiles,
-} from ".";
+
 
 /**
  * 

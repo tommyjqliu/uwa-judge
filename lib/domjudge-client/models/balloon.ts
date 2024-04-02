@@ -13,9 +13,7 @@
  */
 
 import { ContestProblem } from './contest-problem';
-import {
-    ContestProblem,
-} from ".";
+
 
 /**
  * 

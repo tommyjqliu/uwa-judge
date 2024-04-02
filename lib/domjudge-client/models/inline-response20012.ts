@@ -15,9 +15,7 @@
 import { ArchiveList } from './archive-list';
 import { Files } from './files';
 import { Submission } from './submission';
-import {
-    ArchiveList,Files,Submission,
-} from ".";
+
 
 /**
  * 

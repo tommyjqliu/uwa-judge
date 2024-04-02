@@ -19,7 +19,7 @@ import { Configuration } from '../configuration';
 import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } from '../base';
 import { InlineResponse2009 } from '../models';
 import { InlineResponse400 } from '../models';
-import { Judging &amp; JudgementExtraFields } from '../models';
+import { Judging , JudgementExtraFields } from '../models';
 /**
  * JudgementsApi - axios parameter creator
  * @export

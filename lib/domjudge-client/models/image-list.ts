@@ -13,9 +13,7 @@
  */
 
 import { ImageListInner } from './image-list-inner';
-import {
-    ImageListInner,
-} from ".";
+
 
 /**
  * 

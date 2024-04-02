@@ -13,9 +13,7 @@
  */
 
 import { FileListInner } from './file-list-inner';
-import {
-    FileListInner,
-} from ".";
+
 
 /**
  * 

@@ -14,9 +14,7 @@
 
 import { JudgementExtraFields } from './judgement-extra-fields';
 import { Judging } from './judging';
-import {
-    JudgementExtraFields,Judging,
-} from ".";
+
 
 /**
  * 

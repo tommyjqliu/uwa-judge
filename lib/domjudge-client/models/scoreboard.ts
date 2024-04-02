@@ -14,9 +14,7 @@
 
 import { ContestState } from './contest-state';
 import { ScoreboardRows } from './scoreboard-rows';
-import {
-    ContestState,ScoreboardRows,
-} from ".";
+
 
 /**
  * 

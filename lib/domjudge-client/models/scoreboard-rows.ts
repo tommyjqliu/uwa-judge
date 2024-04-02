@@ -14,9 +14,7 @@
 
 import { ScoreboardProblems } from './scoreboard-problems';
 import { ScoreboardScore } from './scoreboard-score';
-import {
-    ScoreboardProblems,ScoreboardScore,
-} from ".";
+
 
 /**
  * 

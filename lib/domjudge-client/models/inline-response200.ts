@@ -13,9 +13,7 @@
  */
 
 import { InlineResponse200Endpoints } from './inline-response200-endpoints';
-import {
-    InlineResponse200Endpoints,
-} from ".";
+
 
 /**
  * 

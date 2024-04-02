@@ -15,9 +15,7 @@
 import { ImageList } from './image-list';
 import { Photo } from './photo';
 import { Team } from './team';
-import {
-    ImageList,Photo,Team,
-} from ".";
+
 
 /**
  * 

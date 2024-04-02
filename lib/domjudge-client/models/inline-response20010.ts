@@ -15,9 +15,7 @@
 import { ImageList } from './image-list';
 import { Logo } from './logo';
 import { TeamAffiliation } from './team-affiliation';
-import {
-    ImageList,Logo,TeamAffiliation,
-} from ".";
+
 
 /**
  * 

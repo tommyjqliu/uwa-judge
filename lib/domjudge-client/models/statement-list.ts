@@ -13,9 +13,7 @@
  */
 
 import { StatementListInner } from './statement-list-inner';
-import {
-    StatementListInner,
-} from ".";
+
 
 /**
  * 

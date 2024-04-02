@@ -13,9 +13,7 @@
  */
 
 import { InlineResponse2005Domjudge } from './inline-response2005-domjudge';
-import {
-    InlineResponse2005Domjudge,
-} from ".";
+
 
 /**
  * 

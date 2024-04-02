@@ -15,9 +15,7 @@
 import { Banner } from './banner';
 import { Contest } from './contest';
 import { ImageList } from './image-list';
-import {
-    Banner,Contest,ImageList,
-} from ".";
+
 
 /**
  * 

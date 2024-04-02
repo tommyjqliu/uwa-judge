@@ -13,9 +13,7 @@
  */
 
 import { SourceCodeListInner } from './source-code-list-inner';
-import {
-    SourceCodeListInner,
-} from ".";
+
 
 /**
  * 

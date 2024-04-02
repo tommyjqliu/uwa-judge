@@ -14,9 +14,7 @@
 
 import { JudgingRun } from './judging-run';
 import { RunExtraFields } from './run-extra-fields';
-import {
-    JudgingRun,RunExtraFields,
-} from ".";
+
 
 /**
  * 
