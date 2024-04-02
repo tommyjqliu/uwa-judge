@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -13,8 +7,882 @@ datasource db {
   url      = env("PRISMA_DATABASE_URL")
 }
 
+// ---------------Below Are Schema From Domjudge, Do Not Edit--------------------------//
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model auditlog {
+  logid     Int     @id @default(autoincrement()) @db.UnsignedInt
+  logtime   Decimal @db.Decimal(32, 9)
+  cid       Int?    @db.UnsignedInt
+  user      String? @db.VarChar(255)
+  datatype  String  @db.VarChar(32)
+  dataid    String? @db.VarChar(64)
+  action    String  @db.VarChar(128)
+  extrainfo String? @db.VarChar(255)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model balloon {
+  balloonid  Int         @id @default(autoincrement()) @db.UnsignedInt
+  submitid   Int?        @db.UnsignedInt
+  done       Boolean     @default(false)
+  submission submission? @relation(fields: [submitid], references: [submitid], onDelete: Cascade, onUpdate: Restrict, map: "balloon_ibfk_1")
+
+  @@index([submitid], map: "submitid")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model clarification {
+  clarid                             Int             @id @default(autoincrement()) @db.UnsignedInt
+  externalid                         String?         @db.VarChar(255)
+  cid                                Int?            @db.UnsignedInt
+  respid                             Int?            @db.UnsignedInt
+  submittime                         Decimal         @db.Decimal(32, 9)
+  sender                             Int?            @db.UnsignedInt
+  recipient                          Int?            @db.UnsignedInt
+  jury_member                        String?         @db.VarChar(255)
+  probid                             Int?            @db.UnsignedInt
+  category                           String?         @db.VarChar(255)
+  queue                              String?         @db.VarChar(255)
+  body                               String          @db.LongText
+  answered                           Boolean         @default(false)
+  contest                            contest?        @relation(fields: [cid], references: [cid], onDelete: Cascade, onUpdate: Restrict, map: "clarification_ibfk_1")
+  clarification                      clarification?  @relation("clarificationToclarification", fields: [respid], references: [clarid], onUpdate: Restrict, map: "clarification_ibfk_2")
+  other_clarification                clarification[] @relation("clarificationToclarification")
+  problem                            problem?        @relation(fields: [probid], references: [probid], onUpdate: Restrict, map: "clarification_ibfk_3")
+  team_clarification_senderToteam    team?           @relation("clarification_senderToteam", fields: [sender], references: [teamid], onDelete: Cascade, onUpdate: Restrict, map: "clarification_ibfk_4")
+  team_clarification_recipientToteam team?           @relation("clarification_recipientToteam", fields: [recipient], references: [teamid], onDelete: Cascade, onUpdate: Restrict, map: "clarification_ibfk_5")
+  team_unread                        team_unread[]
+
+  @@unique([cid, externalid(length: 190)], map: "externalid")
+  @@index([cid], map: "cid")
+  @@index([cid, answered, submittime], map: "cid_2")
+  @@index([probid], map: "probid")
+  @@index([recipient], map: "recipient")
+  @@index([respid], map: "respid")
+  @@index([sender], map: "sender")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model configuration {
+  configid Int    @id @default(autoincrement()) @db.UnsignedInt
+  name     String @unique(map: "name") @db.VarChar(32)
+  value    String @db.LongText
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model contest {
+  cid                          Int                            @id @default(autoincrement()) @db.UnsignedInt
+  externalid                   String?                        @unique(map: "externalid", length: 190) @db.VarChar(255)
+  name                         String                         @db.VarChar(255)
+  shortname                    String                         @unique(map: "shortname", length: 190) @db.VarChar(255)
+  activatetime                 Decimal                        @db.Decimal(32, 9)
+  starttime                    Decimal                        @db.Decimal(32, 9)
+  freezetime                   Decimal?                       @db.Decimal(32, 9)
+  endtime                      Decimal                        @db.Decimal(32, 9)
+  unfreezetime                 Decimal?                       @db.Decimal(32, 9)
+  deactivatetime               Decimal?                       @db.Decimal(32, 9)
+  activatetime_string          String                         @db.VarChar(64)
+  starttime_string             String                         @db.VarChar(64)
+  freezetime_string            String?                        @db.VarChar(64)
+  endtime_string               String                         @db.VarChar(64)
+  unfreezetime_string          String?                        @db.VarChar(64)
+  deactivatetime_string        String?                        @db.VarChar(64)
+  finalizetime                 Decimal?                       @db.Decimal(32, 9)
+  finalizecomment              String?                        @db.Text
+  b                            Int                            @default(0) @db.UnsignedSmallInt
+  enabled                      Boolean                        @default(true)
+  starttime_enabled            Boolean                        @default(true)
+  process_balloons             Boolean                        @default(true)
+  public                       Boolean                        @default(true)
+  open_to_all_teams            Boolean                        @default(true)
+  medals_enabled               Boolean                        @default(false)
+  gold_medals                  Int                            @default(4) @db.UnsignedSmallInt
+  silver_medals                Int                            @default(4) @db.UnsignedSmallInt
+  bronze_medals                Int                            @default(4) @db.UnsignedSmallInt
+  is_locked                    Boolean                        @default(false)
+  allow_submit                 Boolean                        @default(true)
+  warning_message              String?                        @db.Text
+  clarification                clarification[]
+  contestproblem               contestproblem[]
+  contestteam                  contestteam[]
+  contestteamcategory          contestteamcategory[]
+  contestteamcategoryformedals contestteamcategoryformedals[]
+  event                        event[]
+  external_contest_source      external_contest_source?
+  external_judgement           external_judgement[]
+  external_run                 external_run[]
+  internal_error               internal_error[]
+  judging                      judging[]
+  rankcache                    rankcache[]
+  removed_interval             removed_interval[]
+  scorecache                   scorecache[]
+  submission                   submission[]
+
+  @@index([cid, enabled], map: "cid")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model contestproblem {
+  cid               Int          @db.UnsignedInt
+  probid            Int          @db.UnsignedInt
+  shortname         String       @db.VarChar(255)
+  points            Int          @default(1) @db.UnsignedInt
+  allow_submit      Boolean      @default(true)
+  allow_judge       Boolean      @default(true)
+  color             String?      @db.VarChar(32)
+  lazy_eval_results Int?         @db.UnsignedInt
+  contest           contest      @relation(fields: [cid], references: [cid], onDelete: Cascade, onUpdate: Restrict, map: "contestproblem_ibfk_1")
+  problem           problem      @relation(fields: [probid], references: [probid], onDelete: Cascade, onUpdate: Restrict, map: "contestproblem_ibfk_2")
+  submission        submission[]
+
+  @@id([cid, probid])
+  @@unique([cid, shortname(length: 190)], map: "shortname")
+  @@index([cid], map: "cid")
+  @@index([probid], map: "probid")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model contestteam {
+  cid     Int     @db.UnsignedInt
+  teamid  Int     @db.UnsignedInt
+  contest contest @relation(fields: [cid], references: [cid], onDelete: Cascade, onUpdate: Restrict, map: "contestteam_ibfk_1")
+  team    team    @relation(fields: [teamid], references: [teamid], onDelete: Cascade, onUpdate: Restrict, map: "contestteam_ibfk_2")
+
+  @@id([cid, teamid])
+  @@index([cid], map: "IDX_8328F8554B30D9C4")
+  @@index([teamid], map: "IDX_8328F8554DD6ABF3")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model contestteamcategory {
+  cid           Int           @db.UnsignedInt
+  categoryid    Int           @db.UnsignedInt
+  contest       contest       @relation(fields: [cid], references: [cid], onDelete: Cascade, onUpdate: Restrict, map: "FK_51A2DDC44B30D9C4")
+  team_category team_category @relation(fields: [categoryid], references: [categoryid], onDelete: Cascade, onUpdate: Restrict, map: "FK_51A2DDC49B32FD3")
+
+  @@id([cid, categoryid])
+  @@index([cid], map: "IDX_51A2DDC44B30D9C4")
+  @@index([categoryid], map: "IDX_51A2DDC49B32FD3")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model contestteamcategoryformedals {
+  cid           Int           @db.UnsignedInt
+  categoryid    Int           @db.UnsignedInt
+  contest       contest       @relation(fields: [cid], references: [cid], onDelete: Cascade, onUpdate: Restrict, map: "FK_40B1F5544B30D9C4")
+  team_category team_category @relation(fields: [categoryid], references: [categoryid], onDelete: Cascade, onUpdate: Restrict, map: "FK_40B1F5549B32FD3")
+
+  @@id([cid, categoryid])
+  @@index([cid], map: "IDX_CC3496DE4B30D9C4")
+  @@index([categoryid], map: "IDX_CC3496DE9B32FD3")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model debug_package {
+  debug_package_id Int        @id @default(autoincrement()) @db.UnsignedInt
+  judgingid        Int?       @db.UnsignedInt
+  judgehostid      Int?       @db.UnsignedInt
+  filename         String     @db.VarChar(255)
+  judging          judging?   @relation(fields: [judgingid], references: [judgingid], onDelete: Cascade, onUpdate: Restrict, map: "FK_9E17399B5D5FEA72")
+  judgehost        judgehost? @relation(fields: [judgehostid], references: [judgehostid], onDelete: Restrict, onUpdate: Restrict, map: "FK_9E17399BE0E4FC3E")
+
+  @@index([judgehostid], map: "IDX_9E17399BE0E4FC3E")
+  @@index([judgingid], map: "judgingid")
+}
+
+model doctrine_migration_versions {
+  version        String    @id
+  executed_at    DateTime? @db.DateTime(0)
+  execution_time Int?
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model event {
+  eventid      Int      @id @default(autoincrement()) @db.UnsignedInt
+  eventtime    Decimal  @db.Decimal(32, 9)
+  cid          Int?     @db.UnsignedInt
+  endpointtype String   @db.VarChar(32)
+  endpointid   String   @db.VarChar(64)
+  action       String   @db.VarChar(32)
+  content      Bytes
+  contest      contest? @relation(fields: [cid], references: [cid], onDelete: Cascade, onUpdate: Restrict, map: "event_ibfk_1")
+
+  @@index([cid], map: "cid")
+  @@index([cid, endpointtype, endpointid], map: "endpoint")
+  @@index([cid, eventtime], map: "eventtime")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model executable {
+  execid                                      String                @id @db.VarChar(32)
+  description                                 String?               @db.VarChar(255)
+  type                                        String                @db.VarChar(32)
+  immutable_execid                            Int?                  @unique(map: "UNIQ_D68EDA01979A9F09") @db.UnsignedInt
+  immutable_executable                        immutable_executable? @relation(fields: [immutable_execid], references: [immutable_execid], onDelete: Restrict, onUpdate: Restrict, map: "FK_D68EDA01979A9F09")
+  language                                    language[]
+  problem_problem_special_runToexecutable     problem[]             @relation("problem_special_runToexecutable")
+  problem_problem_special_compareToexecutable problem[]             @relation("problem_special_compareToexecutable")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model executable_file {
+  execfileid           Int                   @id @default(autoincrement()) @db.UnsignedInt
+  immutable_execid     Int?                  @db.UnsignedInt
+  filename             String                @db.VarChar(255)
+  ranknumber           Int                   @db.UnsignedInt
+  file_content         Bytes
+  hash                 String?               @db.VarChar(32)
+  is_executable        Boolean               @default(false)
+  immutable_executable immutable_executable? @relation(fields: [immutable_execid], references: [immutable_execid], onDelete: Cascade, onUpdate: Restrict, map: "FK_99FA6255979A9F09")
+
+  @@unique([immutable_execid, filename(length: 190)], map: "filename")
+  @@unique([immutable_execid, ranknumber], map: "rankindex")
+  @@index([immutable_execid], map: "immutable_execid")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model external_contest_source {
+  extsourceid             Int                       @id @default(autoincrement()) @db.UnsignedInt
+  cid                     Int?                      @unique(map: "cid") @db.UnsignedInt
+  type                    String                    @db.VarChar(255)
+  source                  String                    @db.VarChar(255)
+  username                String?                   @db.VarChar(255)
+  password                String?                   @db.VarChar(255)
+  last_event_id           String?                   @db.VarChar(255)
+  last_poll_time          Decimal?                  @db.Decimal(32, 9)
+  contest                 contest?                  @relation(fields: [cid], references: [cid], onDelete: Cascade, onUpdate: Restrict, map: "FK_7B5AB21F4B30D9C4")
+  external_source_warning external_source_warning[]
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model external_judgement {
+  extjudgementid Int            @id @default(autoincrement()) @db.UnsignedInt
+  externalid     String?        @db.VarChar(255)
+  cid            Int?           @db.UnsignedInt
+  submitid       Int?           @db.UnsignedInt
+  result         String?        @db.VarChar(32)
+  verified       Boolean        @default(false)
+  jury_member    String?        @db.VarChar(255)
+  verify_comment String?        @db.VarChar(255)
+  starttime      Decimal        @db.Decimal(32, 9)
+  endtime        Decimal?       @db.Decimal(32, 9)
+  valid          Boolean        @default(true)
+  submission     submission?    @relation(fields: [submitid], references: [submitid], onDelete: Cascade, onUpdate: Restrict, map: "external_judgement_ibfk_1")
+  contest        contest?       @relation(fields: [cid], references: [cid], onDelete: Cascade, onUpdate: Restrict, map: "external_judgement_ibfk_2")
+  external_run   external_run[]
+
+  @@unique([cid, externalid(length: 190)], map: "externalid")
+  @@index([cid], map: "cid")
+  @@index([submitid], map: "submitid")
+  @@index([verified], map: "verified")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model external_run {
+  extrunid           Int                 @id @default(autoincrement()) @db.UnsignedInt
+  extjudgementid     Int?                @db.UnsignedInt
+  testcaseid         Int?                @db.UnsignedInt
+  externalid         String?             @db.VarChar(255)
+  cid                Int?                @db.UnsignedInt
+  result             String              @db.VarChar(32)
+  endtime            Decimal             @db.Decimal(32, 9)
+  runtime            Float               @db.Float
+  external_judgement external_judgement? @relation(fields: [extjudgementid], references: [extjudgementid], onDelete: Cascade, onUpdate: Restrict, map: "external_run_ibfk_1")
+  testcase           testcase?           @relation(fields: [testcaseid], references: [testcaseid], onDelete: Cascade, onUpdate: Restrict, map: "external_run_ibfk_2")
+  contest            contest?            @relation(fields: [cid], references: [cid], onDelete: Cascade, onUpdate: Restrict, map: "external_run_ibfk_3")
+
+  @@unique([cid, externalid(length: 190)], map: "externalid")
+  @@index([extjudgementid], map: "extjudgementid")
+  @@index([testcaseid], map: "testcaseid")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model external_source_warning {
+  extwarningid            Int                      @id @default(autoincrement()) @db.UnsignedInt
+  extsourceid             Int?                     @db.UnsignedInt
+  last_event_id           String?                  @db.VarChar(255)
+  time                    Decimal                  @db.Decimal(32, 9)
+  entity_type             String                   @db.VarChar(255)
+  entity_id               String                   @db.VarChar(255)
+  type                    String                   @db.VarChar(255)
+  hash                    String                   @db.VarChar(255)
+  content                 String                   @db.LongText
+  external_contest_source external_contest_source? @relation(fields: [extsourceid], references: [extsourceid], onDelete: Cascade, onUpdate: Restrict, map: "FK_18F83C481C667D08")
+
+  @@unique([extsourceid, hash(length: 190)], map: "hash")
+  @@index([extsourceid], map: "IDX_18F83C481C667D08")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model immutable_executable {
+  immutable_execid Int               @id @default(autoincrement()) @db.UnsignedInt
+  userid           Int?              @db.UnsignedInt
+  hash             String?           @db.VarChar(32)
+  executable       executable?
+  executable_file  executable_file[]
+  user             user?             @relation(fields: [userid], references: [userid], onUpdate: Restrict, map: "FK_676B601AF132696E")
+
+  @@index([userid], map: "IDX_676B601AF132696E")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model internal_error {
+  errorid                                   Int                   @id @default(autoincrement()) @db.UnsignedInt
+  judgingid                                 Int?                  @db.UnsignedInt
+  cid                                       Int?                  @db.UnsignedInt
+  description                               String                @db.VarChar(255)
+  judgehostlog                              String                @db.Text
+  time                                      Decimal               @db.Decimal(32, 9)
+  disabled                                  String                @db.Text
+  status                                    internal_error_status @default(open)
+  judging_internal_error_judgingidTojudging judging?              @relation("internal_error_judgingidTojudging", fields: [judgingid], references: [judgingid], onUpdate: Restrict, map: "internal_error_ibfk_1")
+  contest                                   contest?              @relation(fields: [cid], references: [cid], onUpdate: Restrict, map: "internal_error_ibfk_2")
+  judging_judging_erroridTointernal_error   judging[]             @relation("judging_erroridTointernal_error")
+
+  @@index([cid], map: "cid")
+  @@index([judgingid], map: "judgingid")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model judgehost {
+  judgehostid   Int             @id @default(autoincrement()) @db.UnsignedInt
+  hostname      String          @unique(map: "hostname") @db.VarChar(64)
+  enabled       Boolean         @default(true)
+  polltime      Decimal?        @db.Decimal(32, 9)
+  hidden        Boolean         @default(false)
+  debug_package debug_package[]
+  judgetask     judgetask[]
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model judgetask {
+  judgetaskid       Int            @id @default(autoincrement()) @db.UnsignedInt
+  judgehostid       Int?           @db.UnsignedInt
+  type              judgetask_type @default(judging_run)
+  priority          Int
+  jobid             Int?           @db.UnsignedInt
+  submitid          Int?           @db.UnsignedInt
+  compile_script_id Int?           @db.UnsignedInt
+  run_script_id     Int?           @db.UnsignedInt
+  compare_script_id Int?           @db.UnsignedInt
+  testcase_id       Int?           @db.UnsignedInt
+  compile_config    String?        @db.LongText
+  run_config        String?        @db.LongText
+  compare_config    String?        @db.LongText
+  valid             Boolean        @default(true)
+  starttime         Decimal?       @db.Decimal(32, 9)
+  uuid              String?        @db.VarChar(255)
+  testcase_hash     String?        @db.VarChar(100)
+  judgehost         judgehost?     @relation(fields: [judgehostid], references: [judgehostid], onDelete: Restrict, onUpdate: Restrict, map: "judgetask_ibfk_1")
+  judging_run       judging_run[]
+
+  @@index([jobid], map: "jobid")
+  @@index([judgehostid], map: "judgehostid")
+  @@index([judgehostid, jobid], map: "judgehostid_jobid")
+  @@index([judgehostid, valid, priority], map: "judgehostid_valid_priority")
+  @@index([priority], map: "priority")
+  @@index([judgehostid, starttime, valid, type, priority, judgetaskid], map: "specific_type")
+  @@index([submitid], map: "submitid")
+  @@index([valid], map: "valid")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model judging {
+  judgingid                                        Int              @id @default(autoincrement()) @db.UnsignedInt
+  cid                                              Int?             @db.UnsignedInt
+  submitid                                         Int?             @db.UnsignedInt
+  starttime                                        Decimal?         @db.Decimal(32, 9)
+  endtime                                          Decimal?         @db.Decimal(32, 9)
+  result                                           String?          @db.VarChar(32)
+  verified                                         Boolean          @default(false)
+  jury_member                                      String?          @db.VarChar(255)
+  verify_comment                                   String?          @db.VarChar(255)
+  valid                                            Boolean          @default(true)
+  output_compile                                   Bytes?
+  seen                                             Boolean          @default(false)
+  rejudgingid                                      Int?             @db.UnsignedInt
+  prevjudgingid                                    Int?             @db.UnsignedInt
+  judge_completely                                 Boolean          @default(false)
+  errorid                                          Int?             @db.UnsignedInt
+  uuid                                             String           @db.VarChar(255)
+  metadata                                         Bytes?
+  debug_package                                    debug_package[]
+  internal_error_internal_error_judgingidTojudging internal_error[] @relation("internal_error_judgingidTojudging")
+  internal_error_judging_erroridTointernal_error   internal_error?  @relation("judging_erroridTointernal_error", fields: [errorid], references: [errorid], onUpdate: Restrict, map: "FK_4CA80CED4BCA8D9D")
+  contest                                          contest?         @relation(fields: [cid], references: [cid], onDelete: Cascade, onUpdate: Restrict, map: "judging_ibfk_1")
+  submission                                       submission?      @relation(fields: [submitid], references: [submitid], onDelete: Cascade, onUpdate: Restrict, map: "judging_ibfk_2")
+  rejudging                                        rejudging?       @relation(fields: [rejudgingid], references: [rejudgingid], onUpdate: Restrict, map: "judging_ibfk_4")
+  judging                                          judging?         @relation("judgingTojudging", fields: [prevjudgingid], references: [judgingid], onUpdate: Restrict, map: "judging_ibfk_5")
+  other_judging                                    judging[]        @relation("judgingTojudging")
+  judging_run                                      judging_run[]
+
+  @@index([errorid], map: "IDX_4CA80CED4BCA8D9D")
+  @@index([cid], map: "cid")
+  @@index([prevjudgingid], map: "prevjudgingid")
+  @@index([rejudgingid], map: "rejudgingid")
+  @@index([submitid], map: "submitid")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model judging_run {
+  runid              Int                 @id @default(autoincrement()) @db.UnsignedInt
+  judgingid          Int?                @db.UnsignedInt
+  testcaseid         Int?                @db.UnsignedInt
+  runresult          String?             @db.VarChar(32)
+  runtime            Float?              @db.Float
+  endtime            Decimal?            @db.Decimal(32, 9)
+  judgetaskid        Int?                @db.UnsignedInt
+  judgetask          judgetask?          @relation(fields: [judgetaskid], references: [judgetaskid], onDelete: Restrict, onUpdate: Restrict, map: "FK_29A6E6E13CBA64F2")
+  testcase           testcase?           @relation(fields: [testcaseid], references: [testcaseid], onDelete: Restrict, onUpdate: Restrict, map: "judging_run_ibfk_1")
+  judging            judging?            @relation(fields: [judgingid], references: [judgingid], onDelete: Cascade, onUpdate: Restrict, map: "judging_run_ibfk_2")
+  judging_run_output judging_run_output?
+
+  @@unique([judgingid, testcaseid], map: "testcaseid")
+  @@index([judgetaskid], map: "IDX_29A6E6E13CBA64F2")
+  @@index([judgingid], map: "judgingid")
+  @@index([testcaseid], map: "testcaseid_2")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model judging_run_output {
+  runid         Int         @id @db.UnsignedInt
+  output_run    Bytes?
+  output_diff   Bytes?
+  output_error  Bytes?
+  output_system Bytes?
+  metadata      Bytes?
+  judging_run   judging_run @relation(fields: [runid], references: [runid], onDelete: Cascade, onUpdate: Restrict, map: "judging_run_output_ibfk_1")
+
+  @@index([runid], map: "runid")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model language {
+  langid                  String       @id @db.VarChar(32)
+  externalid              String?      @unique(map: "externalid", length: 190) @db.VarChar(255)
+  name                    String       @db.VarChar(255)
+  extensions              String?      @db.LongText
+  require_entry_point     Boolean      @default(false)
+  entry_point_description String?      @db.VarChar(255)
+  allow_submit            Boolean      @default(true)
+  allow_judge             Boolean      @default(true)
+  time_factor             Float        @default(1) @db.Float
+  compile_script          String?      @db.VarChar(32)
+  filter_compiler_files   Boolean      @default(true)
+  executable              executable?  @relation(fields: [compile_script], references: [execid], onUpdate: Restrict, map: "language_ibfk_1")
+  submission              submission[]
+
+  @@index([compile_script], map: "compile_script")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model problem {
+  probid                                         Int                  @id @default(autoincrement()) @db.UnsignedInt
+  externalid                                     String?              @unique(map: "externalid", length: 190) @db.VarChar(255)
+  name                                           String               @db.VarChar(255)
+  timelimit                                      Float                @default(0) @db.Float
+  memlimit                                       Int?                 @db.UnsignedInt
+  outputlimit                                    Int?                 @db.UnsignedInt
+  special_run                                    String?              @db.VarChar(32)
+  special_compare                                String?              @db.VarChar(32)
+  special_compare_args                           String?              @db.VarChar(255)
+  combined_run_compare                           Boolean              @default(false)
+  problemtext                                    Bytes?
+  problemtext_type                               String?              @db.VarChar(4)
+  clarification                                  clarification[]
+  contestproblem                                 contestproblem[]
+  executable_problem_special_runToexecutable     executable?          @relation("problem_special_runToexecutable", fields: [special_run], references: [execid], onUpdate: Restrict, map: "problem_ibfk_1")
+  executable_problem_special_compareToexecutable executable?          @relation("problem_special_compareToexecutable", fields: [special_compare], references: [execid], onUpdate: Restrict, map: "problem_ibfk_2")
+  problem_attachment                             problem_attachment[]
+  scorecache                                     scorecache[]
+  submission                                     submission[]
+  testcase                                       testcase[]
+
+  @@index([special_compare], map: "special_compare")
+  @@index([special_run], map: "special_run")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model problem_attachment {
+  attachmentid               Int                         @id @default(autoincrement()) @db.UnsignedInt
+  probid                     Int?                        @db.UnsignedInt
+  name                       String                      @db.VarChar(255)
+  type                       String                      @db.VarChar(4)
+  problem                    problem?                    @relation(fields: [probid], references: [probid], onDelete: Cascade, onUpdate: Restrict, map: "FK_317299FEEF049279")
+  problem_attachment_content problem_attachment_content?
+
+  @@index([probid], map: "IDX_317299FEEF049279")
+  @@index([attachmentid, name(length: 190)], map: "name")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model problem_attachment_content {
+  attachmentid       Int                @id @db.UnsignedInt
+  content            Bytes
+  problem_attachment problem_attachment @relation(fields: [attachmentid], references: [attachmentid], onDelete: Cascade, onUpdate: Restrict, map: "FK_C097D9BF4707030C")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model queuetask {
+  queuetaskid  Int      @id @default(autoincrement()) @db.UnsignedInt
+  teamid       Int?     @db.UnsignedInt
+  jobid        Int?     @db.UnsignedInt
+  priority     Int
+  teampriority Int
+  starttime    Decimal? @db.Decimal(32, 9)
+  team         team?    @relation(fields: [teamid], references: [teamid], onDelete: Cascade, onUpdate: Restrict, map: "FK_45E85FF84DD6ABF3")
+
+  @@index([jobid], map: "jobid")
+  @@index([priority], map: "priority")
+  @@index([queuetaskid], map: "queuetaskid")
+  @@index([starttime], map: "starttime")
+  @@index([teamid], map: "teamid")
+  @@index([teampriority], map: "teampriority")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model rankcache {
+  cid                  Int     @db.UnsignedInt
+  teamid               Int     @db.UnsignedInt
+  points_restricted    Int     @default(0) @db.UnsignedInt
+  totaltime_restricted Int     @default(0)
+  points_public        Int     @default(0) @db.UnsignedInt
+  totaltime_public     Int     @default(0)
+  contest              contest @relation(fields: [cid], references: [cid], onDelete: Cascade, onUpdate: Restrict, map: "rankcache_ibfk_1")
+  team                 team    @relation(fields: [teamid], references: [teamid], onDelete: Cascade, onUpdate: Restrict, map: "rankcache_ibfk_2")
+
+  @@id([cid, teamid])
+  @@index([cid], map: "cid")
+  @@index([cid, points_public, totaltime_public], map: "order_public")
+  @@index([cid, points_restricted, totaltime_restricted], map: "order_restricted")
+  @@index([teamid], map: "teamid")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model rejudging {
+  rejudgingid                        Int          @id @default(autoincrement()) @db.UnsignedInt
+  userid_start                       Int?         @db.UnsignedInt
+  userid_finish                      Int?         @db.UnsignedInt
+  starttime                          Decimal      @db.Decimal(32, 9)
+  endtime                            Decimal?     @db.Decimal(32, 9)
+  reason                             String       @db.VarChar(255)
+  valid                              Boolean      @default(true)
+  auto_apply                         Boolean      @default(false)
+  repeat                             Int?         @db.UnsignedInt
+  repeat_rejudgingid                 Int?         @db.UnsignedInt
+  judging                            judging[]
+  rejudging                          rejudging?   @relation("rejudgingTorejudging", fields: [repeat_rejudgingid], references: [rejudgingid], onUpdate: Restrict, map: "FK_719382B18D95A49F")
+  other_rejudging                    rejudging[]  @relation("rejudgingTorejudging")
+  user_rejudging_userid_startTouser  user?        @relation("rejudging_userid_startTouser", fields: [userid_start], references: [userid], onUpdate: Restrict, map: "rejudging_ibfk_1")
+  user_rejudging_userid_finishTouser user?        @relation("rejudging_userid_finishTouser", fields: [userid_finish], references: [userid], onUpdate: Restrict, map: "rejudging_ibfk_2")
+  submission                         submission[]
+
+  @@index([repeat_rejudgingid], map: "IDX_719382B18D95A49F")
+  @@index([userid_finish], map: "userid_finish")
+  @@index([userid_start], map: "userid_start")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model removed_interval {
+  intervalid       Int      @id @default(autoincrement()) @db.UnsignedInt
+  cid              Int?     @db.UnsignedInt
+  starttime        Decimal  @db.Decimal(32, 9)
+  endtime          Decimal  @db.Decimal(32, 9)
+  starttime_string String   @db.VarChar(64)
+  endtime_string   String   @db.VarChar(64)
+  contest          contest? @relation(fields: [cid], references: [cid], onDelete: Cascade, onUpdate: Restrict, map: "removed_interval_ibfk_1")
+
+  @@index([cid], map: "cid")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model role {
+  roleid      Int        @id @default(autoincrement()) @db.UnsignedInt
+  role        String     @unique(map: "role") @db.VarChar(32)
+  description String     @db.VarChar(255)
+  userrole    userrole[]
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model scorecache {
+  cid                    Int     @db.UnsignedInt
+  teamid                 Int     @db.UnsignedInt
+  probid                 Int     @db.UnsignedInt
+  submissions_restricted Int     @default(0) @db.UnsignedInt
+  pending_restricted     Int     @default(0) @db.UnsignedInt
+  solvetime_restricted   Decimal @default(0.000000000) @db.Decimal(32, 9)
+  is_correct_restricted  Boolean @default(false)
+  submissions_public     Int     @default(0) @db.UnsignedInt
+  pending_public         Int     @default(0) @db.UnsignedInt
+  solvetime_public       Decimal @default(0.000000000) @db.Decimal(32, 9)
+  is_correct_public      Boolean @default(false)
+  is_first_to_solve      Boolean @default(false)
+  contest                contest @relation(fields: [cid], references: [cid], onDelete: Cascade, onUpdate: Restrict, map: "scorecache_ibfk_1")
+  team                   team    @relation(fields: [teamid], references: [teamid], onDelete: Cascade, onUpdate: Restrict, map: "scorecache_ibfk_2")
+  problem                problem @relation(fields: [probid], references: [probid], onDelete: Cascade, onUpdate: Restrict, map: "scorecache_ibfk_3")
+
+  @@id([cid, teamid, probid])
+  @@index([cid], map: "cid")
+  @@index([probid], map: "probid")
+  @@index([teamid], map: "teamid")
+}
+
+model sessions {
+  sess_id       Bytes @id @db.VarBinary(128)
+  sess_data     Bytes @db.Blob
+  sess_lifetime Int   @db.UnsignedInt
+  sess_time     Int   @db.UnsignedInt
+
+  @@index([sess_lifetime])
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model submission {
+  submitid           Int                  @id @default(autoincrement()) @db.UnsignedInt
+  origsubmitid       Int?                 @db.UnsignedInt
+  cid                Int?                 @db.UnsignedInt
+  teamid             Int?                 @db.UnsignedInt
+  userid             Int?                 @db.UnsignedInt
+  probid             Int?                 @db.UnsignedInt
+  langid             String?              @db.VarChar(32)
+  submittime         Decimal              @db.Decimal(32, 9)
+  valid              Boolean              @default(true)
+  rejudgingid        Int?                 @db.UnsignedInt
+  expected_results   String?              @db.VarChar(255)
+  externalid         String?              @db.VarChar(255)
+  entry_point        String?              @db.VarChar(255)
+  balloon            balloon[]
+  external_judgement external_judgement[]
+  judging            judging[]
+  user               user?                @relation(fields: [userid], references: [userid], onDelete: Cascade, onUpdate: Restrict, map: "FK_DB055AF3F132696E")
+  contest            contest?             @relation(fields: [cid], references: [cid], onDelete: Cascade, onUpdate: Restrict, map: "submission_ibfk_1")
+  team               team?                @relation(fields: [teamid], references: [teamid], onDelete: Cascade, onUpdate: Restrict, map: "submission_ibfk_2")
+  problem            problem?             @relation(fields: [probid], references: [probid], onDelete: Cascade, onUpdate: Restrict, map: "submission_ibfk_3")
+  language           language?            @relation(fields: [langid], references: [langid], onDelete: Cascade, onUpdate: Restrict, map: "submission_ibfk_4")
+  submission         submission?          @relation("submissionTosubmission", fields: [origsubmitid], references: [submitid], onUpdate: Restrict, map: "submission_ibfk_6")
+  other_submission   submission[]         @relation("submissionTosubmission")
+  rejudging          rejudging?           @relation(fields: [rejudgingid], references: [rejudgingid], onUpdate: Restrict, map: "submission_ibfk_7")
+  contestproblem     contestproblem?      @relation(fields: [cid, probid], references: [cid, probid], onDelete: Cascade, onUpdate: Restrict, map: "submission_ibfk_8")
+  submission_file    submission_file[]
+
+  @@unique([cid, externalid(length: 190)], map: "externalid")
+  @@index([langid], map: "langid")
+  @@index([origsubmitid], map: "origsubmitid")
+  @@index([probid], map: "probid")
+  @@index([cid, probid], map: "probid_2")
+  @@index([rejudgingid], map: "rejudgingid")
+  @@index([cid, teamid], map: "teamid")
+  @@index([teamid], map: "teamid_2")
+  @@index([userid], map: "userid")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model submission_file {
+  submitfileid Int         @id @default(autoincrement()) @db.UnsignedInt
+  submitid     Int?        @db.UnsignedInt
+  sourcecode   Bytes
+  filename     String      @db.VarChar(255)
+  ranknumber   Int         @db.UnsignedInt
+  submission   submission? @relation(fields: [submitid], references: [submitid], onDelete: Cascade, onUpdate: Restrict, map: "submission_file_ibfk_1")
+
+  @@unique([submitid, filename(length: 190)], map: "filename")
+  @@unique([submitid, ranknumber], map: "rankindex")
+  @@index([submitid], map: "submitid")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model team {
+  teamid                                      Int               @id @default(autoincrement()) @db.UnsignedInt
+  externalid                                  String?           @unique(map: "externalid", length: 190) @db.VarChar(255)
+  icpcid                                      String?           @db.VarChar(255)
+  name                                        String            @db.VarChar(255)
+  display_name                                String?           @db.VarChar(255)
+  categoryid                                  Int?              @db.UnsignedInt
+  affilid                                     Int?              @db.UnsignedInt
+  enabled                                     Boolean           @default(true)
+  publicdescription                           String?           @db.LongText
+  room                                        String?           @db.VarChar(255)
+  internalcomments                            String?           @db.LongText
+  judging_last_started                        Decimal?          @db.Decimal(32, 9)
+  penalty                                     Int               @default(0)
+  clarification_clarification_senderToteam    clarification[]   @relation("clarification_senderToteam")
+  clarification_clarification_recipientToteam clarification[]   @relation("clarification_recipientToteam")
+  contestteam                                 contestteam[]
+  queuetask                                   queuetask[]
+  rankcache                                   rankcache[]
+  scorecache                                  scorecache[]
+  submission                                  submission[]
+  team_category                               team_category?    @relation(fields: [categoryid], references: [categoryid], onDelete: Cascade, onUpdate: Restrict, map: "team_ibfk_1")
+  team_affiliation                            team_affiliation? @relation(fields: [affilid], references: [affilid], onUpdate: Restrict, map: "team_ibfk_2")
+  team_unread                                 team_unread[]
+  user                                        user[]
+
+  @@index([affilid], map: "affilid")
+  @@index([categoryid], map: "categoryid")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model team_affiliation {
+  affilid          Int     @id @default(autoincrement()) @db.UnsignedInt
+  externalid       String? @unique(map: "externalid", length: 190) @db.VarChar(255)
+  icpcid           String? @db.VarChar(255)
+  shortname        String  @db.VarChar(32)
+  name             String  @db.VarChar(255)
+  country          String? @db.Char(3)
+  internalcomments String? @db.LongText
+  team             team[]
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model team_category {
+  categoryid                   Int                            @id @default(autoincrement()) @db.UnsignedInt
+  externalid                   String?                        @unique(map: "externalid", length: 190) @db.VarChar(255)
+  icpcid                       String?                        @db.VarChar(255)
+  name                         String                         @db.VarChar(255)
+  sortorder                    Boolean                        @default(false)
+  color                        String?                        @db.VarChar(32)
+  visible                      Boolean                        @default(true)
+  allow_self_registration      Boolean                        @default(false)
+  contestteamcategory          contestteamcategory[]
+  contestteamcategoryformedals contestteamcategoryformedals[]
+  team                         team[]
+
+  @@index([sortorder], map: "sortorder")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model team_unread {
+  teamid        Int           @db.UnsignedInt
+  mesgid        Int           @db.UnsignedInt
+  team          team          @relation(fields: [teamid], references: [teamid], onDelete: Cascade, onUpdate: Restrict, map: "team_unread_ibfk_1")
+  clarification clarification @relation(fields: [mesgid], references: [clarid], onDelete: Cascade, onUpdate: Restrict, map: "team_unread_ibfk_2")
+
+  @@id([teamid, mesgid])
+  @@index([teamid], map: "IDX_3272D5F4DD6ABF3")
+  @@index([mesgid], map: "IDX_3272D5F9E88E262")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model testcase {
+  testcaseid          Int                @id @default(autoincrement()) @db.UnsignedInt
+  md5sum_input        String?            @db.Char(32)
+  md5sum_output       String?            @db.Char(32)
+  probid              Int?               @db.UnsignedInt
+  ranknumber          Int                @db.UnsignedInt
+  description         Bytes?
+  image_type          String?            @db.VarChar(4)
+  sample              Boolean            @default(false)
+  orig_input_filename String?            @db.VarChar(255)
+  deleted             Boolean            @default(false)
+  external_run        external_run[]
+  judging_run         judging_run[]
+  problem             problem?           @relation(fields: [probid], references: [probid], onDelete: Cascade, onUpdate: Restrict, map: "testcase_ibfk_1")
+  testcase_content    testcase_content[]
+
+  @@unique([probid, ranknumber], map: "rankindex")
+  @@index([probid], map: "probid")
+  @@index([sample], map: "sample")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model testcase_content {
+  testcaseid   Int?      @db.UnsignedInt
+  input        Bytes?
+  output       Bytes?
+  image        Bytes?
+  image_thumb  Bytes?
+  tc_contentid Int       @id @default(autoincrement()) @db.UnsignedInt
+  testcase     testcase? @relation(fields: [testcaseid], references: [testcaseid], onDelete: Cascade, onUpdate: Restrict, map: "FK_50A5CCE2D360BB2B")
+
+  @@index([testcaseid], map: "IDX_50A5CCE2D360BB2B")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model user {
+  userid                                  Int                    @id @default(autoincrement()) @db.UnsignedInt
+  externalid                              String?                @unique(map: "externalid", length: 190) @db.VarChar(255)
+  username                                String                 @unique(map: "username", length: 190) @db.VarChar(255)
+  name                                    String                 @db.VarChar(255)
+  email                                   String?                @db.VarChar(255)
+  last_login                              Decimal?               @db.Decimal(32, 9)
+  last_api_login                          Decimal?               @db.Decimal(32, 9)
+  first_login                             Decimal?               @db.Decimal(32, 9)
+  last_ip_address                         String?                @db.VarChar(255)
+  password                                String?                @db.VarChar(255)
+  ip_address                              String?                @db.VarChar(255)
+  enabled                                 Boolean                @default(true)
+  teamid                                  Int?                   @db.UnsignedInt
+  immutable_executable                    immutable_executable[]
+  rejudging_rejudging_userid_startTouser  rejudging[]            @relation("rejudging_userid_startTouser")
+  rejudging_rejudging_userid_finishTouser rejudging[]            @relation("rejudging_userid_finishTouser")
+  submission                              submission[]
+  team                                    team?                  @relation(fields: [teamid], references: [teamid], onUpdate: Restrict, map: "user_ibfk_1")
+  userrole                                userrole[]
+
+  @@index([teamid], map: "teamid")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model userrole {
+  userid Int  @db.UnsignedInt
+  roleid Int  @db.UnsignedInt
+  user   user @relation(fields: [userid], references: [userid], onDelete: Cascade, onUpdate: Restrict, map: "userrole_ibfk_1")
+  role   role @relation(fields: [roleid], references: [roleid], onDelete: Cascade, onUpdate: Restrict, map: "userrole_ibfk_2")
+
+  @@id([userid, roleid])
+  @@index([roleid], map: "IDX_F114F21B2D46D92A")
+  @@index([userid], map: "IDX_F114F21BF132696E")
+}
+
+enum judgetask_type {
+  judging_run
+  generic_task
+  config_check
+  debug_info
+  prefetch
+}
+
+enum internal_error_status {
+  open
+  resolved
+  ignored
+}
+
+// ---------------Above Are Schema From Domjudge, Do Not Edit--------------------------//
+
+model Permission {
+  id          Int         @id @default(autoincrement())
+  name        String
+  description String?
+  userGroups  UserGroup[]
+  users       User[]
+}
+
 model User {
-  id      Int      @id @default(autoincrement())
-  email   String   @unique
-  name    String?
+  email       String       @id
+  username    String
+  permissions Permission[]
+}
+
+model UserGroup {
+  id          Int          @id @default(autoincrement())
+  name        String
+  description String?
+  permissions Permission[]
+}
+
+model Assignment {
+  id          Int     @id @default(autoincrement())
+  name        String
+  description String?
+}
+
+model Problem {
+  id          Int     @id @default(autoincrement())
+  name        String
+  description String?
+}
+
+model Submission {
+  id          Int     @id @default(autoincrement())
 }
