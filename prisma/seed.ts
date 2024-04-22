@@ -6,8 +6,8 @@ const prisma = new DOMjudgeClient()
 
 
 async function main() {
-    // const t = await prisma.user.findMany();
-    // console.log(t)
+    const t = await prisma.user.findMany();
+    console.log(t)
 }
 
 

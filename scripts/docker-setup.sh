@@ -38,8 +38,26 @@ if [ $? -eq 0 ]; then
     # docker-compose -p $DOCKER_PROJECT exec mariadb mariadb -u"root" -p"$MYSQL_ROOT_PASSWORD" -e "$SQL_QUERY_GRANT_PRIVILEGES"
     docker-compose -p $DOCKER_PROJECT exec mariadb mariadb -u"root" -p"$MYSQL_ROOT_PASSWORD" -e "$SQL_QUERY_GRANT_DB"
     docker-compose -p $DOCKER_PROJECT exec mariadb mariadb -u"root" -p"$MYSQL_ROOT_PASSWORD" -e "FLUSH PRIVILEGES;"
-    npx prisma migrate reset --force
 else
     echo "ERROR: Could not connect to MariaDB after $MAX_TRIES retries. Aborting."
+    exit 1
+fi
+
+# Wait for domjudge on
+for i in $(seq 1 $MAX_TRIES); do
+    response=$(curl --write-out '%{http_code}' --silent --output /dev/null $DOMJUDGE_URL/public)
+    if [ "$response" -eq 200 ]; then
+        break
+    fi
+    echo "Waiting for Domjudge to ready ($i/$MAX_TRIES attempts)..."
+    sleep $RETRY_WAIT
+done
+
+if [ "$response" -eq 200 ]; then
+    echo "Domjudge is ready, proceeding with setup..."
+    sleep 1
+     npx prisma migrate reset --force
+else
+    echo "ERROR: Could not connect to Domjudge after $MAX_TRIES retries. Aborting."
     exit 1
 fi
