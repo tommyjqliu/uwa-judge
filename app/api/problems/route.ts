@@ -1,5 +1,5 @@
 import { getHash, isFile } from '@/lib/file';
-import { ProblemsApi, djConfig } from '@/lib/domjudge-client';
+import { ProblemsApi, djConfig } from '@/lib/domjudge-api-client';
 const problemsApi = new ProblemsApi(djConfig)
 
 export async function POST(request: Request) {
