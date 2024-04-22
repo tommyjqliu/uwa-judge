@@ -2,6 +2,9 @@
   "name": "uwa-judge",
   "version": "0.1.0",
   "private": true,
+  "prisma": {
+    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -21,13 +24,14 @@
     "@mui/material": "^5.15.15",
     "@prisma/client": "^5.11.0",
     "axios": "^1.6.8",
+    "dotenv": "^16.4.5",
     "next": "14.1.3",
     "next-auth": "^4.24.7",
     "react": "^18",
     "react-dom": "^18"
   },
   "devDependencies": {
-    "@types/node": "^20",
+    "@types/node": "^20.12.7",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "autoprefixer": "^10.0.1",
@@ -37,7 +41,8 @@
     "postcss": "^8",
     "prisma": "^5.11.0",
     "tailwindcss": "^3.3.0",
-    "typescript": "^5",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.5",
     "vitest": "^1.4.0"
   }
 }

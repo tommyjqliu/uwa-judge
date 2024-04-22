@@ -1,4 +1,4 @@
-import { SubmissionsApi, djConfig } from "@/lib/domjudge-client"
+import { SubmissionsApi, djConfig } from "@/lib/domjudge-api-client"
 import { isFile } from "@/lib/file"
 
 const submissionsApi = new SubmissionsApi(djConfig)
