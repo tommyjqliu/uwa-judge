@@ -16,13 +16,12 @@ model Permission {
 }
 
 model User {
-  email       String       @id
-  username    String
-  permissions Permission[]
+  email              String           @id
+  username           String
+  permissions        Permission[]
   //relation
-  assignmentsCreated Assignment[] @relation("creator")
-  assignUser AssignmentUser[]
-
+  assignmentsCreated Assignment[]     @relation("creator")
+  assignUser         AssignmentUser[]
 }
 
 model UserGroup {
@@ -33,24 +32,15 @@ model UserGroup {
 }
 
 model Assignment {
-  id          Int       @id @default(autoincrement())
-  title       String
-  description String
-  publishDate DateTime
-  creatorId   String
+  id             Int                     @id @default(autoincrement())
+  title          String
+  description    String
+  publishDate    DateTime
+  creatorId      String
   // relation
-  creator     User      @relation("creator", fields: [creatorId], references: [email])
+  creator        User                    @relation("creator", fields: [creatorId], references: [email])
   assignmentUser AssignmentUser[]
-  assignmentProblem AssignmentProblem[]
-}
-model AssignmentProblem {
-  assignmentId Int
-  problemId    Int
-
-  //relation
-  assignment   Assignment @relation(fields: [assignmentId], references: [id])
-  problem      Problem     @relation(fields: [problemId], references: [id])
-  @@id([assignmentId, problemId])
+  problems       ProblemsOnAssignments[]
 }
 
 model AssignmentUser {
@@ -58,19 +48,28 @@ model AssignmentUser {
   userId       String
 
   //relation
-  assignment   Assignment @relation(fields: [assignmentId], references: [id])
-  user         User        @relation(fields: [userId], references: [email])
+  assignment Assignment @relation(fields: [assignmentId], references: [id])
+  user       User       @relation(fields: [userId], references: [email])
+
   @@id([assignmentId, userId])
 }
 
-
 model Problem {
-  id          Int     @id @default(autoincrement())
+  id          String                  @id // External ID in domjudge. also hash value of the archive file
   name        String
   description String?
-  assignmentProblem AssignmentProblem[]
+  assignments ProblemsOnAssignments[]
+}
+
+model ProblemsOnAssignments {
+  problemId    String
+  assignmentId Int
+  problem      Problem    @relation(fields: [problemId], references: [id])
+  assignment   Assignment @relation(fields: [assignmentId], references: [id])
+
+  @@id([problemId, assignmentId])
 }
 
 model Submission {
-  id          Int     @id @default(autoincrement())
+  id Int @id @default(autoincrement())
 }

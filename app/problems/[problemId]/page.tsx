@@ -9,8 +9,9 @@ export default function Page({ params: { problemId } }: { params: { problemId: s
     function submitForm(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
         e.preventDefault();
         console.log(files)
-        axios.postForm(`/api/problems/${problemId}/submission`, {
+        axios.postForm(`/api/submissions`, {
             files,
+            problemId,
             language: 'python3',
         })
     }

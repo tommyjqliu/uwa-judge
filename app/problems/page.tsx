@@ -1,6 +1,6 @@
 "use client"
 import { auth } from "@/lib/auth";
-import { useState } from "react";
+import { MouseEvent, useState } from "react";
 
 
 export default function Page() {
@@ -9,9 +9,8 @@ export default function Page() {
     function submitForm(e: MouseEvent) {
         e.preventDefault();
 
-
         const formData = new FormData();
-
+        
         for (let i = 0; i < (files?.length || 0); i++) {
             formData.append("files", files?.[i]!);
         }

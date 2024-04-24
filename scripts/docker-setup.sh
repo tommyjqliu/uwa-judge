@@ -31,7 +31,7 @@ for i in $(seq 1 $MAX_TRIES); do
 done
 
 # Check if connection successful
-if [ $? -eq 0 ]; then
+if [ "$result" -eq 0 ]; then
     echo "MariaDB connection successful, proceeding with database setup..."
     sleep 1
     # docker-compose -p $DOCKER_PROJECT exec mariadb mariadb -u"root" -p"$MYSQL_ROOT_PASSWORD" -e "$SQL_QUERY_CREATE_DB"
