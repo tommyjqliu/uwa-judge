@@ -16,11 +16,11 @@ model Permission {
 }
 
 model User {
-  email              String               @id
-  username           String
-  permissions        Permission[]
+  email       String               @id
+  username    String
+  permissions Permission[]
   //relation
-  assignments        UsersOnAssignments[]
+  assignments UsersOnAssignments[]
 }
 
 model UserGroup {
@@ -33,9 +33,9 @@ model UserGroup {
 model Assignment {
   id          Int                     @id @default(autoincrement())
   title       String
-  description String
-  publishDate DateTime
-  dueDate     DateTime
+  description String?
+  publishDate DateTime?
+  dueDate     DateTime?
   users       UsersOnAssignments[]
   problems    ProblemsOnAssignments[]
 }
@@ -44,6 +44,12 @@ enum AssignmentRole {
   STUDENT
   TUTOR
   TEACHER
+}
+
+model AssignmentRoleDescription {
+  // AssignmentRole has to accociate with some model so it can be used as enum
+  role        AssignmentRole @id
+  description String
 }
 
 model UsersOnAssignments {
