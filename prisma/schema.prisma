@@ -7,20 +7,39 @@ datasource db {
   url      = env("UWAJUDGE_DATABASE_URL")
 }
 
+enum AccountProvider {
+  MICROSOFT
+  GOOGLE
+  GITHUB
+}
+
+model User {
+  id               Int                  @id @default(autoincrement())
+  email            String?
+  username         String?
+  password         String?
+  permissions      Permission[]
+  assignments      UsersOnAssignments[]
+  externalAccounts ExternalAccount[]
+}
+
+model ExternalAccount {
+  id         Int             @id @default(autoincrement())
+  userId     Int
+  provider   AccountProvider
+  providerId String
+  user       User            @relation(fields: [userId], references: [id])
+
+  @@unique([provider, userId])
+  @@unique([provider, providerId])
+}
+
 model Permission {
   id          Int         @id @default(autoincrement())
   name        String
   description String?
   userGroups  UserGroup[]
   users       User[]
-}
-
-model User {
-  email       String               @id
-  username    String
-  permissions Permission[]
-  //relation
-  assignments UsersOnAssignments[]
 }
 
 model UserGroup {
@@ -54,11 +73,11 @@ model AssignmentRoleDescription {
 
 model UsersOnAssignments {
   assignmentId Int
-  userId       String
+  userId       Int
 
   //relation
   assignment Assignment @relation(fields: [assignmentId], references: [id])
-  user       User       @relation(fields: [userId], references: [email])
+  user       User       @relation(fields: [userId], references: [id])
   roles      Json // List of AssignmentRole on this assignment
 
   @@id([assignmentId, userId])
