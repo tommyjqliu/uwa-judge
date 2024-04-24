@@ -32,16 +32,24 @@ model Assignment {
   id          Int     @id @default(autoincrement())
   name        String
   description String?
-  problems    Problem[]
+  problems ProblemsOnAssignments[]
 }
 
 model Problem {
-  id          Int     @id @default(autoincrement())
+  id          String  @id // External ID in domjudge. also hash value of the archive file
   name        String
   description String?
-  assignment  Assignment[]
+  assignments ProblemsOnAssignments[]
+}
+
+model ProblemsOnAssignments {
+  problemId    String
+  assignmentId Int
+  problem      Problem    @relation(fields: [problemId], references: [id])
+  assignment   Assignment @relation(fields: [assignmentId], references: [id])
+  @@id([problemId, assignmentId])
 }
 
 model Submission {
-  id          Int     @id @default(autoincrement())
+  id Int @id @default(autoincrement())
 }

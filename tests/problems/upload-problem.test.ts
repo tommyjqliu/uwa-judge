@@ -26,11 +26,13 @@ describe.concurrent("Upload problem", () => {
                 files.forEach((file, i) => {
                     formdata.append("files", new File([file], fileNames[i]))
                 })
+
                 const res = await fetch({
                     method: "POST",
                     body: formdata,
                 });
-                console.log(res)
+
+                console.log(await res.json())
             }
         });
     });
