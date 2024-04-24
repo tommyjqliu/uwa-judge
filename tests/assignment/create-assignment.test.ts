@@ -14,8 +14,7 @@ describe.concurrent("Create Assignment", () => {
                 const formdata = new FormData()
                 formdata.append("title", "test assignment")
                 formdata.append("description", "test description")
-                formdata.append("users", JSON.stringify([{ userId: "1", role: "TEACHER" }]))
-
+                
                 const res = await fetch({
                     method: "POST",
                     body: formdata,
