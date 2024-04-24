@@ -32,12 +32,14 @@ model Assignment {
   id          Int     @id @default(autoincrement())
   name        String
   description String?
+  problems    Problem[]
 }
 
 model Problem {
   id          Int     @id @default(autoincrement())
   name        String
   description String?
+  assignment  Assignment[]
 }
 
 model Submission {
