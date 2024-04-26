@@ -41,3 +41,4 @@ password.admin
 
 #database
 .mariadb
+password.judgehost
