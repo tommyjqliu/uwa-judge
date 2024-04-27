@@ -1,4 +1,4 @@
-import { CONTEST_CID } from "@/lib/constant"
+import { CONTEST_CID } from "@/lib/constant"    // Contest ID isn't used in our implementation.
 import { SubmissionsApi, djConfig } from "@/lib/domjudge-api-client"
 import { isFile } from "@/lib/file"
 
@@ -7,7 +7,7 @@ const submissionsApi = new SubmissionsApi(djConfig)
 export async function POST(
     request: Request,
 ) {
-    const formData = await request.formData()
+    const formData = await request.formData()   // get data from user input
     const problemId = String(formData.get('problemId')) ?? ''
     const language = String(formData.get('language')) ?? ''
     const entryPoint = String(formData.get('entryPoint')) ?? ''
