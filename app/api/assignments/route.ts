@@ -2,6 +2,10 @@ import errorHandler from "@/lib/error-handler";
 import { object, z } from "zod";
 import { zfd } from "zod-form-data";
 import { PrismaClient, AssignmentRole, Assignment,Prisma } from '@prisma/client';
+import ProblemService from "@/lib/service/problemService";
+
+//here
+//const problemService = new ProblemService();
 
 
 const prisma = new PrismaClient();
@@ -39,23 +43,38 @@ export const POST = errorHandler(async function (request: Request) {
         }    
       });
       let assignmentId: number = newAssignment.id;
-      if(users!=null && users!=undefined){
-      for (const user of users) {
-        const newUsersOnAssignments = await prisma.usersOnAssignments.create({
-            data:{
-                assignmentId: assignmentId,
-                userId:Number(user.userId),
-                roles: user.role
-            }
-        });
+      console.log("assignment created assignmentID:",assignmentId);
+      if (users) {
+        console.log("catch users' information");
+        const usersData = users.map(user => ({
+            assignmentId: assignmentId,
+            userId: Number(user.userId),
+            roles: user.role
+        }));
+        if (usersData.length > 0) {
+            const result = await prisma.usersOnAssignments.createMany({
+                data: usersData,
+                skipDuplicates: true  
+            });
+            console.log(result); 
         }
     }
 
-    if(problems!=null && problems!=undefined){
-        for(const problem of problems){
-            data:{}
-        }
+    /*
+    if (problems) {
+      console.log("catch problems information");
+      // Extract only the file objects from the problems array
+      const problemFiles = problems.map(p => p.file);
+      await problemService.uploadProblemsAndLinkToAssignment(problemFiles, assignmentId);
     }
+    return new Response(JSON.stringify(newAssignment), {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    */
+
     
       return new Response(JSON.stringify(newAssignment), {
         status: 200,
