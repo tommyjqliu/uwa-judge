@@ -42,8 +42,7 @@ export const GET = errorHandler(async function (request: Request, context: any) 
         });
 
         let userList:UserWithRoles[] = [];
-        for (let each of usersOnAssignments) {
-          console.log(each);
+        for (let each of usersOnAssignments) {  
           let user: UserWithRoles = {
             id: each.user.id,
             email: each.user.email,
@@ -52,13 +51,16 @@ export const GET = errorHandler(async function (request: Request, context: any) 
           };
           userList.push(user);
         }
-        console.log(userList);
 
-
-
-        // TO DO PROBLEM PART
-        let problemList:Problem[] = [];
-        
+        let problemList:string[] = [];
+        const problemsOnAssignments = await prisma.problemsOnAssignments.findMany({
+          where: {
+            assignmentId: assignmentId,
+          }
+        })
+        for (let each of problemsOnAssignments){
+            problemList.push(each.problemId);
+        }
         let assignmentDetailVO: AssignmentDetailVO = new AssignmentDetailVO(assignmentId,assignment.title,assignment.description,
           assignment.publishDate,assignment?.dueDate,userList,problemList);
 
@@ -127,3 +129,50 @@ export const GET = errorHandler(async function (request: Request, context: any) 
         });
       }
     });
+
+    const receiveSchema = zfd.formData({
+      title: z.string(),
+      description: z.string().optional(),
+      publishDate: z.date().optional(),
+      dueDate: z.date().optional()
+    });
+
+    //can only update basic information of the assignment: title description, publishDate, dueDate
+    export const PUT = errorHandler(async function (request: Request, context: any) {
+      const parsedData = receiveSchema.parse(await request.formData());
+      const { title, description, publishDate, dueDate} = parsedData;
+      const params = context.params;
+      const assignmentId = Number(params.assignmentId); 
+        try {
+          const updateUser = await prisma.assignment.update({
+            where: {
+              id: assignmentId,
+            },
+            data: {
+              title: title,
+              description:description,
+              publishDate:publishDate? new Date(publishDate) : undefined,
+              dueDate:dueDate? new Date(dueDate) : undefined
+            },
+          })
+            let json =  {
+              "status":200,
+              "msg":"Successfully deleted"
+            }
+            return new Response(JSON.stringify(json), {
+              status: 200,
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            });
+        } catch (error) {
+          
+          console.error(error);
+          return new Response(JSON.stringify({ error: 'Failed to get assignment' }), {
+            status: 500,
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
+        }
+      });

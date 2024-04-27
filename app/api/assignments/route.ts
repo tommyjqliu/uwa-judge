@@ -5,8 +5,6 @@ import { PrismaClient, AssignmentRole, Assignment,Prisma } from '@prisma/client'
 import ProblemService from "@/lib/service/problemService";
 
 const problemService = new ProblemService();
-
-
 const prisma = new PrismaClient();
 
 export const assignmentSchema = zfd.formData({
@@ -28,7 +26,8 @@ export const assignmentSchema = zfd.formData({
 export const POST = errorHandler(async function (request: Request) {
     
     const parsedData = assignmentSchema.parse(await request.formData());
-  
+    console.log("json!");
+    console.log(request.json());
     const { title, description, publishDate, dueDate, users, problems } = parsedData;
     console.log(parsedData);
     try {
@@ -73,14 +72,6 @@ export const POST = errorHandler(async function (request: Request) {
       },
     });
     
-
-    
-      return new Response(JSON.stringify(newAssignment), {
-        status: 200,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
     } catch (error) {
       console.error(error);
       return new Response(JSON.stringify({ error: 'Failed to create assignment' }), {
@@ -93,8 +84,6 @@ export const POST = errorHandler(async function (request: Request) {
   });
 
   export const GET = errorHandler(async function (request: Request) {
-    console.log("hey");
-
     try {
       const assignmentsFromDB = await prisma.assignment.findMany();
       const assignments: Assignment[] = assignmentsFromDB.map(assignmentFromDB => {
