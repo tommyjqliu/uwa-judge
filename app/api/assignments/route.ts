@@ -4,8 +4,7 @@ import { zfd } from "zod-form-data";
 import { PrismaClient, AssignmentRole, Assignment,Prisma } from '@prisma/client';
 import ProblemService from "@/lib/service/problemService";
 
-//here
-//const problemService = new ProblemService();
+const problemService = new ProblemService();
 
 
 const prisma = new PrismaClient();
@@ -60,7 +59,7 @@ export const POST = errorHandler(async function (request: Request) {
         }
     }
 
-    /*
+    
     if (problems) {
       console.log("catch problems information");
       // Extract only the file objects from the problems array
@@ -73,7 +72,7 @@ export const POST = errorHandler(async function (request: Request) {
         'Content-Type': 'application/json',
       },
     });
-    */
+    
 
     
       return new Response(JSON.stringify(newAssignment), {
