@@ -22,7 +22,25 @@ export const assignmentSchema = zfd.formData({
 
 });
 
-
+/**
+ * @Description: Add an assignment 
+ * @Author: Zhiyang
+ * @version: 
+ * @Date: 2024-04-28 10:27:15
+ * @LastEditors: Zhiyang
+ * @LastEditTime: Do not Edit
+ * @param:
+ *    formData:{
+ *       "title": string,
+ *       "descripiton":string,
+ *       "publishDate":Date,
+ *       "dueDate":Date,
+ *       "users":[{"userId": "1", "role": "TEACHER"},{"userId": "2","role": "STUDENT"}],
+ *       "problems":List<File>
+    ]
+ *    }
+ * @Return: Response
+ */
 export const POST = errorHandler(async function (request: Request) {
     
     const parsedData = assignmentSchema.parse(await request.formData());
@@ -83,6 +101,25 @@ export const POST = errorHandler(async function (request: Request) {
     }
   });
 
+  /**
+   * @Description: Get assignments list
+   * @Author: Zhiyang
+   * @version: 
+   * @Date: 2024-04-28 10:57:07
+   * @LastEditors: Zhiyang
+   * @LastEditTime: Do not Edit
+   * @param:
+   * @Return:
+   * [
+      {
+        "id": 1,
+        "title": "testWithProblems",
+        "description": "testWithProblems",
+        "publishDate": null,
+        "dueDate": null
+      }
+    ]
+   */  
   export const GET = errorHandler(async function (request: Request) {
     try {
       const assignmentsFromDB = await prisma.assignment.findMany();

@@ -5,8 +5,24 @@ import { PrismaClient, Problem,AssignmentRole, Assignment,Prisma,UsersOnAssignme
 import { UsernamePasswordClient } from "@azure/msal-node";
 import {UserWithRoles,AssignmentDetailVO} from "@/app/vo/AssignmentDetailVO"
 const prisma = new PrismaClient();
+
+
+
+/**
+ * @Description: Delete problems on specific assignment
+ * @Author: Zhiyang
+ * @version: 
+ * @Date: 2024-04-28 10:27:15
+ * @LastEditors: Zhiyang
+ * @LastEditTime: Do not Edit
+ * @param:
+ *    params:assignmentId
+ *    jsonData:{
+ *      "problems":["problemId1","problemId2"]
+ *    }
+ * @Return: Response
+ */
 export const DELETE = errorHandler(async function (request: Request, context: any) {
-  
     const params = context.params;
     const assignmentId = Number(params.assignmentId); 
     const body = await request.json();

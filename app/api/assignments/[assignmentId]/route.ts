@@ -6,8 +6,45 @@ import { UsernamePasswordClient } from "@azure/msal-node";
 import {UserWithRoles,AssignmentDetailVO} from "@/app/vo/AssignmentDetailVO"
 const prisma = new PrismaClient();
 
+/**
+ * @Description: get assignment information base on assignmentId
+ * @Author: Zhiyang
+ * @version: 
+ * @Date: 2024-04-28 10:27:15
+ * @LastEditors: Zhiyang
+ * @LastEditTime: Do not Edit
+ * @param:
+ *    params:assignmentId
+ * @Return: {
+ *     "assignmentId": 4,
+    "title": "testWithProblems",
+    "description": "testWithProblems",
+    "publishDate": null,
+    "dueDate": null,
+    "users": [
+        {
+            "id": 1,
+            "email": "abc@email.com",
+            "username": "A",
+            "roles": "TEACHER"
+        },
+        {
+            "id": 2,
+            "email": "sdf@email.com",
+            "username": "B",
+            "roles": "STUDENT"
+        },
+        {
+            "id": 3,
+            "email": "gggg@email.com",
+            "username": "C",
+            "roles": "STUDENT"
+        }
+    ],
+    "problems": ["problemId1","problemId2"]
+ * }
+ */
 export const GET = errorHandler(async function (request: Request, context: any) {
-  
   const params = context.params;
   const assignmentId = Number(params.assignmentId); 
     try {
@@ -84,7 +121,17 @@ export const GET = errorHandler(async function (request: Request, context: any) 
     }
   });
 
-
+/**
+ * @Description: Delete assignment base on assignmentId
+ * @Author: Zhiyang
+ * @version: 
+ * @Date: 2024-04-28 10:27:15
+ * @LastEditors: Zhiyang
+ * @LastEditTime: Do not Edit
+ * @param:
+ *    params:assignmentId
+ * @Return: response
+ */
   export const DELETE = errorHandler(async function (request: Request, context: any) {
   
     const params = context.params;
@@ -137,7 +184,18 @@ export const GET = errorHandler(async function (request: Request, context: any) 
       dueDate: z.date().optional()
     });
 
-    //can only update basic information of the assignment: title description, publishDate, dueDate
+
+    /**
+ * @Description: update the basic information of an assignment (can only update: title description, publishDate, dueDate)
+ * @Author: Zhiyang
+ * @version: 
+ * @Date: 2024-04-28 10:27:15
+ * @LastEditors: Zhiyang
+ * @LastEditTime: Do not Edit
+ * @param:
+ *    formData: title, description, publishDate (ISO 8601 format string), dueDate(ISO 8601 format string)
+ * @Return: response
+ */
     export const PUT = errorHandler(async function (request: Request, context: any) {
       const parsedData = receiveSchema.parse(await request.formData());
       const { title, description, publishDate, dueDate} = parsedData;

@@ -1,9 +1,25 @@
+
 import errorHandler from "@/lib/error-handler";
 import { PrismaClient, UsersOnAssignments,AssignmentRole} from '@prisma/client';
 import { object, z } from "zod";
 const prisma = new PrismaClient();
 
-
+/**
+ * @Description: Delete users on specific assignment
+ * @Author: Zhiyang
+ * @version: 
+ * @Date: 2024-04-28 10:27:15
+ * @LastEditors: Zhiyang
+ * @LastEditTime: Do not Edit
+ * @param:
+ *    params:assignmentId
+ *    jsonData:{
+ *      "users":{
+ *        ["userId1","userId2"]
+ *      }
+ *    }
+ * @Return: Response
+ */
 export const DELETE = errorHandler(async function (request: Request, context: any) {
   
     
@@ -43,42 +59,47 @@ export const DELETE = errorHandler(async function (request: Request, context: an
       }
     });
 
+    
 
+/**
+ * @Description: Add users on specific assignment
+ * @Author: Zhiyang
+ * @version: 
+ * @Date: 2024-04-28 10:27:15
+ * @LastEditors: Zhiyang
+ * @LastEditTime: Do not Edit
+ * @param:
+ *    params:assignmentId
+ *    jsonData:{
+ *       "users":[
+        {"id":1,
+        "roles":"STUDENT"
+        },
+        {"id":2,
+        "roles":"TEACHER"
+        },
+        {
+        "id":1,
+        "roles":"TUTOR"
+        }
+    ]
+ *    }
+ * @Return: Response
+ */
     export const POST = errorHandler(async function (request: Request, context: any) {
         const body = await request.json();
         const users = body.users; 
         const assignmentId = context.params.assignmentId;
-
-        /*
-        "users": [
-        {
-            "id": 1,
-            "email": "abc@email.com",
-            "username": "A",
-            "roles": "TEACHER"
-        },
-        {
-            "id": 2,
-            "email": "sdf@email.com",
-            "username": "B",
-            "roles": "STUDENT"
-        }
-    ],
-        */
-
           try {
             const rolesSchema = z.enum(Object.values(AssignmentRole) as [string]);
 
             const validateRoles = (roles: unknown) => {
                 try {
-                    console.log("不起作用啊？",roles);
-                    console.log(rolesSchema.parse(roles))
                     return rolesSchema.parse(roles); 
                 } catch (error) {
                     return null;  
                 }
             }
-
             if (users) {
                 const usersData = users.map((user: { id: any; roles: any; }) => ({
                         userId: parseInt(user.id),
@@ -91,7 +112,7 @@ export const DELETE = errorHandler(async function (request: Request, context: an
                     if(each.roles == null){
                         let json =  {
                             "status":400,
-                            "msg":"Roles not correct"
+                            "msg":"Role not correct: should be either TEACHER, STUDENT, or TUTOR"
                           }
                           return new Response(JSON.stringify(json), {
                             status: 400,
