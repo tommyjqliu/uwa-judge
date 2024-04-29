@@ -25,7 +25,7 @@ export default function Page() {
         var language:string = 'Python'
         formData.set("language", language)
 
-        var entryPoint:string = ''
+        var entryPoint:string = 'app/submit'
         formData.set("entryPoint", entryPoint)
 
         // Add files to form
@@ -39,12 +39,13 @@ export default function Page() {
             body: formData,
         })
             .then((response) => {
-                if (!response.ok) {
+                /* if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
-                }
+                } */
                 if(response.body() != null){
                     // Display the result if not NULL
-                    document.getElementById('submitResponse')!.innerHTML = response.body(); // '!' asserts that the "submitResponse" tag will never be NULL
+                    //document.getElementById('submitResponse')!.innerHTML = response.body(); // '!' asserts that the "submitResponse" tag will never be NULL
+                    document.getElementById('submitResponse')!.value = response.body(); // '!' asserts that the "submitResponse" tag will never be NULL
                 }
             })
 

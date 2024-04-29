@@ -32,7 +32,8 @@ model Assignment {
   id          Int     @id @default(autoincrement())
   name        String
   description String?
-  problems ProblemsOnAssignments[]
+  problems    ProblemsOnAssignments[]
+  submissions Submission[]
 }
 
 model Problem {
@@ -40,6 +41,7 @@ model Problem {
   name        String
   description String?
   assignments ProblemsOnAssignments[]
+  submissions Submission[]
 }
 
 model ProblemsOnAssignments {
@@ -51,7 +53,11 @@ model ProblemsOnAssignments {
 }
 
 model Submission {
-  id            Int @id @default(autoincrement())
-  assignmentId  Int
-  assignment    Assignment @relation(fields: [assignmentId], references: [id])
+  id           Int @id @default(autoincrement())
+  problemId    String
+  assignmentID Int
+  filename     String
+  language     String
+  problem      Problem @relation(fields: [problemId], references: [id])
+  assignment   Assignment @relation(fields: [assignmentID], references: [id])
 }
