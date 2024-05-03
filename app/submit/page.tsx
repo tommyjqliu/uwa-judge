@@ -41,18 +41,21 @@ export default function Page() {
             method: 'POST',
             body: formData,
         })
-            .then( (response) => response.json() )
-                .then((data) => {
-                    //const message = response.json()
-                    //const message = data
-                    if(data != null){
-                        // Display the result if not NULL
-                        //document.getElementById('submitResponse')!.innerHTML = message; // '!' asserts that the "submitResponse" tag will never be NULL
-                        //console.log(message.submitResponse);
-                        document.getElementById('submitResponse').value = data; // '!' asserts that the "submitResponse" tag will never be NULL
-                    }
-                })
+            .then( (response) => {
+                const status = response.status
+                var user_message = ""
+                if(status == 200){
+                    var user_message = "Successful Upload"
+                }
+                if(status == 400){
+                    var user_message = "Failed Upload: No files specified"
+                }
+                else{
+                    var user_message = "Failed Upload: Unknown Error"
+                }
 
+                document.getElementById('submitResponse')!.value = user_message
+            } )
     }
 
 
@@ -69,7 +72,7 @@ export default function Page() {
             <button type='submit' onClick={(e) => submitForm(e)}>Upload</button>
             <div>
                 <h3>Response:</h3>
-                <textarea id="submitResponse" rows="6" cols="30"> </textarea>
+                <textarea id="submitResponse" value="" rows="1" cols="30"> </textarea>
             </div>
         </form>
     </div>
