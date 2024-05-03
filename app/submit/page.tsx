@@ -10,54 +10,101 @@ import { MouseEvent, useState } from "react";
 
 import Link from "next/link";
 
-
-
-
 export default function Page() {
+
+    var [DJResponseVal, setDjResponse] = useState('');
+    var [UWAResponseVal, setUWAResponse] = useState('');
 
     const [files, setFiles] = useState<FileList | null>(null);
     function submitForm(e: MouseEvent) {
         e.preventDefault();
+        
 
-        const formData = new FormData();
+        // ---------- Variable setup ----------
+
+        var problemId:string = '1';  // Must be string for the form
+        var assignmentID:number = 1;
+        var language:string = 'python3' // These values are pre-defined by domjudge
+        var entryPoint:string = ''  // This value doesn't seem to matter
+        // File name added by loop
+
+        // ---------- DomJudge Database Upload ----------
+
+        const DJformData = new FormData();
 
         // test problemId id.
-        var problemId:string = '1';  // Must be string for the form
-        formData.set("problemId", problemId)
-
-        var language:string = 'python3'
-        formData.set("language", language)
-
-        var entryPoint:string = ''
-        formData.set("entryPoint", entryPoint)
+        
+        DJformData.set("problemId", problemId)
+        DJformData.set("language", language)
+        DJformData.set("entryPoint", entryPoint)
 
         // Add files to form
         for (let i = 0; i < (files?.length || 0); i++) {
-            formData.append("files", files?.[i]!);
+            DJformData.append("files", files?.[i]!);
         }
 
         // communicate with domjudge api
-        fetch("/api/submissions", {
+        fetch("/api/submissions/domjudge", {
             method: 'POST',
-            body: formData,
+            body: DJformData,
         })
             .then( (response) => {
                 const status = response.status
-                var user_message = ""
+                var DJ_user_message = ""
                 if(status == 200){
-                    var user_message = "Successful Upload"
+                    var DJ_user_message = "Successful Upload"
                 }
                 if(status == 400){
-                    var user_message = "Failed Upload: No files specified"
+                    var DJ_user_message = "Failed Upload: No files specified"
                 }
                 else{
-                    var user_message = "Failed Upload: Unknown Error"
+                    var DJ_user_message = "Failed Upload: Unknown Error"
                 }
 
-                document.getElementById('submitResponse')!.value = user_message
+                setDjResponse(DJ_user_message)
             } )
+        
+        // --------------------
+
+
+        // ---------- Private Database Upload ----------
+
+       const UWAformData = new FormData();
+        
+        UWAformData.set("problemId", problemId)
+        UWAformData.set("assignmentID", assignmentID)
+        UWAformData.set("language", language)
+
+        for (let i = 0; i < (files?.length || 0); i++) {
+            UWAformData.append("filename", files?.[i]!);
+        }
+
+
+        fetch("/api/submissions/uwa", {
+            method: 'POST',
+            body: UWAformData,
+        })
+            .then( (response) => {
+                const status = response.status
+                var UWA_user_message = ""
+                if(status == 200){
+                    var UWA_user_message = "Successful Upload"
+                }
+                if(status == 400){
+                    var UWA_user_message = "Failed Upload: No files specified"
+                }
+                else{
+                    var UWA_user_message = "Failed Upload: Unknown Error"
+                }
+
+                setDjResponse(UWA_user_message)
+            } )
+
+
     }
 
+
+    // Return website structure
 
     return <div>
         <Link href="/..">Back to Main</Link>
@@ -71,9 +118,20 @@ export default function Page() {
             </div>
             <button type='submit' onClick={(e) => submitForm(e)}>Upload</button>
             <div>
-                <h3>Response:</h3>
-                <textarea id="submitResponse" value="" rows="1" cols="30"> </textarea>
+                <h3>DJResponse:</h3>
+                <textarea id="DJResponse"
+                    value={DJResponseVal}
+                    onChange={e => setDjResponse(e.target.value)}
+                    rows="1" cols="30"
+                ></textarea>
+                <h3>UWAResponse:</h3>
+                <textarea id="DJResponse"
+                    value={DJResponseVal}
+                    onChange={e => setDjResponse(e.target.value)}
+                    rows="1" cols="30"
+                ></textarea>
             </div>
         </form>
+        <Link href="/viewAll"></Link>
     </div>
 }
