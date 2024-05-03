@@ -2,13 +2,7 @@
 
 . ./.env
 
-# 1. Get secret
->password.admin
->password.judgehost
-docker-compose -p $DOCKER_PROJECT exec domserver cat /opt/domjudge/domserver/etc/initial_admin_password.secret >password.admin
-docker-compose -p $DOCKER_PROJECT exec domserver cat /opt/domjudge/domserver/etc/restapi.secret | grep '^[^#]' | awk '{print $4}' >password.judgehost
-
-# 2. Set up database
+# 1. Set up database
 # SQL queries to create the database and user
 # SQL_QUERY_CREATE_DB="CREATE DATABASE IF NOT EXISTS $MySQL_DATABASE_UWAJUDGE;"
 # SQL_QUERY_GRANT_PRIVILEGES="GRANT ALL PRIVILEGES ON $MySQL_DATABASE_UWAJUDGE.* TO '$MYSQL_USER'@'%';"
@@ -56,7 +50,13 @@ done
 if [ "$response" -eq 200 ]; then
     echo "Domjudge is ready, proceeding with setup..."
     sleep 1
-     npx prisma migrate reset --force
+    # Get secret
+    >password.admin
+    >password.judgehost
+    docker-compose -p $DOCKER_PROJECT exec domserver cat /opt/domjudge/domserver/etc/initial_admin_password.secret >password.admin
+    docker-compose -p $DOCKER_PROJECT exec domserver cat /opt/domjudge/domserver/etc/restapi.secret | grep '^[^#]' | awk '{print $4}' >password.judgehost
+
+    npx prisma migrate reset --force
 else
     echo "ERROR: Could not connect to Domjudge after $MAX_TRIES retries. Aborting."
     exit 1
