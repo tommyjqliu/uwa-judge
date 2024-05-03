@@ -4,10 +4,7 @@ import { zfd } from "zod-form-data";
 import { PrismaClient, AssignmentRole, Assignment,Prisma } from '@prisma/client';
 import ProblemService from "@/lib/service/problemService";
 
-//here
-//const problemService = new ProblemService();
-
-
+const problemService = new ProblemService();
 const prisma = new PrismaClient();
 
 export const assignmentSchema = zfd.formData({
@@ -25,11 +22,30 @@ export const assignmentSchema = zfd.formData({
 
 });
 
-
+/**
+ * @Description: Add an assignment 
+ * @Author: Zhiyang
+ * @version: 
+ * @Date: 2024-04-28 10:27:15
+ * @LastEditors: Zhiyang
+ * @LastEditTime: Do not Edit
+ * @param:
+ *    formData:{
+ *       "title": string,
+ *       "descripiton":string,
+ *       "publishDate":Date,
+ *       "dueDate":Date,
+ *       "users":[{"userId": "1", "role": "TEACHER"},{"userId": "2","role": "STUDENT"}],
+ *       "problems":List<File>
+    ]
+ *    }
+ * @Return: Response
+ */
 export const POST = errorHandler(async function (request: Request) {
     
     const parsedData = assignmentSchema.parse(await request.formData());
-  
+    console.log("json!");
+    console.log(request.json());
     const { title, description, publishDate, dueDate, users, problems } = parsedData;
     console.log(parsedData);
     try {
@@ -60,7 +76,7 @@ export const POST = errorHandler(async function (request: Request) {
         }
     }
 
-    /*
+    
     if (problems) {
       console.log("catch problems information");
       // Extract only the file objects from the problems array
@@ -73,15 +89,7 @@ export const POST = errorHandler(async function (request: Request) {
         'Content-Type': 'application/json',
       },
     });
-    */
-
     
-      return new Response(JSON.stringify(newAssignment), {
-        status: 200,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
     } catch (error) {
       console.error(error);
       return new Response(JSON.stringify({ error: 'Failed to create assignment' }), {
@@ -93,9 +101,26 @@ export const POST = errorHandler(async function (request: Request) {
     }
   });
 
+  /**
+   * @Description: Get assignments list
+   * @Author: Zhiyang
+   * @version: 
+   * @Date: 2024-04-28 10:57:07
+   * @LastEditors: Zhiyang
+   * @LastEditTime: Do not Edit
+   * @param:
+   * @Return:
+   * [
+      {
+        "id": 1,
+        "title": "testWithProblems",
+        "description": "testWithProblems",
+        "publishDate": null,
+        "dueDate": null
+      }
+    ]
+   */  
   export const GET = errorHandler(async function (request: Request) {
-    console.log("hey");
-
     try {
       const assignmentsFromDB = await prisma.assignment.findMany();
       const assignments: Assignment[] = assignmentsFromDB.map(assignmentFromDB => {

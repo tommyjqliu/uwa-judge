@@ -1,9 +1,8 @@
 import { User,Problem, Assignment,ProblemsOnAssignments,UsersOnAssignments } from '@prisma/client';
 import { JsonValue } from '@prisma/client/runtime/library';
-// 创建一个新的类型，不包括 'password'
 type UserWithoutPassword = Omit<User, 'password'>;
 export type UserWithRoles = UserWithoutPassword & {
-    roles: JsonValue;  // 假设 roles 是字符串数组
+    roles: JsonValue;  
   };
 export class AssignmentDetailVO {
     readonly assignmentId: number;
@@ -12,12 +11,12 @@ export class AssignmentDetailVO {
     readonly publishDate: Date|null;
     readonly dueDate: Date|null;
     readonly users:UserWithoutPassword[];
-    readonly problems:Problem[];
+    readonly problems:string[];
 
     constructor(assignmentId: number, title: string,
         description:string|null, publishDate: Date|null,
         dueDate: Date|null, users:UserWithoutPassword[],
-        problems:Problem[]
+        problems:string[]
         ) {
         this.assignmentId = assignmentId;
         this.title = title;
@@ -32,7 +31,7 @@ export class AssignmentDetailVO {
     toJSON(): { assignmentId: number, title: string,
         description:string|null, publishDate: Date|null,
         dueDate: Date|null, users:UserWithoutPassword[],
-        problems:Problem[] } {
+        problems:string[] } {
         return {
         assignmentId: this.assignmentId,
         title :this.title,

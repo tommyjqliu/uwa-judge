@@ -6,8 +6,45 @@ import { UsernamePasswordClient } from "@azure/msal-node";
 import {UserWithRoles,AssignmentDetailVO} from "@/app/vo/AssignmentDetailVO"
 const prisma = new PrismaClient();
 
+/**
+ * @Description: get assignment information base on assignmentId
+ * @Author: Zhiyang
+ * @version: 
+ * @Date: 2024-04-28 10:27:15
+ * @LastEditors: Zhiyang
+ * @LastEditTime: Do not Edit
+ * @param:
+ *    params:assignmentId
+ * @Return: {
+ *     "assignmentId": 4,
+    "title": "testWithProblems",
+    "description": "testWithProblems",
+    "publishDate": null,
+    "dueDate": null,
+    "users": [
+        {
+            "id": 1,
+            "email": "abc@email.com",
+            "username": "A",
+            "roles": "TEACHER"
+        },
+        {
+            "id": 2,
+            "email": "sdf@email.com",
+            "username": "B",
+            "roles": "STUDENT"
+        },
+        {
+            "id": 3,
+            "email": "gggg@email.com",
+            "username": "C",
+            "roles": "STUDENT"
+        }
+    ],
+    "problems": ["problemId1","problemId2"]
+ * }
+ */
 export const GET = errorHandler(async function (request: Request, context: any) {
-  
   const params = context.params;
   const assignmentId = Number(params.assignmentId); 
     try {
@@ -42,8 +79,7 @@ export const GET = errorHandler(async function (request: Request, context: any) 
         });
 
         let userList:UserWithRoles[] = [];
-        for (let each of usersOnAssignments) {
-          console.log(each);
+        for (let each of usersOnAssignments) {  
           let user: UserWithRoles = {
             id: each.user.id,
             email: each.user.email,
@@ -52,13 +88,16 @@ export const GET = errorHandler(async function (request: Request, context: any) 
           };
           userList.push(user);
         }
-        console.log(userList);
 
-
-
-        // TO DO PROBLEM PART
-        let problemList:Problem[] = [];
-        
+        let problemList:string[] = [];
+        const problemsOnAssignments = await prisma.problemsOnAssignments.findMany({
+          where: {
+            assignmentId: assignmentId,
+          }
+        })
+        for (let each of problemsOnAssignments){
+            problemList.push(each.problemId);
+        }
         let assignmentDetailVO: AssignmentDetailVO = new AssignmentDetailVO(assignmentId,assignment.title,assignment.description,
           assignment.publishDate,assignment?.dueDate,userList,problemList);
 
@@ -82,7 +121,17 @@ export const GET = errorHandler(async function (request: Request, context: any) 
     }
   });
 
-
+/**
+ * @Description: Delete assignment base on assignmentId
+ * @Author: Zhiyang
+ * @version: 
+ * @Date: 2024-04-28 10:27:15
+ * @LastEditors: Zhiyang
+ * @LastEditTime: Do not Edit
+ * @param:
+ *    params:assignmentId
+ * @Return: response
+ */
   export const DELETE = errorHandler(async function (request: Request, context: any) {
   
     const params = context.params;
@@ -127,3 +176,61 @@ export const GET = errorHandler(async function (request: Request, context: any) 
         });
       }
     });
+
+    const receiveSchema = zfd.formData({
+      title: z.string(),
+      description: z.string().optional(),
+      publishDate: z.date().optional(),
+      dueDate: z.date().optional()
+    });
+
+
+    /**
+ * @Description: update the basic information of an assignment (can only update: title description, publishDate, dueDate)
+ * @Author: Zhiyang
+ * @version: 
+ * @Date: 2024-04-28 10:27:15
+ * @LastEditors: Zhiyang
+ * @LastEditTime: Do not Edit
+ * @param:
+ *    formData: title, description, publishDate (ISO 8601 format string), dueDate(ISO 8601 format string)
+ * @Return: response
+ */
+    export const PUT = errorHandler(async function (request: Request, context: any) {
+      const parsedData = receiveSchema.parse(await request.formData());
+      const { title, description, publishDate, dueDate} = parsedData;
+      const params = context.params;
+      const assignmentId = Number(params.assignmentId); 
+        try {
+          const updateUser = await prisma.assignment.update({
+            where: {
+              id: assignmentId,
+            },
+            data: {
+              title: title,
+              description:description,
+              publishDate:publishDate? new Date(publishDate) : undefined,
+              dueDate:dueDate? new Date(dueDate) : undefined
+            },
+          })
+            let json =  {
+              "status":200,
+              "msg":"Successfully deleted"
+            }
+            return new Response(JSON.stringify(json), {
+              status: 200,
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            });
+        } catch (error) {
+          
+          console.error(error);
+          return new Response(JSON.stringify({ error: 'Failed to get assignment' }), {
+            status: 500,
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
+        }
+      });
