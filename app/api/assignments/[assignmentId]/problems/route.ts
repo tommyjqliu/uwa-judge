@@ -3,7 +3,7 @@ import { object, z } from "zod";
 import { zfd } from "zod-form-data";
 import { PrismaClient, Problem, AssignmentRole, Assignment, Prisma, UsersOnAssignments, ProblemsOnAssignments } from '@prisma/client';
 import { UsernamePasswordClient } from "@azure/msal-node";
-import { UserWithRoles, AssignmentDetailVO } from "@/app/vo/AssignmentDetailVO"
+import { UserWithRoles, AssignmentDetailVO } from "@/lib/vo/AssignmentDetailVO"
 import ProblemService from "@/lib/service/problemService";
 const problemService = new ProblemService();
 const prisma = new PrismaClient();

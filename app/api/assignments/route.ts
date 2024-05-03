@@ -1,11 +1,11 @@
 import errorHandler from "@/lib/error-handler";
-import { object, z } from "zod";
+import { z } from "zod";
 import { zfd } from "zod-form-data";
-import { PrismaClient, AssignmentRole, Assignment, Prisma } from '@prisma/client';
+import { AssignmentRole, Assignment } from '@prisma/client';
 import ProblemService from "@/lib/service/problemService";
+import { uwajudgeDB } from "@/lib/database-client";
 
 const problemService = new ProblemService();
-const prisma = new PrismaClient();
 
 export const assignmentSchema = zfd.formData({
   title: z.string(),
@@ -50,7 +50,7 @@ export const POST = errorHandler(async function (request: Request) {
   console.log(parsedData);
   try {
 
-    const newAssignment = await prisma.assignment.create({
+    const newAssignment = await uwajudgeDB.assignment.create({
       data: {
         title,
         description,
@@ -68,7 +68,7 @@ export const POST = errorHandler(async function (request: Request) {
         roles: user.role
       }));
       if (usersData.length > 0) {
-        const result = await prisma.usersOnAssignments.createMany({
+        const result = await uwajudgeDB.usersOnAssignments.createMany({
           data: usersData,
           skipDuplicates: true
         });
@@ -122,7 +122,7 @@ export const POST = errorHandler(async function (request: Request) {
  */
 export const GET = errorHandler(async function (request: Request) {
   try {
-    const assignmentsFromDB = await prisma.assignment.findMany();
+    const assignmentsFromDB = await uwajudgeDB.assignment.findMany();
     const assignments: Assignment[] = assignmentsFromDB.map(assignmentFromDB => {
       return {
         id: assignmentFromDB.id,

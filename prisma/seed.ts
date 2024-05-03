@@ -1,12 +1,9 @@
 import dotenv from 'dotenv';
-import { PrismaClient as DOMjudgeClient } from '../lib/domjudge-db-client'
-import { CONTEST_CID, CONTEST_SETTING } from '../lib/constant';
-import { PrismaClient as UWAjudgeClient } from '@prisma/client';
+import { CONTEST_CID, CONTEST_SETTING } from '@/lib/constant';
+import { domjudgeDB, uwajudgeDB } from '@/lib/database-client';
 
 dotenv.config();
 
-const domjudgeDB = new DOMjudgeClient()
-const uwajudgeDB = new UWAjudgeClient()
 
 async function main() {
     await domjudgeDB.contest.upsert({
@@ -21,6 +18,25 @@ async function main() {
             teamid: 1,
         }
     })
+
+    await uwajudgeDB.assignment.createMany({
+        data: [
+            {
+                title: 'Assignment 1',
+                description: 'Assignment 1 description',
+                publishDate: new Date(),
+                dueDate: new Date(),
+
+            },
+            {
+                title: 'Assignment 2',
+                description: 'Assignment 2 description',
+                publishDate: new Date(),
+                dueDate: new Date(),
+            },
+        ]
+    })
+
 }
 
 
