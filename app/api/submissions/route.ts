@@ -7,15 +7,15 @@ import errorHandler from '@/lib/error-handler';
 
 const submissionsApi = new SubmissionsApi(djConfig)
 
-//export async function POST(
-//    request: Request,
-//) 
 export const POST = errorHandler(async function (request: Request) {
     const formData = await request.formData()   // get data from user input
     const problemId = String(formData.get('problemId')) ?? ''
     const language = String(formData.get('language')) ?? ''
     const entryPoint = String(formData.get('entryPoint')) ?? ''
-    const files = formData.getAll('files[]').filter(isFile)
+    const files = formData.getAll('files').filter(isFile)
+    if(files == null){
+        throw new Error("No Files Specified")
+    }
     const res = await submissionsApi.postV4AppApiSubmissionAddsubmissionForm(problemId, language, files, entryPoint, String(CONTEST_CID))
         /* .catch(function (error) {
             console.log(error.toJSON());

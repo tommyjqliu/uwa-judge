@@ -10,6 +10,9 @@ import { MouseEvent, useState } from "react";
 
 import Link from "next/link";
 
+
+
+
 export default function Page() {
 
     const [files, setFiles] = useState<FileList | null>(null);
@@ -38,16 +41,17 @@ export default function Page() {
             method: 'POST',
             body: formData,
         })
-            .then((response) => {
-                /* if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                } */
-                if(response != null){
-                    // Display the result if not NULL
-                    //document.getElementById('submitResponse')!.innerHTML = response.body(); // '!' asserts that the "submitResponse" tag will never be NULL
-                    document.getElementById('submitResponse').value = response.body(); // '!' asserts that the "submitResponse" tag will never be NULL
-                }
-            })
+            .then( (response) => response.json() )
+                .then((data) => {
+                    //const message = response.json()
+                    //const message = data
+                    if(data != null){
+                        // Display the result if not NULL
+                        //document.getElementById('submitResponse')!.innerHTML = message; // '!' asserts that the "submitResponse" tag will never be NULL
+                        //console.log(message.submitResponse);
+                        document.getElementById('submitResponse').value = data; // '!' asserts that the "submitResponse" tag will never be NULL
+                    }
+                })
 
     }
 
