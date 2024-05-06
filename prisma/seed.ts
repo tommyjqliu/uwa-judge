@@ -19,6 +19,20 @@ async function main() {
         }
     })
 
+
+    // Insert test users
+    const usersToInsert = Array.from({ length: 20 }, (_, i) => {
+        const username = `user${i + 1}`;
+        return {
+            username,
+            password: username,
+        };
+    });
+
+    await uwajudgeDB.user.createMany({
+        data: usersToInsert,
+    })
+    
     await uwajudgeDB.assignment.createMany({
         data: [
             {

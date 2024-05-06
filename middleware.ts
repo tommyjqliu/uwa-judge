@@ -5,5 +5,6 @@ export default withAuth({
         signIn: '/auth/sign-in',
     }
 })
+
 // Only protect these route
 export const config = { matcher: ["/dashboard", "/api/test"] }

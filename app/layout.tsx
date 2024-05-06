@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Inter, Press_Start_2P } from "next/font/google";
 import "./globals.css";
+import getSession from "@/lib/auth/get-session";
+import Link from "next/link";
 
 const inter = Inter({ subsets: ["latin"] });
 const pressStart2P = Press_Start_2P({ weight: "400", subsets: ["latin"] });
@@ -14,13 +16,21 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
+  const session = await getSession();
+  console.log('client session', session);
   return (
     <html lang="en">
       <body className={inter.className}>
         <header className="flex justify-between p-2 bg-gray-100">
-          <h1 className={pressStart2P.className}>UWA Judge</h1>
-          <div>Login</div>
+          <div className="flex gap-4">
+            <Link href="/"><h1 className={pressStart2P.className}>UWA Judge</h1></Link>
+            <Link href="/assignments">Assignments</Link>
+          </div>
+          <div className="flex gap-2">
+            <span>{session?.user?.userId}</span>
+            <span>{session?.user?.name}</span>
+            {session ? <Link href="api/auth/signout">Logout</Link> : <Link href="api/auth/signin">Login</Link>}
+          </div>
         </header>
         {children}
       </body>
