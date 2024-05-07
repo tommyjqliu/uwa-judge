@@ -7,18 +7,40 @@ datasource db {
   url      = env("UWAJUDGE_DATABASE_URL")
 }
 
+enum AccountProvider {
+  MICROSOFT
+  GOOGLE
+  GITHUB
+}
+
+model User {
+  id                  Int                   @id @default(autoincrement())
+  email               String?
+  username            String?
+  password            String?
+  permissions         Permission[]
+  assignments         StudentsOnAssignments[]
+  externalAccounts    ExternalAccount[]
+  AdminsOnAssignments AdminsOnAssignments[]
+  TutorsOnAssignments TutorsOnAssignments[]
+}
+model ExternalAccount {
+  id         Int             @id @default(autoincrement())
+  userId     Int
+  provider   AccountProvider
+  providerId String
+  user       User            @relation(fields: [userId], references: [id])
+
+  @@unique([provider, userId])
+  @@unique([provider, providerId])
+}
+
 model Permission {
   id          Int         @id @default(autoincrement())
   name        String
   description String?
   userGroups  UserGroup[]
   users       User[]
-}
-
-model User {
-  email       String       @id
-  username    String
-  permissions Permission[]
 }
 
 model UserGroup {
@@ -29,14 +51,61 @@ model UserGroup {
 }
 
 model Assignment {
-  id          Int     @id @default(autoincrement())
-  name        String
+  id          Int                     @id @default(autoincrement())
+  title       String
   description String?
-  problems ProblemsOnAssignments[]
+  publishDate DateTime?
+  dueDate     DateTime?
+  admins      AdminsOnAssignments[]
+  tutors      TutorsOnAssignments[]
+  students    StudentsOnAssignments[]
+  problems    ProblemsOnAssignments[]
+}
+
+model AdminsOnAssignments {
+  assignmentId Int
+  userId       Int
+  assignment   Assignment @relation(fields: [assignmentId], references: [id])
+  user         User       @relation(fields: [userId], references: [id])
+
+  @@id([assignmentId, userId])
+}
+
+model TutorsOnAssignments {
+  assignmentId Int
+  userId       Int
+  assignment   Assignment @relation(fields: [assignmentId], references: [id])
+  user         User       @relation(fields: [userId], references: [id])
+
+  @@id([assignmentId, userId])
+}
+enum AssignmentRole {
+  STUDENT
+  TUTOR
+  TEACHER
+}
+
+model AssignmentRoleDescription {
+  // AssignmentRole has to accociate with some model so it can be used as enum
+  role        AssignmentRole @id
+  description String
+}
+
+model StudentsOnAssignments {
+  assignmentId Int
+  userId       Int
+
+  //relation
+  assignment Assignment @relation(fields: [assignmentId], references: [id])
+  user       User       @relation(fields: [userId], references: [id])
+  roles      Json // List of AssignmentRole on this assignment
+
+  @@id([assignmentId, userId])
+	@@map("UsersOnAssignments")
 }
 
 model Problem {
-  id          String  @id // External ID in domjudge. also hash value of the archive file
+  id          String                  @id // External ID in domjudge. also hash value of the archive file
   name        String
   description String?
   assignments ProblemsOnAssignments[]
@@ -47,6 +116,7 @@ model ProblemsOnAssignments {
   assignmentId Int
   problem      Problem    @relation(fields: [problemId], references: [id])
   assignment   Assignment @relation(fields: [assignmentId], references: [id])
+
   @@id([problemId, assignmentId])
 }
 
