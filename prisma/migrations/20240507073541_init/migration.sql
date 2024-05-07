@@ -50,6 +50,22 @@ CREATE TABLE `Assignment` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
+CREATE TABLE `AdminsOnAssignments` (
+    `assignmentId` INTEGER NOT NULL,
+    `userId` INTEGER NOT NULL,
+
+    PRIMARY KEY (`assignmentId`, `userId`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `TutorsOnAssignments` (
+    `assignmentId` INTEGER NOT NULL,
+    `userId` INTEGER NOT NULL,
+
+    PRIMARY KEY (`assignmentId`, `userId`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
 CREATE TABLE `AssignmentRoleDescription` (
     `role` ENUM('STUDENT', 'TUTOR', 'TEACHER') NOT NULL,
     `description` VARCHAR(191) NOT NULL,
@@ -110,6 +126,18 @@ CREATE TABLE `_PermissionToUser` (
 
 -- AddForeignKey
 ALTER TABLE `ExternalAccount` ADD CONSTRAINT `ExternalAccount_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `AdminsOnAssignments` ADD CONSTRAINT `AdminsOnAssignments_assignmentId_fkey` FOREIGN KEY (`assignmentId`) REFERENCES `Assignment`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `AdminsOnAssignments` ADD CONSTRAINT `AdminsOnAssignments_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `TutorsOnAssignments` ADD CONSTRAINT `TutorsOnAssignments_assignmentId_fkey` FOREIGN KEY (`assignmentId`) REFERENCES `Assignment`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `TutorsOnAssignments` ADD CONSTRAINT `TutorsOnAssignments_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `UsersOnAssignments` ADD CONSTRAINT `UsersOnAssignments_assignmentId_fkey` FOREIGN KEY (`assignmentId`) REFERENCES `Assignment`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
