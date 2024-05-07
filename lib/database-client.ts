@@ -6,6 +6,10 @@ const globalForPrisma = global as unknown as {
     domjudgeDB: DOMjudgeClient
 }
 
+export type DOMjudgeDB = DOMjudgeClient
+export type UWAjudgeDB = UWAjudgeClient
+export const DOMjudgeDB = DOMjudgeClient
+export const UWAjudgeDB = UWAjudgeClient
 
 export const domjudgeDB = globalForPrisma.domjudgeDB || new DOMjudgeClient()
 export const uwajudgeDB = globalForPrisma.uwajudgeDB || new UWAjudgeClient()

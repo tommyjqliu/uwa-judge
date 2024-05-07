@@ -21,9 +21,7 @@ import {
   Select,
   MenuItem,
 } from '@mui/material';
-import { styled } from '@mui/system';
 import { AttachFile as AttachFileIcon, Send as SendIcon, Code as CodeIcon } from '@mui/icons-material';
-import MonacoEditor from 'react-monaco-editor';
 
 const SubmitButton = styled(Button)`
   background-color: #4caf50;
@@ -90,6 +88,7 @@ const TableHeaderCell = styled(TableCell)`
     border-right: none;
   }
 `;
+
 const TableBodyCell = styled(TableCell)`
   border-bottom: 1px solid #ccc;
 `;

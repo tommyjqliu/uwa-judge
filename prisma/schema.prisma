@@ -14,15 +14,16 @@ enum AccountProvider {
 }
 
 model User {
-  id               Int                  @id @default(autoincrement())
-  email            String?
-  username         String?
-  password         String?
-  permissions      Permission[]
-  assignments      UsersOnAssignments[]
-  externalAccounts ExternalAccount[]
+  id                  Int                   @id @default(autoincrement())
+  email               String?
+  username            String?
+  password            String?
+  permissions         Permission[]
+  assignments         StudentsOnAssignments[]
+  externalAccounts    ExternalAccount[]
+  AdminsOnAssignments AdminsOnAssignments[]
+  TutorsOnAssignments TutorsOnAssignments[]
 }
-
 model ExternalAccount {
   id         Int             @id @default(autoincrement())
   userId     Int
@@ -55,10 +56,29 @@ model Assignment {
   description String?
   publishDate DateTime?
   dueDate     DateTime?
-  users       UsersOnAssignments[]
+  admins      AdminsOnAssignments[]
+  tutors      TutorsOnAssignments[]
+  students    StudentsOnAssignments[]
   problems    ProblemsOnAssignments[]
 }
 
+model AdminsOnAssignments {
+  assignmentId Int
+  userId       Int
+  assignment   Assignment @relation(fields: [assignmentId], references: [id])
+  user         User       @relation(fields: [userId], references: [id])
+
+  @@id([assignmentId, userId])
+}
+
+model TutorsOnAssignments {
+  assignmentId Int
+  userId       Int
+  assignment   Assignment @relation(fields: [assignmentId], references: [id])
+  user         User       @relation(fields: [userId], references: [id])
+
+  @@id([assignmentId, userId])
+}
 enum AssignmentRole {
   STUDENT
   TUTOR
@@ -71,7 +91,7 @@ model AssignmentRoleDescription {
   description String
 }
 
-model UsersOnAssignments {
+model StudentsOnAssignments {
   assignmentId Int
   userId       Int
 
@@ -81,6 +101,7 @@ model UsersOnAssignments {
   roles      Json // List of AssignmentRole on this assignment
 
   @@id([assignmentId, userId])
+	@@map("UsersOnAssignments")
 }
 
 model Problem {

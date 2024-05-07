@@ -1,5 +1,5 @@
 import { AssignmentList } from "@/app/assignments/assignment-list";
-import Pagination from "@/components/pagination";
+import Pagination from "@/lib/components/pagination";
 import { uwajudgeDB } from "@/lib/database-client";
 import { sleep } from "@/lib/utils";
 import { Box, TextField } from "@mui/material";

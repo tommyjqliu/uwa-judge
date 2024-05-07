@@ -42,6 +42,10 @@
     // Let ts-node support parsing module path aliases in paths
     "require": [
       "tsconfig-paths/register"
-    ]
+    ],
+    "compilerOptions": {
+      "module": "ESNext",
+      "moduleResolution": "Node"
+    }
   }
 }

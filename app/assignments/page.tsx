@@ -1,5 +1,5 @@
 import { AssignmentList } from "@/app/assignments/assignment-list";
-import Pagination from "@/components/pagination";
+import Pagination from "@/lib/components/pagination";
 import { uwajudgeDB } from "@/lib/database-client";
 import { sleep } from "@/lib/utils";
 
@@ -16,7 +16,10 @@ export default async function page({
     const assignments = await uwajudgeDB.assignment.findMany();
     console.log(searchParams?.['page'])
     return <main className='p-8'>
-        <h2 className='mb-4'>Assignments</h2>
+        <div className="flex justify-between">
+            <h2 className='mb-4'>Assignments</h2>
+            <Link href="/assignments/create">Create Assignment</Link>
+        </div>
         <AssignmentList assignments={assignments} />
         <Pagination totalPage={10} />
     </main>

@@ -1,17 +1,20 @@
 'use server'
 
-import { domjudgeDB, uwajudgeDB } from "../database-client";
-type ClientKeys = 'uwajudgeDB' | 'domjudgeDB'
+import { DOMjudgeDB, UWAjudgeDB, domjudgeDB, uwajudgeDB } from "../database-client";
+import { RemoveKeysStartingWith } from "../type";
 
-export interface EntityQueryOptions {
-    db?: ClientKeys
-    entity: string,
+export interface EntityQueryOptions<DB extends "UWAjudgeDB" | "DOMjudgeDB"> {
+    db: DB,
+    entity: DB extends "DOMjudgeDB" ? keyof DOMjudgeDB : keyof UWAjudgeDB,
+    where?: any;
 }
 
-export default async function entityQuery({ entity, db }: EntityQueryOptions) {
+export default async function entityQuery<DB extends "UWAjudgeDB" | "DOMjudgeDB">({ entity, db, where }: EntityQueryOptions<DB>) {
     try {
-        const dbClient = (db === 'uwajudgeDB' ? uwajudgeDB : domjudgeDB);
-        return (dbClient[entity as any] as any).findMany();
+        const dbClient = (db === "DOMjudgeDB" ? domjudgeDB : uwajudgeDB);
+        return (dbClient[entity as any] as any).findMany({
+            where
+        });
     } catch (e) {
         console.error(e);
         return "Error fetching data.";

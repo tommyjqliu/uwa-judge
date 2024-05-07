@@ -1,6 +1,8 @@
 import dotenv from 'dotenv';
 import { CONTEST_CID, CONTEST_SETTING } from '@/lib/constant';
 import { domjudgeDB, uwajudgeDB } from '@/lib/database-client';
+import { readProblems } from '@/tests/utils/read-problems';
+import { createProblems } from '@/lib/services/problem-service';
 
 dotenv.config();
 
@@ -32,25 +34,23 @@ async function main() {
     await uwajudgeDB.user.createMany({
         data: usersToInsert,
     })
-    
-    await uwajudgeDB.assignment.createMany({
-        data: [
-            {
-                title: 'Assignment 1',
-                description: 'Assignment 1 description',
+
+    const problems = await readProblems()
+
+    for (let i = 1; i <= 5; i++) {
+        const title = `Assignment ${i}`;
+        const description = `Assignment ${i} description`;
+        const assignment = await uwajudgeDB.assignment.create({
+            data: {
+                title,
+                description,
                 publishDate: new Date(),
                 dueDate: new Date(),
+            }
+        })
+        await createProblems(problems, assignment.id)
 
-            },
-            {
-                title: 'Assignment 2',
-                description: 'Assignment 2 description',
-                publishDate: new Date(),
-                dueDate: new Date(),
-            },
-        ]
-    })
-
+    }
 }
 
 

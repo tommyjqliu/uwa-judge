@@ -1,11 +1,9 @@
 import errorHandler from "@/lib/error-handler";
 import { object, z } from "zod";
 import { zfd } from "zod-form-data";
-import { PrismaClient, Problem, AssignmentRole, Assignment, Prisma, UsersOnAssignments, ProblemsOnAssignments } from '@prisma/client';
-import { UsernamePasswordClient } from "@azure/msal-node";
-import { UserWithRoles, AssignmentDetailVO } from "@/lib/vo/AssignmentDetailVO"
-import ProblemService from "@/lib/service/problemService";
-const problemService = new ProblemService();
+import { PrismaClient, } from '@prisma/client';
+import { createProblems } from "@/lib/services/problem-service";
+
 const prisma = new PrismaClient();
 
 export const assignmentSchema = zfd.formData({
@@ -93,7 +91,13 @@ export const POST = errorHandler(async function (request: Request, context: any)
     let response: Response = new Response()
     if (problems) {
       const problemFiles = problems.map(p => p.file);
-      response = await problemService.uploadProblemsAndLinkToAssignment(problemFiles, assignmentId);
+      await createProblems(problemFiles, assignmentId);
+      response = new Response(JSON.stringify({ message: 'Successfully uploaded problems' }), {
+        status: 200,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
     }
     else {
       response = new Response(JSON.stringify({ error: 'Failed to upload problems' }), {

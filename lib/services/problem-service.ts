@@ -1,16 +1,11 @@
-import { getHash, isFile } from '@/lib/file';  
+import { getHash, isFile } from '@/lib/file';
 import { ProblemsApi, djConfig } from '@/lib/domjudge-api-client';
 import { CONTEST_CID } from '@/lib/constant';
 import { domjudgeDB, uwajudgeDB } from '@/lib/database-client';
 
-export default class ProblemService {
-  problemsApi: ProblemsApi;
+const problemsApi = new ProblemsApi(djConfig)
 
-  constructor() {
-    this.problemsApi = new ProblemsApi(djConfig);
-  }
-
-    async uploadProblemsAndLinkToAssignment(files: File[], assignmentId: number) {
+export async function createProblems(files: File[], assignmentId?: number) {
     const fileNames = files.map(file => file.name.replace(/\.zip$/, ''));
     const hashes = await Promise.all(files.map(getHash));
     const existedProblems = await domjudgeDB.problem.findMany({
@@ -29,7 +24,7 @@ export default class ProblemService {
         const file = files[i];
         const buffer = await file.arrayBuffer();
         const newFile = new File([buffer], hashes[i]); // rename the file to its hash
-        const addProblemRes = await this.problemsApi.postV4AppApiProblemAddproblemForm(newFile, '', String(CONTEST_CID));
+        const addProblemRes = await problemsApi.postV4AppApiProblemAddproblemForm(newFile, '', String(CONTEST_CID));
         return addProblemRes.data;
     }));
 
@@ -61,7 +56,6 @@ export default class ProblemService {
             }
         }
     });
-    return new Response(JSON.stringify(problems), { status: 200 });
-  }
-}
 
+    return problems;
+}
