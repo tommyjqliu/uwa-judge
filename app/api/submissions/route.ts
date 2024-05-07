@@ -1,6 +1,7 @@
 import { CONTEST_CID } from "@/lib/constant"
 import { domjudgeDB } from "@/lib/database-client"
 import { SubmissionsApi, djConfig } from "@/lib/domjudge-api-client"
+import { sleep } from "@/lib/utils"
 import { z } from "zod"
 import { zfd } from "zod-form-data"
 
@@ -51,8 +52,24 @@ export async function POST(
     }
 
     const res = await submissionsApi.postV4AppApiSubmissionAddsubmissionForm(domjudgeProblem.probid.toString(), language, files, entryPoint, String(CONTEST_CID))
+    await sleep(1000)
+    
+    let judging = await domjudgeDB.judging.findFirst({
+        where: {
+            submitid: +res.data.id!
+        }
+    })
 
-    return new Response(JSON.stringify(res.data), {
+    while (!judging?.result) {
+        await sleep(1000)
+        judging = await domjudgeDB.judging.findFirst({
+            where: {
+                submitid: +res.data.id!
+            }
+        })
+    }
+
+    return new Response(JSON.stringify(judging), {
         status: 200,
     })
 }

@@ -7,6 +7,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Assignment } from '@prisma/client';
+import Link from 'next/link';
 
 function createData(
     name: string,
@@ -47,10 +48,10 @@ export function AssignmentList({
                             <TableCell component="th" scope="row">
                                 {assignment.id}
                             </TableCell>
-                            <TableCell align="right">{assignment.title}</TableCell>
-                            <TableCell align="right">{assignment.description }</TableCell>
+                            <TableCell align="right"><Link href={`code?assignmentId=${assignment.id}`}>{assignment.title}</Link></TableCell>
+                            <TableCell align="right">{assignment.description}</TableCell>
                             <TableCell align="right">{assignment.publishDate?.toLocaleString()}</TableCell>
-                            <TableCell align="right">{assignment.dueDate?.toLocaleString() }</TableCell>
+                            <TableCell align="right">{assignment.dueDate?.toLocaleString()}</TableCell>
                         </TableRow>
                     ))}
                 </TableBody>

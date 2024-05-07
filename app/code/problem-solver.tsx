@@ -12,7 +12,7 @@ export interface ProblemSolverProps {
 }
 
 export default function ProblemSolver({ problemId }: ProblemSolverProps) {
-    const [language, setLanguage] = useState('python3');
+    const [language, setLanguage] = useState('python');
     const [code, setCode] = useState('');
     const submit = useCallback(() => {
         axios.postForm('/api/submissions', {
