@@ -1,8 +1,8 @@
 import CredentialsProvider from "next-auth/providers/credentials";
 import { uwajudgeDB } from "../database-client";
-import bcrypt from "bcrypt"
+import bcrypt from "bcrypt";
 
-export const providerId = 'username-password'
+export const providerId = "username-password";
 export const credentialsProvider = CredentialsProvider({
   id: providerId,
   // The name to display on the sign in form (e.g. "Sign in with...")
@@ -14,26 +14,34 @@ export const credentialsProvider = CredentialsProvider({
 
   credentials: {
     username: { label: "Username", type: "text" },
-    password: { label: "Password", type: "password" }
+    password: { label: "Password", type: "password" },
   },
   async authorize(credentials, req) {
-    const { username, password } = credentials || {}
-    if (!username || !password) { return null }
-    const hashedPassword = password && await bcrypt.hash(password, 10)
-    const user = username && await uwajudgeDB.user.findFirst({
-      where: {
-        username,
-      }
-    })
+    const { username, password } = credentials || {};
+    if (!username || !password) {
+      return null;
+    }
+    const hashedPassword = password && (await bcrypt.hash(password, 10));
+    const user =
+      username &&
+      (await uwajudgeDB.user.findFirst({
+        where: {
+          username,
+        },
+      }));
 
     if (user) {
       // Any object returned will be saved in `user` property of the JWT
-      if (password && user.password && await bcrypt.compare(password, user.password)) {
+      if (
+        password &&
+        user.password &&
+        (await bcrypt.compare(password, user.password))
+      ) {
         return {
           ...user,
           id: user.id.toString(),
           password: undefined,
-        }
+        };
       }
       // If you return null then an error will be displayed advising the user to check their details.
       // You can also Reject this callback with an Error thus the user will be sent to the error page with the error message as a query parameter
@@ -44,15 +52,15 @@ export const credentialsProvider = CredentialsProvider({
           username,
           name: username,
           password: hashedPassword,
-        }
-      })
+        },
+      });
       return {
         ...user,
         id: user.id.toString(),
         password: undefined,
-      }
+      };
     }
-  }
-})
+  },
+});
 
-export default credentialsProvider
+export default credentialsProvider;

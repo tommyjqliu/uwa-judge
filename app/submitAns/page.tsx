@@ -1,5 +1,5 @@
-"use client"
-import React, { ChangeEvent, useState } from 'react';
+"use client";
+import React, { ChangeEvent, useState } from "react";
 import {
   Container,
   Typography,
@@ -20,8 +20,12 @@ import {
   TableRow,
   Select,
   MenuItem,
-} from '@mui/material';
-import { AttachFile as AttachFileIcon, Send as SendIcon, Code as CodeIcon } from '@mui/icons-material';
+} from "@mui/material";
+import {
+  AttachFile as AttachFileIcon,
+  Send as SendIcon,
+  Code as CodeIcon,
+} from "@mui/icons-material";
 
 const SubmitButton = styled(Button)`
   background-color: #4caf50;
@@ -38,7 +42,7 @@ const FileInputWrapper = styled(Box)`
   margin-top: 20px;
 `;
 
-const FileInput = styled('input')`
+const FileInput = styled("input")`
   display: none;
 `;
 
@@ -96,8 +100,8 @@ const TableBodyCell = styled(TableCell)`
 const CodingSubmissionPage: React.FC = () => {
   const [selectedTab, setSelectedTab] = useState(0);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [code, setCode] = useState('');
-  const [language, setLanguage] = useState('javascript');
+  const [code, setCode] = useState("");
+  const [language, setLanguage] = useState("javascript");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -114,17 +118,20 @@ const CodingSubmissionPage: React.FC = () => {
   };
 
   const handleEditorChange = (newValue: string | undefined) => {
-    setCode(newValue || '');
+    setCode(newValue || "");
   };
 
   const handleSubmit = () => {
-    if ((selectedTab === 0 && selectedFile) || (selectedTab === 1 && code.trim() !== '')) {
+    if (
+      (selectedTab === 0 && selectedFile) ||
+      (selectedTab === 1 && code.trim() !== "")
+    ) {
       setIsSubmitting(true);
 
       setTimeout(() => {
         setIsSubmitting(false);
         setSelectedFile(null);
-        setCode('');
+        setCode("");
       }, 2000);
     }
   };
@@ -137,7 +144,11 @@ const CodingSubmissionPage: React.FC = () => {
             Submit
           </Typography>
           <TabsContainer>
-            <StyledTabs value={selectedTab} onChange={handleTabChange} textColor="inherit">
+            <StyledTabs
+              value={selectedTab}
+              onChange={handleTabChange}
+              textColor="inherit"
+            >
               <Tab label="Submit a File" />
               <Tab label="Type up your Code" />
             </StyledTabs>
@@ -148,9 +159,11 @@ const CodingSubmissionPage: React.FC = () => {
                 <Typography variant="body1" paragraph>
                   Select language:
                 </Typography>
-                <Select value={language} 
+                <Select
+                  value={language}
                   onChange={handleLanguageChange}
-                  size = "small">
+                  size="small"
+                >
                   <MenuItem value="javascript">JavaScript</MenuItem>
                   <MenuItem value="python">Python</MenuItem>
                   <MenuItem value="cpp">C++</MenuItem>
@@ -170,7 +183,12 @@ const CodingSubmissionPage: React.FC = () => {
               />
             </Box>
           ) : (
-            <Box mt={4} display="flex" justifyContent="flex-start" alignItems="center">
+            <Box
+              mt={4}
+              display="flex"
+              justifyContent="flex-start"
+              alignItems="center"
+            >
               <Typography variant="body1" paragraph>
                 Select a file to submit your code:
               </Typography>
@@ -184,7 +202,7 @@ const CodingSubmissionPage: React.FC = () => {
                 <AttachFileIcon fontSize="large" />
               </IconButton>
               <Typography variant="body2" ml={1}>
-                {selectedFile ? selectedFile.name : 'No file selected'}
+                {selectedFile ? selectedFile.name : "No file selected"}
               </Typography>
             </Box>
           )}
@@ -192,16 +210,18 @@ const CodingSubmissionPage: React.FC = () => {
             <SubmitButton
               variant="contained"
               size="large"
-              endIcon={isSubmitting ? <CircularProgress size={24} /> : <SendIcon />}
+              endIcon={
+                isSubmitting ? <CircularProgress size={24} /> : <SendIcon />
+              }
               onClick={handleSubmit}
               disabled={
-                (selectedTab === 0 && code.trim() === '') ||
+                (selectedTab === 0 && code.trim() === "") ||
                 (selectedTab === 1 && !selectedFile) ||
                 isSubmitting
               }
-              style={{ marginRight: '5%' }}
+              style={{ marginRight: "5%" }}
             >
-              {isSubmitting ? 'Submitting...' : 'Submit'}
+              {isSubmitting ? "Submitting..." : "Submit"}
             </SubmitButton>
           </Box>
           <ResultsTable>
@@ -217,14 +237,13 @@ const CodingSubmissionPage: React.FC = () => {
                   <TableRow key={index}>
                     <TableBodyCell>Test Case {index + 1}</TableBodyCell>
                     <TableBodyCell
-                    sx={{
-                      backgroundColor: index % 2 === 0 ? 'green' : 'red',
-                      color: 'white',
-                    }}
-                  >
-                    {index % 2 === 0 ? 'Passed' : 'Failed'}
-                  </TableBodyCell>
-
+                      sx={{
+                        backgroundColor: index % 2 === 0 ? "green" : "red",
+                        color: "white",
+                      }}
+                    >
+                      {index % 2 === 0 ? "Passed" : "Failed"}
+                    </TableBodyCell>
                   </TableRow>
                 ))}
               </TableBody>

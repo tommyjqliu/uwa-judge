@@ -1,11 +1,10 @@
 import errorHandler from "@/lib/error-handler";
 import { z } from "zod";
 import { zfd } from "zod-form-data";
-import { Assignment } from '@prisma/client';
+import { Assignment } from "@prisma/client";
 
 import { uwajudgeDB } from "@/lib/database-client";
 import { createProblems } from "@/lib/services/problem-service";
-
 
 export const assignmentSchema = zfd.formData({
   title: z.string(),
@@ -36,9 +35,9 @@ export const assignmentSchema = zfd.formData({
  * @Return: Response
  */
 export const POST = errorHandler(async function (request: Request) {
-
   const parsedData = assignmentSchema.parse(await request.formData());
-  const { title, description, publishDate, dueDate, students, problems } = parsedData;
+  const { title, description, publishDate, dueDate, students, problems } =
+    parsedData;
 
   const assignment = await uwajudgeDB.assignment.create({
     data: {
@@ -48,12 +47,12 @@ export const POST = errorHandler(async function (request: Request) {
       dueDate,
       students: {
         createMany: {
-          data: students.map(student => ({
+          data: students.map((student) => ({
             userId: student,
-          }))
-        }
-      }
-    }
+          })),
+        },
+      },
+    },
   });
 
   await createProblems(problems, assignment.id);
@@ -61,7 +60,7 @@ export const POST = errorHandler(async function (request: Request) {
   return new Response(JSON.stringify(assignment), {
     status: 200,
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
   });
 });
@@ -88,27 +87,29 @@ export const POST = errorHandler(async function (request: Request) {
 export const GET = errorHandler(async function (request: Request) {
   try {
     const assignmentsFromDB = await uwajudgeDB.assignment.findMany();
-    const assignments: Assignment[] = assignmentsFromDB.map(assignmentFromDB => {
-      return {
-        id: assignmentFromDB.id,
-        title: assignmentFromDB.title,
-        description: assignmentFromDB.description,
-        publishDate: assignmentFromDB.publishDate,
-        dueDate: assignmentFromDB.dueDate
-      };
-    });
+    const assignments: Assignment[] = assignmentsFromDB.map(
+      (assignmentFromDB) => {
+        return {
+          id: assignmentFromDB.id,
+          title: assignmentFromDB.title,
+          description: assignmentFromDB.description,
+          publishDate: assignmentFromDB.publishDate,
+          dueDate: assignmentFromDB.dueDate,
+        };
+      },
+    );
     return new Response(JSON.stringify(assignments), {
       status: 200,
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
     });
   } catch (error) {
     console.error(error);
-    return new Response(JSON.stringify({ error: 'Failed to get assignment' }), {
+    return new Response(JSON.stringify({ error: "Failed to get assignment" }), {
       status: 500,
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
     });
   }
