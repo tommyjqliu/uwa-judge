@@ -1,13 +1,14 @@
 import { CONTEST_CID } from "@/lib/constant"
 import { domjudgeDB } from "@/lib/database-client"
 import { SubmissionsApi, djConfig } from "@/lib/domjudge-api-client"
+import errorHandler from "@/lib/error-handler"
 import { sleep } from "@/lib/utils"
 import { z } from "zod"
 import { zfd } from "zod-form-data"
 
 const submissionsApi = new SubmissionsApi(djConfig)
 
-export async function POST(
+export const POST = errorHandler(async function (
     request: Request,
 ) {
     const formData = await request.formData()
@@ -53,7 +54,7 @@ export async function POST(
 
     const res = await submissionsApi.postV4AppApiSubmissionAddsubmissionForm(domjudgeProblem.probid.toString(), language, files, entryPoint, String(CONTEST_CID))
     await sleep(1000)
-    
+
     let judging = await domjudgeDB.judging.findFirst({
         where: {
             submitid: +res.data.id!
@@ -72,4 +73,4 @@ export async function POST(
     return new Response(JSON.stringify(judging), {
         status: 200,
     })
-}
+})

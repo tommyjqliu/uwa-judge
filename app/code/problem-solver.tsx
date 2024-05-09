@@ -1,10 +1,9 @@
 "use client"
+import axios from "@/lib/axios";
 import ClientContext from "@/lib/components/client-context";
 import EntitySelector from "@/lib/components/entity-selector";
 import { Editor } from "@monaco-editor/react";
 import { Button, MenuItem, Select } from "@mui/material";
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import { useCallback, useState } from "react";
 
 export interface ProblemSolverProps {
@@ -17,7 +16,7 @@ export default function ProblemSolver({ problemId }: ProblemSolverProps) {
     const submit = useCallback(() => {
         axios.postForm('/api/submissions', {
             problemId,
-            language: language,
+            language,
             code,
         })
     }, [code, language, problemId]);
