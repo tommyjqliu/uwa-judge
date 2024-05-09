@@ -17,19 +17,25 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const session = await getSession();
-  console.log('client session', session);
+  console.log("client session", session);
   return (
     <html lang="en">
       <body className={inter.className}>
         <header className="flex justify-between p-2 bg-gray-100">
           <div className="flex gap-4">
-            <Link href="/"><h1 className={pressStart2P.className}>UWA Judge</h1></Link>
+            <Link href="/">
+              <h1 className={pressStart2P.className}>UWA Judge</h1>
+            </Link>
             <Link href="/assignments">Assignments</Link>
           </div>
           <div className="flex gap-2">
             <span>{session?.user?.userId}</span>
             <span>{session?.user?.name}</span>
-            {session ? <Link href="api/auth/signout">Logout</Link> : <Link href="api/auth/signin">Login</Link>}
+            {session ? (
+              <Link href="api/auth/signout">Logout</Link>
+            ) : (
+              <Link href="api/auth/signin">Login</Link>
+            )}
           </div>
         </header>
         {children}

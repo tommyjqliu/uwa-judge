@@ -1,25 +1,19 @@
 import errorHandler from "@/lib/error-handler";
 import { z } from "zod";
 import { zfd } from "zod-form-data";
-import { AssignmentRole, Assignment } from '@prisma/client';
-import ProblemService from "@/lib/service/problemService";
-import { uwajudgeDB } from "@/lib/database-client";
+import { Assignment } from '@prisma/client';
 
-const problemService = new ProblemService();
+import { uwajudgeDB } from "@/lib/database-client";
+import { createProblems } from "@/lib/services/problem-service";
+
 
 export const assignmentSchema = zfd.formData({
   title: z.string(),
   description: z.string().optional(),
-  publishDate: z.date().optional(),
-  dueDate: z.date().optional(),
-  users: zfd.json((z.object({
-    userId: z.string(),
-    role: z.enum(Object.values(AssignmentRole) as [string])
-  }).array())).optional(),
-  problems: zfd.json(z.object({
-    file: zfd.file(),
-  }).array()).optional(),
-
+  publishDate: z.coerce.date().optional(),
+  dueDate: z.coerce.date().optional(),
+  students: zfd.repeatable(z.coerce.number().array().default([])),
+  problems: zfd.repeatable(z.array(zfd.file())), // repearable is nessary for parsing signle file
 });
 
 /**
@@ -44,61 +38,32 @@ export const assignmentSchema = zfd.formData({
 export const POST = errorHandler(async function (request: Request) {
 
   const parsedData = assignmentSchema.parse(await request.formData());
-  console.log("json!");
-  console.log(request.json());
-  const { title, description, publishDate, dueDate, users, problems } = parsedData;
-  console.log(parsedData);
-  try {
+  const { title, description, publishDate, dueDate, students, problems } = parsedData;
 
-    const newAssignment = await uwajudgeDB.assignment.create({
-      data: {
-        title,
-        description,
-        publishDate: publishDate ? new Date(publishDate) : undefined,
-        dueDate: dueDate ? new Date(dueDate) : undefined,
-      }
-    });
-    let assignmentId: number = newAssignment.id;
-    console.log("assignment created assignmentID:", assignmentId);
-    if (users) {
-      console.log("catch users' information");
-      const usersData = users.map(user => ({
-        assignmentId: assignmentId,
-        userId: Number(user.userId),
-        roles: user.role
-      }));
-      if (usersData.length > 0) {
-        const result = await uwajudgeDB.usersOnAssignments.createMany({
-          data: usersData,
-          skipDuplicates: true
-        });
-        console.log(result);
+  const assignment = await uwajudgeDB.assignment.create({
+    data: {
+      title,
+      description,
+      publishDate,
+      dueDate,
+      students: {
+        createMany: {
+          data: students.map(student => ({
+            userId: student,
+          }))
+        }
       }
     }
+  });
 
+  await createProblems(problems, assignment.id);
 
-    if (problems) {
-      console.log("catch problems information");
-      // Extract only the file objects from the problems array
-      const problemFiles = problems.map(p => p.file);
-      await problemService.uploadProblemsAndLinkToAssignment(problemFiles, assignmentId);
-    }
-    return new Response(JSON.stringify(newAssignment), {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-
-  } catch (error) {
-    console.error(error);
-    return new Response(JSON.stringify({ error: 'Failed to create assignment' }), {
-      status: 500,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-  }
+  return new Response(JSON.stringify(assignment), {
+    status: 200,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
 });
 
 /**

@@ -37,7 +37,10 @@ export default function ProblemSolver({ problemId }: ProblemSolverProps) {
                                 entityQuery={{
                                     db: "DOMjudgeDB",
                                     entity: "language",
-                                    where: { allow_submit: { equals: true } }
+                                    action: "findMany",
+                                    query: {
+                                        where: { allow_submit: { equals: true } }
+                                    }
                                 }}
                             />
                             <Editor
