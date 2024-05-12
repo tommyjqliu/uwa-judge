@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 
 services:
   # Database
@@ -9,7 +9,7 @@ services:
     ports:
       - "3306:3306"
     volumes:
-      - ./.mariadb:/var/lib/mysql  
+      - ./.mariadb:/var/lib/mysql
 
   # Database Management
   phpmyadmin:
@@ -37,7 +37,7 @@ services:
     restart: always # TODO: give warning when fail
     privileged: true
     volumes:
-      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+      - /sys/fs/cgroup:/sys/fs/cgroup
       - ./password.judgehost:/etc/password.judgehost:ro
     environment:
       DAEMON_ID: 0

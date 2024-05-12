@@ -2,7 +2,7 @@ import { uwajudgeDB } from "@/lib/database-client";
 import { stringToInt } from "@/lib/zod";
 import { z } from "zod";
 import ProblemSolver from "./problem-solver";
-
+import { Card, CardContent } from "@mui/material";
 export default async function Code({
   searchParams,
 }: {
@@ -53,6 +53,11 @@ export default async function Code({
             ))}
         </select>
       </div>
+      <Card>
+        <CardContent sx={{ m: 1 }}>
+          TODO: will add the Problem Statement here or something
+        </CardContent>
+      </Card>
       <div>
         {problemId ? <ProblemSolver problemId={problemId} /> : "No Problem"}
       </div>
