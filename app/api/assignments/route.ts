@@ -42,7 +42,7 @@ export const assignmentSchema = zfd.formData({
  * @Return: Response
  */
 export const POST = errorHandler(async function (request: Request) {
-
+  try{
   const parsedData = assignmentSchema.parse(await request.formData());
   const { title, description, publishDate, dueDate, students,tutors,admins, problems } =
     parsedData;
@@ -55,6 +55,17 @@ export const POST = errorHandler(async function (request: Request) {
     },
   });
   let assignmentId = assignment.id;
+  try{
+    await createProblems(problems, assignmentId);
+  }
+  catch(error){
+    return new Response(JSON.stringify({"status":500,"msg":"problem upload failed"}), {
+      status: 500,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  }
 
   if(students){
     //process with students
@@ -88,15 +99,22 @@ export const POST = errorHandler(async function (request: Request) {
       data: data_tutors
     });
   }
-
-  await createProblems(problems, assignment.id);
-
   return new Response(JSON.stringify(assignment), {
     status: 200,
     headers: {
       "Content-Type": "application/json",
     },
   });
+  
+  }
+  catch(error){
+    return new Response(JSON.stringify({"Error":"Fail to Create Assignment"}), {
+      status: 500,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  }
 });
 
 /**
@@ -140,7 +158,7 @@ export const GET = errorHandler(async function (request: Request) {
     });
   } catch (error) {
     console.error(error);
-    return new Response(JSON.stringify({ error: "Failed to get assignment" }), {
+    return new Response(JSON.stringify({ error: "Failed to tet assignment" }), {
       status: 500,
       headers: {
         "Content-Type": "application/json",

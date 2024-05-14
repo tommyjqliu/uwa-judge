@@ -4,16 +4,17 @@ import { zfd } from "zod-form-data";
 import {
   PrismaClient,
   Problem,
-  AssignmentRole,
+  AdminsOnAssignments,
   Assignment,
   Prisma,
-  UsersOnAssignments,
+  StudentsOnAssignments,
+  TutorsOnAssignments,
   ProblemsOnAssignments,
 } from "@prisma/client";
 import { UsernamePasswordClient } from "@azure/msal-node";
 import { UserWithRoles, AssignmentDetailVO } from "@/lib/vo/AssignmentDetailVO";
+import { log } from "console";
 const prisma = new PrismaClient();
-
 /**
  * @Description: get assignment information base on assignmentId
  * @Author: Zhiyang
@@ -24,34 +25,25 @@ const prisma = new PrismaClient();
  * @param:
  *    params:assignmentId
  * @Return: {
- *     "assignmentId": 4,
-    "title": "testWithProblems",
-    "description": "testWithProblems",
-    "publishDate": null,
-    "dueDate": null,
-    "users": [
+    "assignment": {
+        "id": 9,
+        "title": "testWithProblems",
+        "description": "testWithProblems",
+        "publishDate": null,
+        "dueDate": null
+    },
+    "students": [
         {
             "id": 1,
-            "email": "abc@email.com",
-            "username": "A",
-            "roles": "TEACHER"
+            "username": "user1",
+            "email": null
         },
-        {
-            "id": 2,
-            "email": "sdf@email.com",
-            "username": "B",
-            "roles": "STUDENT"
-        },
-        {
-            "id": 3,
-            "email": "gggg@email.com",
-            "username": "C",
-            "roles": "STUDENT"
-        }
     ],
-    "problems": ["problemId1","problemId2"]
- * }
- */
+    "tutors": [......],
+    "admins": [......]
+}
+ * 
+ * */
 export const GET = errorHandler(async function (
   request: Request,
   context: any,
@@ -66,7 +58,7 @@ export const GET = errorHandler(async function (
     });
     if (assignment == null) {
       return new Response(
-        JSON.stringify({ error: "Failed to get assignment" }),
+        JSON.stringify({ error: "Assignment Not Found" }),
         {
           status: 500,
           headers: {
@@ -75,9 +67,9 @@ export const GET = errorHandler(async function (
         },
       );
     }
-    //get all users related to the assignment
-    console.log("assignment", assignment);
-    const usersOnAssignments = await prisma.usersOnAssignments.findMany({
+    //Admin List
+    //get all admins related to the assignment
+    const as = await prisma.adminsOnAssignments.findMany({
       where: {
         assignmentId: assignmentId,
       },
@@ -91,39 +83,46 @@ export const GET = errorHandler(async function (
         },
       },
     });
-
-    let userList: UserWithRoles[] = [];
-    for (let each of usersOnAssignments) {
-      let user: UserWithRoles = {
-        id: each.user.id,
-        email: each.user.email,
-        username: each.user.username,
-        roles: each.roles,
-      };
-      userList.push(user);
-    }
-
-    let problemList: string[] = [];
-    const problemsOnAssignments = await prisma.problemsOnAssignments.findMany({
+    let adminList = as.map(item => item.user)
+    //Student List
+    const sl = await prisma.studentsOnAssignments.findMany({
       where: {
         assignmentId: assignmentId,
       },
+      include: {
+        user: {
+          select: {
+            id: true,
+            username: true,
+            email: true,
+          },
+        },
+      },
     });
-    for (let each of problemsOnAssignments) {
-      problemList.push(each.problemId);
+    let studentList = sl.map(item => item.user)
+    //Tutor List
+    const tl = await prisma.tutorsOnAssignments.findMany({
+      where: {
+        assignmentId: assignmentId,
+      },
+      include: {
+        user: {
+          select: {
+            id: true,
+            username: true,
+            email: true,
+          },
+        },
+      },
+    });
+    let tutorList = tl.map(item => item.user)
+
+    let json = {
+      "assignment": assignment,
+      "students":studentList,
+      "tutors":tutorList,
+      "admins":adminList
     }
-    let assignmentDetailVO: AssignmentDetailVO = new AssignmentDetailVO(
-      assignmentId,
-      assignment.title,
-      assignment.description,
-      assignment.publishDate,
-      assignment?.dueDate,
-      userList,
-      problemList,
-    );
-
-    let json = assignmentDetailVO.toJSON();
-
     return new Response(JSON.stringify(json), {
       status: 200,
       headers: {
@@ -166,8 +165,24 @@ export const DELETE = errorHandler(async function (
           assignmentId: assignmentId,
         },
       });
-    //Delete UsersOnAssignments
-    const deleteUsersOnAssignments = await prisma.usersOnAssignments.deleteMany(
+    //Delete studentsOnAssignments
+    const deleteUsersOnAssignments = await prisma.studentsOnAssignments.deleteMany(
+      {
+        where: {
+          assignmentId: assignmentId,
+        },
+      },
+    );
+    //Delete tutorssOnAssignments
+    const deleteTutorsOnAssignments = await prisma.tutorsOnAssignments.deleteMany(
+      {
+        where: {
+          assignmentId: assignmentId,
+        },
+      },
+    );
+    //Delete adminsOnAssignments
+    const deleteAdminsOnAssignments = await prisma.adminsOnAssignments.deleteMany(
       {
         where: {
           assignmentId: assignmentId,
@@ -207,7 +222,6 @@ const receiveSchema = zfd.formData({
   publishDate: z.date().optional(),
   dueDate: z.date().optional(),
 });
-
 /**
  * @Description: update the basic information of an assignment (can only update: title description, publishDate, dueDate)
  * @Author: Zhiyang
