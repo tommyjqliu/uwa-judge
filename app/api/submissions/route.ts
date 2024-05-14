@@ -84,7 +84,27 @@ export const POST = errorHandler(async function (request: Request) {
     });
   }
 
-  return new Response(JSON.stringify(judging), {
+  const judgingRuns = await domjudgeDB.judging_run.findMany({
+    where: { judgingid: judging!.judgingid },
+  });
+
+  const testcaseResults = await Promise.all(
+    judgingRuns.map(async (run) => {
+      const output = await domjudgeDB.judging_run_output.findFirst({
+        where: { runid: run.runid },
+      });
+      return {
+        runid: run.runid,
+        result: run.runresult,
+        output_run: output?.output_run?.toString(),
+        output_diff: output?.output_diff?.toString(),
+        output_error: output?.output_error?.toString(),
+        output_system: output?.output_system?.toString(),
+      };
+    }),
+  );
+
+  return new Response(JSON.stringify({ judging, testcaseResults }), {
     status: 200,
   });
 });

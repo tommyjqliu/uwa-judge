@@ -2,7 +2,8 @@ import { uwajudgeDB } from "@/lib/database-client";
 import { stringToInt } from "@/lib/zod";
 import { z } from "zod";
 import ProblemSolver from "./problem-solver";
-
+import { Card, CardContent, MenuItem, Select } from "@mui/material";
+import Link from "next/link";
 export default async function Code({
   searchParams,
 }: {
@@ -16,19 +17,20 @@ export default async function Code({
     .parse(searchParams);
 
   const assignment =
-    assignmentId &&
-    (await uwajudgeDB.assignment.findUnique({
-      where: {
-        id: assignmentId,
-      },
-      include: {
-        problems: {
-          include: {
-            problem: true,
+    undefined !== assignmentId
+      ? await uwajudgeDB.assignment.findUnique({
+          where: {
+            id: assignmentId,
           },
-        },
-      },
-    }));
+          include: {
+            problems: {
+              include: {
+                problem: true,
+              },
+            },
+          },
+        })
+      : undefined;
 
   const problems =
     assignment && assignment.problems.map(({ problem }) => problem);
@@ -38,21 +40,27 @@ export default async function Code({
     <main className="p-8">
       <div>
         <label>Assignment</label>
-        <select>
-          {assignment && (
-            <option value={assignment.id}>{assignment.title}</option>
-          )}
-        </select>
+        <div> {assignment?.title}</div>
         <label>Problem</label>
-        <select>
+        <Select value={problemId}>
           {problems &&
             problems.map((problem) => (
-              <option key={problem.id} value={problem.id}>
+              <MenuItem key={problem.id} value={problem.id}>
+                <Link
+                  key={problem.id}
+                  href={`/code?assignmentId=${assignmentId}&problemId=${problem.id}`}
+                  className="h-full w-full absolute inset-0"
+                />
                 {problem.name}
-              </option>
+              </MenuItem>
             ))}
-        </select>
+        </Select>
       </div>
+      <Card>
+        <CardContent sx={{ m: 1 }}>
+          TODO: will add the Problem Statement here or something
+        </CardContent>
+      </Card>
       <div>
         {problemId ? <ProblemSolver problemId={problemId} /> : "No Problem"}
       </div>

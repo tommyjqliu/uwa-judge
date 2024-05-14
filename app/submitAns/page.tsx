@@ -26,6 +26,9 @@ import {
   Send as SendIcon,
   Code as CodeIcon,
 } from "@mui/icons-material";
+import { styled } from "@mui/material/styles";
+import Editor from "@monaco-editor/react";
+import { SelectChangeEvent } from "@mui/material";
 
 const SubmitButton = styled(Button)`
   background-color: #4caf50;
@@ -113,10 +116,9 @@ const CodingSubmissionPage: React.FC = () => {
     setSelectedFile(file || null);
   };
 
-  const handleLanguageChange = (event: ChangeEvent<{ value: unknown }>) => {
+  const handleLanguageChange = (event: SelectChangeEvent<string>) => {
     setLanguage(event.target.value as string);
   };
-
   const handleEditorChange = (newValue: string | undefined) => {
     setCode(newValue || "");
   };
@@ -169,7 +171,7 @@ const CodingSubmissionPage: React.FC = () => {
                   <MenuItem value="cpp">C++</MenuItem>
                 </Select>
               </Box>
-              <MonacoEditor
+              <Editor
                 width="100%"
                 height="400px"
                 language={language}
