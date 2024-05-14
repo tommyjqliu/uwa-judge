@@ -74,7 +74,7 @@ export const DELETE = errorHandler(async function (
 });
 
 /**
- * @Description:
+ * @Description:post problems on assignments
  * @Author: Zhiyang
  * @version:
  * @Date: 2024-05-02 11:39:25
