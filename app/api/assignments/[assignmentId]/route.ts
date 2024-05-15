@@ -117,11 +117,30 @@ export const GET = errorHandler(async function (
     });
     let tutorList = tl.map(item => item.user)
 
+    //The problems list
+    const pl = await prisma.problemsOnAssignments.findMany({
+      where: {
+        assignmentId: assignmentId,
+      },
+
+      include: {
+        problem: {
+          select: {
+            id: true,
+            name: true,
+            description: true,
+          },
+        },
+      },
+    });
+    let problemList = pl.map(item => item.problem)
+
     let json = {
       "assignment": assignment,
       "students":studentList,
       "tutors":tutorList,
-      "admins":adminList
+      "admins":adminList,
+      "problems":problemList
     }
     return new Response(JSON.stringify(json), {
       status: 200,
