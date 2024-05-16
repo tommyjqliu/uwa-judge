@@ -13,14 +13,55 @@ export default async function page({
         page?: string,
     },
 }) {
-    const assignments = await uwajudgeDB.assignment.findMany();
-    console.log(searchParams?.['page'])
-    return <main className='p-8'>
-        <div className="flex justify-between">
-            <h2 className='mb-4'>Assignments</h2>
-            <Link href="/assignments/create">Create Assignment</Link>
-        </div>
-        <AssignmentList assignments={assignments} />
-        <Pagination totalPage={10} />
-    </main>
+
+    /**
+    for (let i = 30; i <= 35; i++) {
+        const title = `Assignment ${i}`;
+        const description = `Assignment ${i} description`;
+        const assignment = await uwajudgeDB.assignment.create({
+            data: {
+                title,
+                description,
+                publishDate: new Date(),
+                dueDate: new Date(),
+            }
+        })
+        //await createProblems(problems, assignment.id)
+
+    }
+**/
+
+
+    // Read all assignments
+    const allAssignments = await uwajudgeDB.assignment.findMany();
+    console.log("Total assignments:", allAssignments.length);
+
+    // Set number of assignments per page
+    const assignmentsPerPage = 10;
+
+    // Parse page number, default to page 1 if not provided
+    const page = searchParams?.page ? parseInt(searchParams.page) : 1;
+
+    // Calculate total number of pages
+    const totalPage = Math.ceil(allAssignments.length / assignmentsPerPage);
+
+    // Calculate the range of assignments to display based on page number and assignments per page
+    const startIndex = (page - 1) * assignmentsPerPage;
+    const endIndex = startIndex + assignmentsPerPage;
+    const assignments = allAssignments.slice(startIndex, endIndex);
+
+    console.log("Current page:", page);
+    console.log("Total pages:", totalPage);
+
+    // Output assignment list and pagination component
+    return (
+        <main className='p-8'>
+            <div className="flex justify-between">
+                <h2 className='mb-4'>Assignments</h2>
+                <Link href="/assignments/create">Create Assignment</Link>
+            </div>
+            <AssignmentList assignments={assignments} />
+            <Pagination totalPage={totalPage} />
+        </main>
+    );
 }
