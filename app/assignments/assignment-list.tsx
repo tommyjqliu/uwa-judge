@@ -30,10 +30,10 @@ export function AssignmentList({ assignments }: AssignmentListProps) {
         <TableHead>
           <TableRow>
             <TableCell>id</TableCell>
-            <TableCell align="right">Calories</TableCell>
-            <TableCell align="right">Fat(g)</TableCell>
-            <TableCell align="right">Carbs&nbsp;(g)</TableCell>
-            <TableCell align="right">Protein&nbsp;(g)</TableCell>
+            <TableCell align="right">Name</TableCell>
+            <TableCell align="right">Description</TableCell>
+            <TableCell align="right">Start Time</TableCell>
+            <TableCell align="right">Due Time</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
