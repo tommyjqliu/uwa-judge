@@ -21,8 +21,8 @@ describe.concurrent("Create Assignment", () => {
                 });
 
                 console.log(await res.json())
-                const data = appHandler.assignmentSchema.parse(formdata)
-                console.log(data)
+                // const data = appHandler.assignmentSchema.parse(formdata)
+                // console.log(data)
             }
         });
     });

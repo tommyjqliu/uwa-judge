@@ -5,8 +5,8 @@ import { PrismaClient } from "@prisma/client";
 import { createProblems } from "@/lib/services/problem-service";
 
 const prisma = new PrismaClient();
-
-export const assignmentSchema = zfd.formData({
+// Can't export non-api-endpoint variable
+const assignmentSchema = zfd.formData({
   assignmentId: z.number(),
   problems: zfd.json(
     z

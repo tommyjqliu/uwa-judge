@@ -5,9 +5,8 @@ import { Assignment,StudentsOnAssignments,TutorsOnAssignments,AdminsOnAssignment
 
 import { uwajudgeDB } from "@/lib/database-client";
 import { createProblems } from "@/lib/services/problem-service";
-import { log } from "console";
 
-export const assignmentSchema = zfd.formData({
+const assignmentSchema = zfd.formData({
   title: z.string(),
   description: z.string().optional(),
   publishDate: z.coerce.date().optional(),
