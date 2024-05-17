@@ -14,11 +14,12 @@
     "start": "next start",
     "lint": "next lint",
     "test": "vitest",
-    "docker-dev-up": "sh ./scripts/docker-dev-up.sh",
-    "docker-dev-down": "sh ./scripts/docker-dev-down.sh",
-    "docker-dev-reset": "sh ./scripts/docker-dev-reset.sh",
-    "docker-pub-up": "sh ./scripts/docker-pub-up.sh",
-    "docker-pub-down": "sh ./scripts/docker-pub-down.sh"
+    "docker-dev-up": "sh ./scripts/docker-up.sh",
+    "docker-dev-down": "sh ./scripts/docker-down.sh",
+    "docker-dev-reset": "sh ./scripts/docker-reset.sh",
+    "docker-pub-up": "export ENV=PROD && sh ./scripts/docker-up.sh",
+    "docker-pub-down": "export ENV=PROD && sh ./scripts/docker-down.sh",
+    "docker-pub-reset": "export ENV=PROD && sh ./scripts/docker-reset.sh"
   },
   "dependencies": {
     "@azure/msal-node": "^2.6.4",
