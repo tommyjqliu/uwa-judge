@@ -16,7 +16,7 @@ import globalAxios, {
   AxiosResponse,
   AxiosInstance,
   AxiosRequestConfig,
-} from "axios";
+} from "@/lib/axios";
 import { Configuration } from "../configuration";
 // Some imports not used depending on template conditions
 // @ts-ignore
@@ -397,7 +397,7 @@ export const UsersApiAxiosParamCreator = function (
       };
       const needsSerialization =
         typeof body !== "string" ||
-        localVarRequestOptions.headers["Content-Type"] === "application/json";
+        localVarRequestOptions.headers?.["Content-Type"] === "application/json";
       localVarRequestOptions.data = needsSerialization
         ? JSON.stringify(body !== undefined ? body : {})
         : body || "";
