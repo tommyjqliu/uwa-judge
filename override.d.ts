@@ -1,11 +1,11 @@
 
-declare module "axios" {
-    /**
-     * @deprecated
-     * Use internal axios instance at lib/axios.ts instead
-     */
-    export default function axios(): void;
-}
+// declare module "axios" {
+//     /**
+//      * @deprecated
+//      * Use internal axios instance at lib/axios.ts instead
+//      */
+//     export default function axios(): void;
+// }
 
 declare module "next/router" {
     /**

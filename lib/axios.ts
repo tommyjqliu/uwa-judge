@@ -1,7 +1,7 @@
-export * from "node_modules/axios";
-import { default as originAxios } from "node_modules/axios";
+export * from "axios";
+import { default as originAxios } from "axios";
 
-const axios = originAxios.create({
+const axios = (originAxios as any).create({
   formSerializer: {
     indexes: null,
   },

@@ -9,7 +9,7 @@ services:
     ports:
       - "3306:3306"
     volumes:
-      - ./.mariadb:/var/lib/mysql
+      - ~/uwa-judge-db:/var/lib/mysql
 
   # Database Management
   phpmyadmin:

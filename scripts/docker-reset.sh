@@ -7,6 +7,6 @@ else
 fi
 
 docker compose -p $DOCKER_PROJECT down
-sudo rm -rf .mariadb
+sudo rm -rf ~/uwa-judge-db
 rm -rf password.admin
 rm -rf password.judgehost
