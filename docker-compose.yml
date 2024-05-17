@@ -9,7 +9,7 @@ services:
     ports:
       - "3306:3306"
     volumes:
-      - ~/uwa-judge-db:/var/lib/mysql
+      - ./.mariadb:/var/lib/mysql
 
   # Database Management
   phpmyadmin:
@@ -54,7 +54,15 @@ services:
     ports:
       - "80:80"
       - "443:443"
-    network_mode: "host"
+    profiles:
+      - prod
+  
+  uwajudge:
+    image: uwajudge
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mariadb
     profiles:
       - prod
 

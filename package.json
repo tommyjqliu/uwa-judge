@@ -11,7 +11,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "docker-build": "docker build -t uwajudge .",
+    "deprecated-start": "next start",
     "lint": "next lint",
     "test": "vitest",
     "docker-dev-up": "sh ./scripts/docker-up.sh",
