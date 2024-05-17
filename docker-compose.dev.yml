@@ -37,7 +37,7 @@ services:
     restart: always # TODO: give warning when fail
     privileged: true
     volumes:
-      - /sys/fs/cgroup:/sys/fs/cgroup
+      # - /sys/fs/cgroup:/sys/fs/cgroup
       - ./password.judgehost:/etc/password.judgehost:ro
     environment:
       DAEMON_ID: 0
