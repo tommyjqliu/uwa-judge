@@ -2,7 +2,7 @@
 
 if [ "$ENV" = "PROD" ]; then
   DOCKER_PROJECT="uwajudge-prod"
-  PROFILE_FLAG=""
+  PROFILE_FLAG="--profile prod"
 else
   DOCKER_PROJECT="uwajudge-dev"
   PROFILE_FLAG="--profile dev"
