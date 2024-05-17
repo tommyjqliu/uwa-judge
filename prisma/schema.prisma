@@ -111,10 +111,11 @@ model ProblemsOnAssignments {
 
 model Submission {
   id             String      @id @db.VarChar(255)
-  submissionDate DateTime?
-  assignmentId   Int?
-  problemId      String?     @db.VarChar(255)
-  userId         Int?
+  submissionDate DateTime
+  assignmentId   Int
+  problemId      String      @db.VarChar(255)
+  userId         Int
+  comment        String?
   Assignment     Assignment? @relation(fields: [assignmentId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "fk_assignment_submission")
   Problem        Problem?    @relation(fields: [problemId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "fk_problem_submission")
   User           User?       @relation(fields: [userId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "fk_user_submission")
