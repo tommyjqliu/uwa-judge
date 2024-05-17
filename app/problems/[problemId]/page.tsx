@@ -1,5 +1,5 @@
 "use client";
-import axios from "axios";
+import axios from "@/lib/axios";
 import React, { useState } from "react";
 
 export default function Page({

@@ -34,7 +34,7 @@ export const authConfig = {
             user = await uwajudgeDB.user.create({
               data: {
                 username: (profile as any)?.preferred_username,
-                name: profile?.name,
+                // name: profile?.name,
                 email: profile?.email,
                 externalAccounts: {
                   create: {

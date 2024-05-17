@@ -24,7 +24,7 @@ model User {
 model ExternalAccount {
   id         Int             @id @default(autoincrement())
   userId     Int
-  provider   AccountProvider
+  provider   String
   providerId String
   user       User            @relation(fields: [userId], references: [id])
 
@@ -125,8 +125,3 @@ model Submission {
   @@index([userId], map: "fk_user_submission")
 }
 
-enum AccountProvider {
-  MICROSOFT
-  GOOGLE
-  GITHUB
-}

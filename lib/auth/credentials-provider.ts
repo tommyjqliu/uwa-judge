@@ -50,7 +50,6 @@ export const credentialsProvider = CredentialsProvider({
       const user = await uwajudgeDB.user.create({
         data: {
           username,
-          name: username,
           password: hashedPassword,
         },
       });

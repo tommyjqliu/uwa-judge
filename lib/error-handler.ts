@@ -1,4 +1,4 @@
-import { AxiosError } from "axios";
+import { AxiosError } from "@/lib/axios";
 import { ZodError } from "zod";
 
 export default function errorHandler(endpoint: (...args: any[]) => any) {

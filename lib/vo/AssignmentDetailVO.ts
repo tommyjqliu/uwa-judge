@@ -3,8 +3,8 @@ import {
   Problem,
   Assignment,
   ProblemsOnAssignments,
-  UsersOnAssignments,
 } from "@prisma/client";
+
 import { JsonValue } from "@prisma/client/runtime/library";
 type UserWithoutPassword = Omit<User, "password">;
 export type UserWithRoles = UserWithoutPassword & {
