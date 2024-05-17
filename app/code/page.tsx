@@ -2,48 +2,68 @@ import { uwajudgeDB } from "@/lib/database-client";
 import { stringToInt } from "@/lib/zod";
 import { z } from "zod";
 import ProblemSolver from "./problem-solver";
+import { Card, CardContent, MenuItem, Select } from "@mui/material";
+import Link from "next/link";
+export default async function Code({
+  searchParams,
+}: {
+  searchParams?: { assignmentId?: string; problemId?: string };
+}) {
+  const { assignmentId, problemId: paramProblemId } = z
+    .object({
+      assignmentId: stringToInt.optional(),
+      problemId: z.string().optional(),
+    })
+    .parse(searchParams);
 
-export default async function Code({ searchParams }: { searchParams?: { assignmentId?: string, problemId?: string } }) {
-    const { assignmentId, problemId: paramProblemId } = z.object({
-        assignmentId: stringToInt.optional(),
-        problemId: z.string().optional()
-    }).parse(searchParams);
-
-    const assignment = assignmentId && await uwajudgeDB.assignment.findUnique({
-        where: {
-            id: assignmentId
-        },
-        include: {
+  const assignment =
+    undefined !== assignmentId
+      ? await uwajudgeDB.assignment.findUnique({
+          where: {
+            id: assignmentId,
+          },
+          include: {
             problems: {
-                include: {
-                    problem: true
-                }
-            }
-        }
-    });
+              include: {
+                problem: true,
+              },
+            },
+          },
+        })
+      : undefined;
 
-    const problems = assignment && assignment.problems.map(({ problem }) => problem);
-    const problemId = paramProblemId || (problems && problems[0].id);
+  const problems =
+    assignment && assignment.problems.map(({ problem }) => problem);
+  const problemId = paramProblemId || (problems && problems[0].id);
 
-    return (
-        <main className='p-8'>
-            <div>
-                <label>Assignment</label>
-                <select>
-                    {assignment && <option value={assignment.id}>{assignment.title}</option>}
-                </select>
-                <label>Problem</label>
-                <select>
-                    {problems && problems.map(problem => <option key={problem.id} value={problem.id}>{problem.name}</option>)}
-                </select>
-            </div>
-            <div>
-                {
-                    problemId ?
-                        <ProblemSolver problemId={problemId} /> :
-                        "No Problem"
-                }
-            </div>
-        </main>
-    )
+  return (
+    <main className="p-8">
+      <div>
+        <label>Assignment</label>
+        <div> {assignment?.title}</div>
+        <label>Problem</label>
+        <Select value={problemId}>
+          {problems &&
+            problems.map((problem) => (
+              <MenuItem key={problem.id} value={problem.id}>
+                <Link
+                  key={problem.id}
+                  href={`/code?assignmentId=${assignmentId}&problemId=${problem.id}`}
+                  className="h-full w-full absolute inset-0"
+                />
+                {problem.name}
+              </MenuItem>
+            ))}
+        </Select>
+      </div>
+      <Card>
+        <CardContent sx={{ m: 1 }}>
+          TODO: will add the Problem Statement here or something
+        </CardContent>
+      </Card>
+      <div>
+        {problemId ? <ProblemSolver problemId={problemId} /> : "No Problem"}
+      </div>
+    </main>
+  );
 }

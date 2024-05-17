@@ -8,6 +8,7 @@ dotenv.config();
 
 
 async function main() {
+    // Initial setup
     await domjudgeDB.contest.upsert({
         where: { cid: CONTEST_CID },
         update: CONTEST_SETTING,
@@ -21,8 +22,14 @@ async function main() {
         }
     })
 
+    await domjudgeDB.language.update({
+        where: { langid: 'py3' },
+        data: {
+            externalid: "python"
+        }
+    })
 
-    // Insert test users
+    // Insert test data
     const usersToInsert = Array.from({ length: 20 }, (_, i) => {
         const username = `user${i + 1}`;
         return {

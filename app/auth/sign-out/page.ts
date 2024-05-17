@@ -1,9 +1,11 @@
-"use client"
+"use client";
 
-import { signOut } from "next-auth/react"
+import { signOut } from "next-auth/react";
 import { useEffect } from "react";
 
 export default function Page() {
-    useEffect(() => { signOut({ callbackUrl: '/' }) }, [])
-    return null
+  useEffect(() => {
+    signOut({ callbackUrl: "/" });
+  }, []);
+  return null;
 }

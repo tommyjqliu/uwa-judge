@@ -7,47 +7,45 @@ datasource db {
   url      = env("UWAJUDGE_DATABASE_URL")
 }
 
-enum AccountProvider {
-  MICROSOFT
-  GOOGLE
-  GITHUB
-}
 
 model User {
-  id                  Int                   @id @default(autoincrement())
+  id                  Int                     @id @default(autoincrement())
   email               String?
-  username            String?
+  username            String?                 @unique
   password            String?
-  permissions         Permission[]
-  assignments         StudentsOnAssignments[]
-  externalAccounts    ExternalAccount[]
   AdminsOnAssignments AdminsOnAssignments[]
+  externalAccounts    ExternalAccount[]
+  assignments         StudentsOnAssignments[]
+  Submission          Submission[]
   TutorsOnAssignments TutorsOnAssignments[]
+  permissions         Permission[]            @relation("PermissionToUser")
 }
+
 model ExternalAccount {
   id         Int             @id @default(autoincrement())
   userId     Int
-  provider   AccountProvider
+  provider   String
   providerId String
   user       User            @relation(fields: [userId], references: [id])
 
   @@unique([provider, userId])
   @@unique([provider, providerId])
+  @@index([userId], map: "ExternalAccount_userId_fkey")
 }
 
 model Permission {
   id          Int         @id @default(autoincrement())
   name        String
   description String?
-  userGroups  UserGroup[]
-  users       User[]
+  users       User[]      @relation("PermissionToUser")
+  userGroups  UserGroup[] @relation("PermissionToUserGroup")
 }
 
 model UserGroup {
   id          Int          @id @default(autoincrement())
   name        String
   description String?
-  permissions Permission[]
+  permissions Permission[] @relation("PermissionToUserGroup")
 }
 
 model Assignment {
@@ -57,9 +55,10 @@ model Assignment {
   publishDate DateTime?
   dueDate     DateTime?
   admins      AdminsOnAssignments[]
-  tutors      TutorsOnAssignments[]
-  students    StudentsOnAssignments[]
   problems    ProblemsOnAssignments[]
+  students    StudentsOnAssignments[]
+  Submission  Submission[]
+  tutors      TutorsOnAssignments[]
 }
 
 model AdminsOnAssignments {
@@ -69,6 +68,7 @@ model AdminsOnAssignments {
   user         User       @relation(fields: [userId], references: [id])
 
   @@id([assignmentId, userId])
+  @@index([userId], map: "AdminsOnAssignments_userId_fkey")
 }
 
 model TutorsOnAssignments {
@@ -78,48 +78,50 @@ model TutorsOnAssignments {
   user         User       @relation(fields: [userId], references: [id])
 
   @@id([assignmentId, userId])
-}
-enum AssignmentRole {
-  STUDENT
-  TUTOR
-  TEACHER
-}
-
-model AssignmentRoleDescription {
-  // AssignmentRole has to accociate with some model so it can be used as enum
-  role        AssignmentRole @id
-  description String
+  @@index([userId], map: "TutorsOnAssignments_userId_fkey")
 }
 
 model StudentsOnAssignments {
   assignmentId Int
   userId       Int
-
-  //relation
-  assignment Assignment @relation(fields: [assignmentId], references: [id])
-  user       User       @relation(fields: [userId], references: [id])
-  roles      Json // List of AssignmentRole on this assignment
+  assignment   Assignment @relation(fields: [assignmentId], references: [id])
+  user         User       @relation(fields: [userId], references: [id])
 
   @@id([assignmentId, userId])
-	@@map("UsersOnAssignments")
+  @@index([userId], map: "StudentsOnAssignments_userId_fkey")
 }
 
 model Problem {
-  id          String                  @id // External ID in domjudge. also hash value of the archive file
+  id          String                  @id
   name        String
   description String?
   assignments ProblemsOnAssignments[]
+  Submission  Submission[]
 }
 
 model ProblemsOnAssignments {
   problemId    String
   assignmentId Int
-  problem      Problem    @relation(fields: [problemId], references: [id])
   assignment   Assignment @relation(fields: [assignmentId], references: [id])
+  problem      Problem    @relation(fields: [problemId], references: [id])
 
   @@id([problemId, assignmentId])
+  @@index([assignmentId], map: "ProblemsOnAssignments_assignmentId_fkey")
 }
 
 model Submission {
-  id Int @id @default(autoincrement())
+  id             String      @id @db.VarChar(255)
+  submissionDate DateTime
+  assignmentId   Int
+  problemId      String      @db.VarChar(255)
+  userId         Int
+  comment        String?
+  Assignment     Assignment? @relation(fields: [assignmentId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "fk_assignment_submission")
+  Problem        Problem?    @relation(fields: [problemId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "fk_problem_submission")
+  User           User?       @relation(fields: [userId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "fk_user_submission")
+
+  @@index([assignmentId], map: "fk_assignment_submission")
+  @@index([problemId], map: "fk_problem_submission")
+  @@index([userId], map: "fk_user_submission")
 }
+
