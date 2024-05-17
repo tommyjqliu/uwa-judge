@@ -15,7 +15,7 @@ RETRY_WAIT=5
 
 # Loop for connecting to database
 for i in $(seq 1 $MAX_TRIES); do
-    output=$(docker-compose -p $DOCKER_PROJECT exec mariadb mariadb -u"root" -p"$MYSQL_ROOT_PASSWORD" -e "SELECT 1" 2>&1)
+    output=$(docker compose -p $DOCKER_PROJECT exec mariadb mariadb -u"root" -p"$MYSQL_ROOT_PASSWORD" -e "SELECT 1" 2>&1)
     result=$?
     if [ "$result" -eq 0 ]; then
         break
@@ -28,10 +28,10 @@ done
 if [ "$result" -eq 0 ]; then
     echo "MariaDB connection successful, proceeding with database setup..."
     sleep 1
-    # docker-compose -p $DOCKER_PROJECT exec mariadb mariadb -u"root" -p"$MYSQL_ROOT_PASSWORD" -e "$SQL_QUERY_CREATE_DB"
-    # docker-compose -p $DOCKER_PROJECT exec mariadb mariadb -u"root" -p"$MYSQL_ROOT_PASSWORD" -e "$SQL_QUERY_GRANT_PRIVILEGES"
-    docker-compose -p $DOCKER_PROJECT exec mariadb mariadb -u"root" -p"$MYSQL_ROOT_PASSWORD" -e "$SQL_QUERY_GRANT_DB"
-    docker-compose -p $DOCKER_PROJECT exec mariadb mariadb -u"root" -p"$MYSQL_ROOT_PASSWORD" -e "FLUSH PRIVILEGES;"
+    # docker compose -p $DOCKER_PROJECT exec mariadb mariadb -u"root" -p"$MYSQL_ROOT_PASSWORD" -e "$SQL_QUERY_CREATE_DB"
+    # docker compose -p $DOCKER_PROJECT exec mariadb mariadb -u"root" -p"$MYSQL_ROOT_PASSWORD" -e "$SQL_QUERY_GRANT_PRIVILEGES"
+    docker compose -p $DOCKER_PROJECT exec mariadb mariadb -u"root" -p"$MYSQL_ROOT_PASSWORD" -e "$SQL_QUERY_GRANT_DB"
+    docker compose -p $DOCKER_PROJECT exec mariadb mariadb -u"root" -p"$MYSQL_ROOT_PASSWORD" -e "FLUSH PRIVILEGES;"
 else
     echo "ERROR: Could not connect to MariaDB after $MAX_TRIES retries. Aborting."
     exit 1
@@ -53,8 +53,8 @@ if [ "$response" -eq 200 ]; then
     # Get secret
     >password.admin
     >password.judgehost
-    docker-compose -p $DOCKER_PROJECT exec domserver cat /opt/domjudge/domserver/etc/initial_admin_password.secret >password.admin
-    docker-compose -p $DOCKER_PROJECT exec domserver cat /opt/domjudge/domserver/etc/restapi.secret | grep '^[^#]' | awk '{print $4}' >password.judgehost
+    docker compose -p $DOCKER_PROJECT exec domserver cat /opt/domjudge/domserver/etc/initial_admin_password.secret >password.admin
+    docker compose -p $DOCKER_PROJECT exec domserver cat /opt/domjudge/domserver/etc/restapi.secret | grep '^[^#]' | awk '{print $4}' >password.judgehost
 
     npx prisma migrate reset --force
 else
