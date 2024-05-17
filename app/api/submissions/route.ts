@@ -1,13 +1,11 @@
 import { CONTEST_CID } from "@/lib/constant";
-import { domjudgeDB,uwajudgeDB } from "@/lib/database-client";
-import { SubmissionsApi, djConfig } from "@/lib/domjudge-api-client";
+import { domjudgeDB, uwajudgeDB } from "@/lib/database-client";
+import { SubmissionsApi, getDjConfig } from "@/lib/domjudge-api-client";
 import errorHandler from "@/lib/error-handler";
 import { sleep } from "@/lib/utils";
 import { z } from "zod";
 import { zfd } from "zod-form-data";
-import { Submission} from "@prisma/client";
 
-const submissionsApi = new SubmissionsApi(djConfig);
 
 export const POST = errorHandler(async function (request: Request) {
   const formData = await request.formData();
@@ -69,7 +67,7 @@ export const POST = errorHandler(async function (request: Request) {
     );
   }
 
-  const res = await submissionsApi.postV4AppApiSubmissionAddsubmissionForm(
+  const res = await (new SubmissionsApi(getDjConfig())).postV4AppApiSubmissionAddsubmissionForm(
     domjudgeProblem.probid.toString(),
     language,
     files,
@@ -101,7 +99,7 @@ export const POST = errorHandler(async function (request: Request) {
       assignmentId: assignmentId,
       problemId: problemId,
       userId: userId
-    }, 
+    },
   });
 
   const judgingRuns = await domjudgeDB.judging_run.findMany({

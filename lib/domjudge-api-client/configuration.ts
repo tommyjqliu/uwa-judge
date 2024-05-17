@@ -16,17 +16,17 @@ import * as fs from "fs";
 
 export interface ConfigurationParameters {
   apiKey?:
-    | string
-    | Promise<string>
-    | ((name: string) => string)
-    | ((name: string) => Promise<string>);
+  | string
+  | Promise<string>
+  | ((name: string) => string)
+  | ((name: string) => Promise<string>);
   username?: string;
   password?: string;
   accessToken?:
-    | string
-    | Promise<string>
-    | ((name?: string, scopes?: string[]) => string)
-    | ((name?: string, scopes?: string[]) => Promise<string>);
+  | string
+  | Promise<string>
+  | ((name?: string, scopes?: string[]) => string)
+  | ((name?: string, scopes?: string[]) => Promise<string>);
   basePath?: string;
   baseOptions?: any;
 }
@@ -99,13 +99,16 @@ export class Configuration {
   }
 }
 
-// Read password from file
-const password = fs.readFileSync("./password.admin", "utf8").trim();
-// Read DOMjudge URL from environment variable
-const domjudgeUrl = process.env.DOMJUDGE_URL ?? process.env.VITE_DOMJUDGE_URL;
 
-export const configuration = new Configuration({
-  basePath: domjudgeUrl,
-  username: "admin",
-  password,
-});
+export const getConfiguration = () => {
+  // Read password from file
+  const password = fs.readFileSync("./password.admin", "utf8").trim();
+  // Read DOMjudge URL from environment variable
+  const domjudgeUrl = process.env.DOMJUDGE_URL ?? process.env.VITE_DOMJUDGE_URL;
+
+  return new Configuration({
+    basePath: domjudgeUrl,
+    username: "admin",
+    password,
+  });
+}

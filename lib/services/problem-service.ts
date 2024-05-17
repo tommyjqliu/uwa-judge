@@ -1,5 +1,5 @@
 import { getHash, isFile } from "@/lib/file";
-import { ProblemsApi, djConfig } from "@/lib/domjudge-api-client";
+import { ProblemsApi, getDjConfig } from "@/lib/domjudge-api-client";
 import { CONTEST_CID } from "@/lib/constant";
 import {
   RuntimeClient,
@@ -8,7 +8,7 @@ import {
   uwajudgeDB,
 } from "@/lib/database-client";
 
-const problemsApi = new ProblemsApi(djConfig);
+
 
 export async function uploadProblemToDomjudge(file: File) {
   const externalid = await getHash(file);
@@ -24,7 +24,7 @@ export async function uploadProblemToDomjudge(file: File) {
 
   const buffer = await file.arrayBuffer();
   const newFile = new File([buffer], externalid); // rename the file to its hash
-  await problemsApi.postV4AppApiProblemAddproblemForm(
+  await (new ProblemsApi(getDjConfig())).postV4AppApiProblemAddproblemForm(
     newFile,
     "",
     String(CONTEST_CID),
