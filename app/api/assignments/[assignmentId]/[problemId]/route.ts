@@ -33,6 +33,8 @@ export const GET = errorHandler(async function (
     request: Request,
     context: any,
   ) {
+
+    try{
     const params = context.params;
     const assignmentId = Number(params.assignmentId);
     const problemId = String(params.problemId);
@@ -44,10 +46,20 @@ export const GET = errorHandler(async function (
       }
     });
     let json = getLatestSubmissions(sl)
+    log(json)
       return new Response(JSON.stringify(json), {
         status: 200,
         headers: {
           "Content-Type": "application/json",
         },
       });
+    }
+    catch(error){
+      return new Response(JSON.stringify("Failed to get latestSubmission"), {
+        status: 500,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    }
   });

@@ -28,6 +28,7 @@ export const PUT = errorHandler(async function (
     request: Request,
     context: any,
   ) {
+    try{
     const params = context.params;
     const submissionId = String(params.submissionId)
     
@@ -44,4 +45,13 @@ export const PUT = errorHandler(async function (
           "Content-Type": "application/json",
         },
       });
+    }
+    catch(error){
+      return new Response(JSON.stringify("Failed to update comment"), {
+        status: 500,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    }
   });
