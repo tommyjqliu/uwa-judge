@@ -47,12 +47,12 @@ services:
       - domserver
   
   problemtools:
-    image: tommyjqliu/problemtools-web
+    image: tommyjqliu/problemtools-web:latest
     ports:
       - "5000:5000"
 
   uwajudge:
-    image: tommyjqliu/uwajudge
+    image: tommyjqliu/uwajudge:latest
     env_file:
       - .env
     ports:
