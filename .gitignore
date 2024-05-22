@@ -41,3 +41,5 @@ password.admin
 
 #database
 .mariadb
+
+/temp

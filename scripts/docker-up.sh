@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ "$ENV" = "PROD" ]; then
+if [ "$NODE_ENV" = "production" ]; then
   DOCKER_PROJECT="uwajudge-prod"
   PROFILE_FLAG="--profile prod"
 else
@@ -8,7 +8,6 @@ else
   PROFILE_FLAG="--profile dev"
 fi
 
-touch password.judgehost
 docker compose -p $DOCKER_PROJECT $PROFILE_FLAG up -d
 
 export DOCKER_PROJECT

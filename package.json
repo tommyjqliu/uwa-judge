@@ -11,16 +11,22 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "docker-build": "docker build -t uwajudge .",
+    "build-docker": "docker build -t tommyjqliu/uwajudge .",
+    "tag-docker": "docker tag uwajudge tommyjqliu/uwajudge",
+    "push-docker": "docker push tommyjqliu/uwajudge",
     "deprecated-start": "next start",
     "lint": "next lint",
     "test": "vitest",
     "docker-dev-up": "sh ./scripts/docker-up.sh",
     "docker-dev-down": "sh ./scripts/docker-down.sh",
     "docker-dev-reset": "sh ./scripts/docker-reset.sh",
-    "docker-pub-up": "export ENV=PROD && sh ./scripts/docker-up.sh",
-    "docker-pub-down": "export ENV=PROD && sh ./scripts/docker-down.sh",
-    "docker-pub-reset": "export ENV=PROD && sh ./scripts/docker-reset.sh"
+    "docker-pub-up": "export NODE_ENV=production && sh ./scripts/docker-up.sh",
+    "docker-pub-down": "export NODE_ENV=production && sh ./scripts/docker-down.sh",
+    "docker-pub-reset": "export NODE_ENV=production && sh ./scripts/docker-reset.sh",
+
+    "build-problemtools-web": "docker build -t tommyjqliu/problemtools-web -f ./problemtools/dockerfile ./problemtools",
+    "tag-problemtools-web": "docker tag problemtools-web tommyjqliu/problemtools-web",
+    "push-problemtools-web": "docker push tommyjqliu/problemtools-web"
   },
   "dependencies": {
     "@azure/msal-node": "^2.6.4",

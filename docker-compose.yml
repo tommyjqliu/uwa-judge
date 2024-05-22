@@ -17,7 +17,7 @@ services:
     env_file:
       - .env
     environment:
-      - PMA_HOST=mariadb
+      PMA_HOST: mariadb
     ports:
       - 8080:80
     profiles:
@@ -38,31 +38,42 @@ services:
     image: domjudge/judgehost:8.2.2
     restart: always # TODO: give warning when fail
     privileged: true
-    volumes:
-      # - /sys/fs/cgroup:/sys/fs/cgroup
-      - ./password.judgehost:/etc/password.judgehost:ro
+    # volumes:
+    #   - /sys/fs/cgroup:/sys/fs/cgroup
     environment:
       DAEMON_ID: 0
-      JUDGEDAEMON_PASSWORD_FILE: /etc/password.judgehost
+      JUDGEDAEMON_PASSWORD: ${JUDGEDAEMON_PASSWORD}
     depends_on:
       - domserver
-    
-  nginx:
-    image: nginx:latest
-    volumes:
-      - ./nginx.conf:/etc/nginx/conf.d/default.conf
-    ports:
-      - "80:80"
-      - "443:443"
-    profiles:
-      - prod
   
+  problemtools:
+    image: tommyjqliu/problemtools-web
+    ports:
+      - "5000:5000"
+
   uwajudge:
-    image: uwajudge
+    image: tommyjqliu/uwajudge
+    env_file:
+      - .env
     ports:
       - "3000:3000"
     depends_on:
       - mariadb
     profiles:
       - prod
+  
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+      - /etc/letsencrypt/live/uwajudge.tommydev.net/fullchain.pem:/etc/fullchain.pem
+      - /etc/letsencrypt/live/uwajudge.tommydev.net/privkey.pem:/etc/privkey.pem
+    ports:
+      - "80:80"
+      - "443:443"
+    profiles:
+      - prod
+    depends_on:
+      - uwajudge
+  
 

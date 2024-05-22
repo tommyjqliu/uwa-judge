@@ -104,7 +104,7 @@ export const getConfiguration = () => {
   // Read password from file
   const password = fs.readFileSync("./password.admin", "utf8").trim();
   // Read DOMjudge URL from environment variable
-  const domjudgeUrl = process.env.DOMJUDGE_URL ?? process.env.VITE_DOMJUDGE_URL;
+  const domjudgeUrl = process.env.DOMJUDGE_URL;
 
   return new Configuration({
     basePath: domjudgeUrl,
