@@ -8,7 +8,7 @@ else
   PROFILE_FLAG="--profile dev"
 fi
 
-docker compose -p $DOCKER_PROJECT $PROFILE_FLAG up -d --pull
+docker compose -p $DOCKER_PROJECT $PROFILE_FLAG up -d
 
 export DOCKER_PROJECT
 
