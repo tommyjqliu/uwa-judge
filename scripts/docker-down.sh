@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ "$ENV" = "PROD" ]; then
+if [ "$NODE_ENV" = "production" ]; then
   DOCKER_PROJECT="uwajudge-prod"
 else
   DOCKER_PROJECT="uwajudge-dev"

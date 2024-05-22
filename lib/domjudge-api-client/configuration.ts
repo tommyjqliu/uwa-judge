@@ -102,7 +102,7 @@ export class Configuration {
 
 export const getConfiguration = () => {
   // Read password from file
-  const password = fs.readFileSync("./password.admin", "utf8").trim();
+  const password = process.env.ADMIN_PASSWORD;
   // Read DOMjudge URL from environment variable
   const domjudgeUrl = process.env.DOMJUDGE_URL;
 
