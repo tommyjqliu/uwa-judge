@@ -4,6 +4,7 @@ import { z } from "zod";
 import ProblemSolver from "./problem-solver";
 import { Card, CardContent, MenuItem, Select } from "@mui/material";
 import Link from "next/link";
+
 export default async function Code({
   searchParams,
 }: {
@@ -19,15 +20,9 @@ export default async function Code({
   const assignment =
     undefined !== assignmentId
       ? await uwajudgeDB.assignment.findUnique({
-          where: {
-            id: assignmentId,
-          },
+          where: { id: assignmentId },
           include: {
-            problems: {
-              include: {
-                problem: true,
-              },
-            },
+            problems: { include: { problem: true } },
           },
         })
       : undefined;
@@ -38,11 +33,13 @@ export default async function Code({
 
   return (
     <main className="p-8">
-      <div>
-        <label>Assignment</label>
-        <div> {assignment?.title}</div>
-        <label>Problem</label>
-        <Select value={problemId}>
+      <div className="mb-6">
+        <h2 className="text-2xl font-semibold mb-2">Assignment:</h2>
+        <div className="text-lg">{assignment?.title}</div>
+      </div>
+      <div className="mb-6">
+        <label className="block mb-2 font-semibold">Problem:</label>
+        <Select value={problemId} className="w-full max-w-xs">
           {problems &&
             problems.map((problem) => (
               <MenuItem key={problem.id} value={problem.id}>
@@ -56,13 +53,15 @@ export default async function Code({
             ))}
         </Select>
       </div>
-      <Card>
-        <CardContent sx={{ m: 1 }}>
-          TODO: will add the Problem Statement here or something
-        </CardContent>
+      <Card className="mb-6">
+        <CardContent sx={{ m: 1 }}>{assignment?.description}</CardContent>
       </Card>
       <div>
-        {problemId ? <ProblemSolver problemId={problemId} /> : "No Problem"}
+        {problemId ? (
+          <ProblemSolver assignmentId={assignmentId} problemId={problemId} />
+        ) : (
+          "No Problem"
+        )}
       </div>
     </main>
   );
