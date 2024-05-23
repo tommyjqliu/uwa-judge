@@ -48,7 +48,7 @@ def upload_file():
     output_pdf = os.path.join(app.config['OUTPUT_FOLDER'], os.path.basename(extract_folder) + '.pdf')
 
     # Generate PDF using the extracted folder as input
-    run(['problem2pdf', extract_folder, '-o', output_pdf])
+    run(['problem2pdf', extract_folder, '-o', output_pdf, '-l', 'en'])
 
     # Clean up function to run after sending the file
     @after_this_request

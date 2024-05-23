@@ -6,6 +6,19 @@ import { sleep } from "@/lib/utils";
 import { z } from "zod";
 import { zfd } from "zod-form-data";
 
+function getCurrentDateTime(): string {
+  const now = new Date();
+  const isoString = now.toISOString();
+  return isoString;
+  // const year = now.getFullYear();
+  // const month = String(now.getMonth() + 1).padStart(2, "0");
+  // const day = String(now.getDate()).padStart(2, "0");
+  // const hours = String(now.getHours()).padStart(2, "0");
+  // const minutes = String(now.getMinutes()).padStart(2, "0");
+  // const seconds = String(now.getSeconds()).padStart(2, "0");
+
+  // return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+}
 
 export const POST = errorHandler(async function (request: Request) {
   const formData = await request.formData();
@@ -16,7 +29,6 @@ export const POST = errorHandler(async function (request: Request) {
     problemId,
     assignmentId,
     userId,
-    submissionDate,
     language,
     entryPoint,
     code, // submit text code
@@ -24,9 +36,8 @@ export const POST = errorHandler(async function (request: Request) {
   } = zfd
     .formData({
       problemId: z.string(),
-      assignmentId: z.coerce.number(),
-      userId: z.coerce.number(),
-      submissionDate: z.coerce.date(),
+      assignmentId: z.coerce.number().optional(),
+      userId: z.coerce.number().optional(),
       language: z.string(),
       entryPoint: z.string().default(""),
       code: z.string().optional(),
@@ -67,7 +78,9 @@ export const POST = errorHandler(async function (request: Request) {
     );
   }
 
-  const res = await (new SubmissionsApi(getDjConfig())).postV4AppApiSubmissionAddsubmissionForm(
+  const res = await new SubmissionsApi(
+    getDjConfig(),
+  ).postV4AppApiSubmissionAddsubmissionForm(
     domjudgeProblem.probid.toString(),
     language,
     files,
@@ -75,7 +88,6 @@ export const POST = errorHandler(async function (request: Request) {
     String(CONTEST_CID),
   );
   await sleep(1000);
-
 
   let judging = await domjudgeDB.judging.findFirst({
     where: {
@@ -95,10 +107,10 @@ export const POST = errorHandler(async function (request: Request) {
   await uwajudgeDB.submission.create({
     data: {
       id: res.data.id!,
-      submissionDate: submissionDate,
+      submissionDate: getCurrentDateTime(),
       assignmentId: assignmentId,
       problemId: problemId,
-      userId: userId
+      userId: userId,
     },
   });
 

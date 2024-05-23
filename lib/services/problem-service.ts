@@ -29,7 +29,7 @@ export async function uploadProblemToDomjudge(file: File) {
 
   // Extract and check for problem statement
   const hasProblemFile = await extractAndCheckFile(tempZipPath, tempDirPath);
-  console.log("heretommy",file, hasProblemFile)
+
   if (!hasProblemFile) {
     await fs.remove(tempZipPath);
     await callProblemToolAndSavePDF(file, tempDirPath);
@@ -52,7 +52,7 @@ export async function uploadProblemToDomjudge(file: File) {
 }
 
 export async function createProblems(files: File[], assignmentId?: number) {
-  
+
   const fileNames = files.map((file) => file.name.replace(/\.zip$/, ""));
   const externalids = await Promise.all(
     files.map(async (file) => uploadProblemToDomjudge(file)),
@@ -82,4 +82,16 @@ export async function createProblems(files: File[], assignmentId?: number) {
   });
 
   return problems;
+}
+
+export async function getProblemStatement(problemId: string) {
+  const problem = await domjudgeDB.problem.findUnique({
+    where: {
+      externalid: problemId,
+    },
+  });
+  if (!problem) {
+    throw new Error("Problem not found");
+  }
+  return [problem.problemtext_type, problem.problemtext]
 }
