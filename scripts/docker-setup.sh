@@ -39,7 +39,7 @@ fi
 
 # Wait for domjudge on
 for i in $(seq 1 $MAX_TRIES); do
-    response=$(curl --write-out '%{http_code}' --silent --output /dev/null $DOMJUDGE_URL/public)
+    response=$(curl --write-out '%{http_code}' --silent --output /dev/null http://localhost:8000/public)
     if [ "$response" -eq 200 ]; then
         break
     fi
@@ -50,12 +50,16 @@ done
 if [ "$response" -eq 200 ]; then
     echo "Domjudge is ready, proceeding with setup..."
     sleep 1
-    # Get secret
-    >password.admin
-    >password.judgehost
-    docker compose -p $DOCKER_PROJECT exec domserver cat /opt/domjudge/domserver/etc/initial_admin_password.secret >password.admin
-    docker compose -p $DOCKER_PROJECT exec domserver cat /opt/domjudge/domserver/etc/restapi.secret | grep '^[^#]' | awk '{print $4}' >password.judgehost
-
+    # # Get secret
+    # >password.admin
+    # >password.judgehost
+    # docker compose -p $DOCKER_PROJECT exec domserver cat /opt/domjudge/domserver/etc/initial_admin_password.secret >password.admin
+    # docker compose -p $DOCKER_PROJECT exec domserver cat /opt/domjudge/domserver/etc/restapi.secret | grep '^[^#]' | awk '{print $4}' >password.judgehost
+    # if [ "$NODE_ENV" = "production" ]; then
+    #     docker compose -p $DOCKER_PROJECT exec uwajudge npx prisma migrate reset --force
+    # else
+    #     npx prisma migrate reset --force
+    # fi
     npx prisma migrate reset --force
 else
     echo "ERROR: Could not connect to Domjudge after $MAX_TRIES retries. Aborting."

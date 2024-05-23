@@ -1,25 +1,30 @@
-import dotenv from 'dotenv';
+
 import { CONTEST_CID, CONTEST_SETTING } from '@/lib/constant';
 import { domjudgeDB, uwajudgeDB } from '@/lib/database-client';
 import { readProblems } from '@/tests/utils/read-problems';
 import { createProblems } from '@/lib/services/problem-service';
+import bcrypt from 'bcrypt';
+import { readEnvs } from '@/lib/utils';
 
-dotenv.config();
-
+readEnvs()
 
 async function main() {
     // Initial setup
+    await domjudgeDB.user.upsert({
+        where: { username: "admin" },
+        update: { username: "admin", name: "Administrator", password: await bcrypt.hash(process.env.ADMIN_PASSWORD, 10), teamid: 1 },
+        create: { username: "admin", name: "Administrator", password: await bcrypt.hash(process.env.ADMIN_PASSWORD, 10), teamid: 1 },
+    })
+    await domjudgeDB.user.upsert({
+        where: { username: "judgehost" },
+        update: { username: "judgehost", name: "judgehost", password: await bcrypt.hash(process.env.JUDGEDAEMON_PASSWORD, 10) },
+        create: { username: "judgehost", name: "judgehost", password: await bcrypt.hash(process.env.JUDGEDAEMON_PASSWORD, 10) },
+    })
+
     await domjudgeDB.contest.upsert({
         where: { cid: CONTEST_CID },
         update: CONTEST_SETTING,
         create: CONTEST_SETTING,
-    })
-
-    await domjudgeDB.user.update({
-        where: { username: 'admin' },
-        data: {
-            teamid: 1,
-        }
     })
 
     await domjudgeDB.language.update({
@@ -40,6 +45,7 @@ async function main() {
 
     await uwajudgeDB.user.createMany({
         data: usersToInsert,
+        skipDuplicates: true,
     })
 
     const problems = await readProblems()

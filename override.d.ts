@@ -16,3 +16,13 @@ declare module "next/router" {
 }
 
 // import * as axios from "axios";
+import 'node';
+
+declare global {
+    namespace NodeJS {
+      interface ProcessEnv {
+        ADMIN_PASSWORD: string;
+        JUDGEDAEMON_PASSWORD: string;
+      }
+    }
+  }

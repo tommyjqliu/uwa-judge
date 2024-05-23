@@ -1,9 +1,9 @@
 import { AssignmentList } from "@/app/assignments/assignment-list";
 import Pagination from "@/lib/components/pagination";
 import { uwajudgeDB } from "@/lib/database-client";
-import { sleep } from "@/lib/utils";
-
 import Link from "next/link";
+
+export const dynamic = 'force-dynamic'
 
 export default async function page({
   searchParams,

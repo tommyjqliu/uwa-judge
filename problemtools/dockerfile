@@ -1,0 +1,20 @@
+# Extend from the problemtools/minimal image
+FROM problemtools/minimal
+
+# Install Flask and Gunicorn, then clean up in one layer to reduce image size
+RUN apt-get update && \
+    apt-get install -y python3-pip && \
+    pip3 install Flask gunicorn && \
+    apt-get remove -y python3-pip && \
+    apt-get autoremove -y && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+# Copy the web server script into the container
+COPY ./webserver.py /webserver.py
+
+# Expose the port the web server listens on
+EXPOSE 5000
+
+# Run the web server using Gunicorn
+CMD ["gunicorn", "--bind", "0.0.0.0:5000", "webserver:app"]
