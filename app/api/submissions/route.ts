@@ -36,7 +36,7 @@ export const POST = errorHandler(async function (request: Request) {
   } = zfd
     .formData({
       problemId: z.string(),
-      assignmentId: z.coerce.number().optional(),
+      assignmentId: z.coerce.number(),
       userId: z.coerce.number().optional(),
       language: z.string(),
       entryPoint: z.string().default(""),
@@ -108,9 +108,25 @@ export const POST = errorHandler(async function (request: Request) {
     data: {
       id: res.data.id!,
       submissionDate: getCurrentDateTime(),
-      assignmentId: assignmentId,
-      problemId: problemId,
-      userId: userId,
+      Problem: {
+        connect: {
+          id: problemId,
+        },
+      },
+      Assignment: assignmentId
+        ? {
+            connect: {
+              id: assignmentId,
+            },
+          }
+        : undefined,
+      User: userId
+        ? {
+            connect: {
+              id: userId,
+            },
+          }
+        : undefined,
     },
   });
 
