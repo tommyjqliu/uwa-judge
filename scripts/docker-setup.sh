@@ -55,11 +55,12 @@ if [ "$response" -eq 200 ]; then
     # >password.judgehost
     # docker compose -p $DOCKER_PROJECT exec domserver cat /opt/domjudge/domserver/etc/initial_admin_password.secret >password.admin
     # docker compose -p $DOCKER_PROJECT exec domserver cat /opt/domjudge/domserver/etc/restapi.secret | grep '^[^#]' | awk '{print $4}' >password.judgehost
-     if [ "$NODE_ENV" = "production" ]; then
-        docker compose -p $DOCKER_PROJECT exec uwajudge npx prisma migrate reset --force
-    else
-        npx prisma migrate reset --force
-    fi
+    # if [ "$NODE_ENV" = "production" ]; then
+    #     docker compose -p $DOCKER_PROJECT exec uwajudge npx prisma migrate reset --force
+    # else
+    #     npx prisma migrate reset --force
+    # fi
+    npx prisma migrate reset --force
 else
     echo "ERROR: Could not connect to Domjudge after $MAX_TRIES retries. Aborting."
     exit 1
