@@ -55,7 +55,7 @@ export const POST = errorHandler(async function (request: Request) {
     },
   });
   let assignmentId = assignment.id;
-
+  try{
   if(students){
     //process with students
   const dataStudent = students.map(userId =>({
@@ -66,8 +66,18 @@ export const POST = errorHandler(async function (request: Request) {
       data: dataStudent
     });
   }
+}
+  catch(error){
+    return new Response(JSON.stringify("Add Students Failed"), {
+      status: 500,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  }
 
   //process with admins
+  try{
   if(admins){
     const data_admins = admins.map(userId =>({
       assignmentId,
@@ -77,8 +87,19 @@ export const POST = errorHandler(async function (request: Request) {
       data: data_admins
     });
   }
+}
+catch(error){
+  return new Response(JSON.stringify("Add Admins Failed"), {
+    status: 500,
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+}
+
 
   //process with tutors
+  try{
   if(tutors){
     const data_tutors = tutors.map(userId =>({
       assignmentId,
@@ -88,8 +109,28 @@ export const POST = errorHandler(async function (request: Request) {
       data: data_tutors
     });
   }
-
+}
+catch(error){
+  return new Response(JSON.stringify("Add Tutors Failed"), {
+    status: 500,
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+}
+  try{
+    console.log("---------------------------------")
+    console.log("Failed to add problems！！！！！！！！！")
   await createProblems(problems, assignment.id);
+  }
+  catch(error){
+    return new Response(JSON.stringify("Add Problems Failed"), {
+      status: 500,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  }
 
   return new Response(JSON.stringify(assignment), {
     status: 200,
