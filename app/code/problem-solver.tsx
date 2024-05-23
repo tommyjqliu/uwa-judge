@@ -24,6 +24,7 @@ import { useCallback, useState } from "react";
 
 export interface ProblemSolverProps {
   problemId: string;
+  assignmentId?: number;
 }
 
 const ResultsTable = styled(TableContainer)`
@@ -45,7 +46,10 @@ const TableBodyCell = styled(TableCell)`
   border-bottom: 1px solid #ccc;
 `;
 
-export default function ProblemSolver({ problemId }: ProblemSolverProps) {
+export default function ProblemSolver({
+  problemId,
+  assignmentId,
+}: ProblemSolverProps) {
   const [language, setLanguage] = useState("python");
   const [code, setCode] = useState("");
   const [submissionStatus, setSubmissionStatus] = useState<string | null>(null);
@@ -64,6 +68,8 @@ export default function ProblemSolver({ problemId }: ProblemSolverProps) {
         problemId,
         language,
         code,
+        assignmentId,
+        userId: 1,
       });
       console.log(response);
       if (response.status === 200) {
@@ -80,7 +86,7 @@ export default function ProblemSolver({ problemId }: ProblemSolverProps) {
     } finally {
       setIsLoading(false);
     }
-  }, [code, language, problemId]);
+  }, [code, language, problemId, assignmentId]);
 
   return (
     <ClientContext>
