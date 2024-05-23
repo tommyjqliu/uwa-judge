@@ -42,7 +42,7 @@ export default async function page({
         <Link href="/assignments/create">Create Assignment</Link>
       </div>
       <AssignmentList assignments={assignments} />
-      <Pagination totalPage={totalPage} />
+      <Pagination totalPage={totalPage} className="mt-4"/>
     </main>
   );
 }

@@ -23,7 +23,6 @@
     "docker-pub-up": "export NODE_ENV=production && sh ./scripts/docker-up.sh",
     "docker-pub-down": "export NODE_ENV=production && sh ./scripts/docker-down.sh",
     "docker-pub-reset": "export NODE_ENV=production && sh ./scripts/docker-reset.sh",
-
     "build-problemtools-web": "docker build -t tommyjqliu/problemtools-web -f ./problemtools/dockerfile ./problemtools",
     "tag-problemtools-web": "docker tag problemtools-web tommyjqliu/problemtools-web",
     "push-problemtools-web": "docker push tommyjqliu/problemtools-web"
@@ -38,10 +37,13 @@
     "@mui/x-date-pickers": "^7.3.2",
     "@prisma/client": "^5.11.0",
     "@tanstack/react-query": "^5.34.2",
+    "archiver": "^7.0.1",
     "axios": "^1.6.8",
     "bcrypt": "^5.1.1",
     "dayjs": "^1.11.11",
+    "decompress": "^4.2.1",
     "dotenv": "^16.4.5",
+    "fs-extra": "^11.2.0",
     "monaco-editor": "^0.48.0",
     "next": "^14.2.3",
     "next-auth": "^4.24.7",
@@ -53,7 +55,10 @@
     "zod-form-data": "^2.0.2"
   },
   "devDependencies": {
+    "@types/archiver": "^6.0.2",
     "@types/bcrypt": "^5.0.2",
+    "@types/decompress": "^4.2.7",
+    "@types/fs-extra": "^11.0.4",
     "@types/node": "^20.12.7",
     "@types/qs": "^6.9.15",
     "@types/react": "^18",
