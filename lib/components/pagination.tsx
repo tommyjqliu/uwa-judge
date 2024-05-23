@@ -9,17 +9,20 @@ export interface PaginationProps {
   page?: number;
   perPage?: number;
   totalPage?: number;
+  className?: string;
 }
 
 export default function Pagination({
   page = 1,
   perPage,
   totalPage,
+  className,
 }: PaginationProps) {
   const searchParams = useSearchParams();
   const update = useUpdateQuery();
   return (
     <MuiPagination
+      className={className}
       count={totalPage}
       page={searchParams.get("page") ? +searchParams.get("page")! : 1}
       onChange={(e, page) => {

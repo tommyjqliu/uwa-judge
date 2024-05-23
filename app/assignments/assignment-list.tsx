@@ -32,7 +32,7 @@ export function AssignmentList({ assignments }: AssignmentListProps) {
             <TableCell>id</TableCell>
             <TableCell align="right">Name</TableCell>
             <TableCell align="right">Description</TableCell>
-            <TableCell align="right">Start Time</TableCell>
+            <TableCell align="right">Publish Time</TableCell>
             <TableCell align="right">Due Time</TableCell>
           </TableRow>
         </TableHead>

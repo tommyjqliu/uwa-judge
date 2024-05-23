@@ -1,14 +1,13 @@
-import { getHash, isFile } from "@/lib/file";
+import { callProblemToolAndSavePDF, extractAndCheckFile, getHash, rezipDirectory } from "@/lib/file";
 import { ProblemsApi, getDjConfig } from "@/lib/domjudge-api-client";
 import { CONTEST_CID } from "@/lib/constant";
 import {
-  RuntimeClient,
-  UWAjudgeDB,
   domjudgeDB,
   uwajudgeDB,
 } from "@/lib/database-client";
-
-
+import path from "path";
+import os from "os"
+import fs from "fs-extra"
 
 export async function uploadProblemToDomjudge(file: File) {
   const externalid = await getHash(file);
@@ -22,8 +21,27 @@ export async function uploadProblemToDomjudge(file: File) {
     return externalid;
   }
 
-  const buffer = await file.arrayBuffer();
+  let buffer = await file.arrayBuffer();
+  const tempZipPath = path.join(os.tmpdir(), `${externalid}.zip`);
+  const tempDirPath = path.join(os.tmpdir(), externalid);
+
+  await fs.writeFile(tempZipPath, Buffer.from(buffer));
+
+  // Extract and check for problem statement
+  const hasProblemFile = await extractAndCheckFile(tempZipPath, tempDirPath);
+  console.log("heretommy",file, hasProblemFile)
+  if (!hasProblemFile) {
+    await fs.remove(tempZipPath);
+    await callProblemToolAndSavePDF(file, tempDirPath);
+    await rezipDirectory(tempDirPath, tempZipPath);
+    buffer = await fs.readFile(tempZipPath);
+  }
+
+  await fs.remove(tempZipPath);
+  await fs.remove(tempDirPath);
+
   const newFile = new File([buffer], externalid); // rename the file to its hash
+
   await (new ProblemsApi(getDjConfig())).postV4AppApiProblemAddproblemForm(
     newFile,
     "",
@@ -34,6 +52,7 @@ export async function uploadProblemToDomjudge(file: File) {
 }
 
 export async function createProblems(files: File[], assignmentId?: number) {
+  
   const fileNames = files.map((file) => file.name.replace(/\.zip$/, ""));
   const externalids = await Promise.all(
     files.map(async (file) => uploadProblemToDomjudge(file)),
@@ -64,5 +83,3 @@ export async function createProblems(files: File[], assignmentId?: number) {
 
   return problems;
 }
-
-export async function readProblems() {}

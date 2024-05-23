@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Inter, Press_Start_2P } from "next/font/google";
-import "./globals.css";
 import getSession from "@/lib/auth/get-session";
 import Link from "next/link";
+
+import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 const pressStart2P = Press_Start_2P({ weight: "400", subsets: ["latin"] });

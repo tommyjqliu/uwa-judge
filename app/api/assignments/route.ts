@@ -1,7 +1,7 @@
 import errorHandler from "@/lib/error-handler";
 import { z } from "zod";
 import { zfd } from "zod-form-data";
-import { Assignment,StudentsOnAssignments,TutorsOnAssignments,AdminsOnAssignments } from "@prisma/client";
+import { Assignment, StudentsOnAssignments, TutorsOnAssignments, AdminsOnAssignments } from "@prisma/client";
 
 import { uwajudgeDB } from "@/lib/database-client";
 import { createProblems } from "@/lib/services/problem-service";
@@ -12,8 +12,8 @@ const assignmentSchema = zfd.formData({
   publishDate: z.coerce.date().optional(),
   dueDate: z.coerce.date().optional(),
   students: zfd.repeatable(z.coerce.number().array().default([])).optional(),
-  tutors:zfd.repeatable(z.coerce.number().array().default([])).optional(),
-  admins:zfd.repeatable(z.coerce.number().array().default([])).optional(),
+  tutors: zfd.repeatable(z.coerce.number().array().default([])).optional(),
+  admins: zfd.repeatable(z.coerce.number().array().default([])).optional(),
   problems: zfd.repeatable(z.array(zfd.file())), // repearable is nessary for parsing signle file
 });
 
@@ -43,8 +43,9 @@ const assignmentSchema = zfd.formData({
 export const POST = errorHandler(async function (request: Request) {
 
   const parsedData = assignmentSchema.parse(await request.formData());
-  const { title, description, publishDate, dueDate, students,tutors,admins, problems } =
+  const { title, description, publishDate, dueDate, students, tutors, admins, problems } =
     parsedData;
+
   const assignment = await uwajudgeDB.assignment.create({
     data: {
       title,
@@ -53,22 +54,23 @@ export const POST = errorHandler(async function (request: Request) {
       dueDate
     },
   });
+
   let assignmentId = assignment.id;
 
-  if(students){
+  if (students) {
     //process with students
-  const dataStudent = students.map(userId =>({
-    assignmentId,
-    userId,
-  }));
+    const dataStudent = students.map(userId => ({
+      assignmentId,
+      userId,
+    }));
     const st = await uwajudgeDB.studentsOnAssignments.createMany({
       data: dataStudent
     });
   }
 
   //process with admins
-  if(admins){
-    const data_admins = admins.map(userId =>({
+  if (admins) {
+    const data_admins = admins.map(userId => ({
       assignmentId,
       userId,
     }));
@@ -78,8 +80,8 @@ export const POST = errorHandler(async function (request: Request) {
   }
 
   //process with tutors
-  if(tutors){
-    const data_tutors = tutors.map(userId =>({
+  if (tutors) {
+    const data_tutors = tutors.map(userId => ({
       assignmentId,
       userId,
     }));
@@ -88,7 +90,7 @@ export const POST = errorHandler(async function (request: Request) {
     });
   }
 
-  await createProblems(problems, assignment.id);
+  problems.length && await createProblems(problems, assignment.id);
 
   return new Response(JSON.stringify(assignment), {
     status: 200,
