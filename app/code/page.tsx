@@ -59,7 +59,7 @@ export default async function Code({
         </Select>
       </div>
       <Card>
-        <CardContent sx={{ m: 1 }}>
+        <CardContent className="h-[450px]">
           <PdfReader url={`api/problems/${problemId}/statement`}/>
         </CardContent>
       </Card>
