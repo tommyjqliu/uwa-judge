@@ -37,10 +37,10 @@ export async function extractAndCheckFile(zipFile: string, tempDir: string) {
   await fs.ensureDir(tempDir); // Ensure the temporary directory exists
 
   // Extract the ZIP file into the temporary directory
-  console.log("heretommy",zipFile,tempDir)
+
   await decompress(zipFile, tempDir)
   const files = await fs.readdir(tempDir);
-  console.log("heretommy",files, files.length)
+
   const problemStatements = files.filter(file =>
     file === 'problem.pdf' || file === 'problem.html' || file === 'problem.txt'
   );
@@ -58,7 +58,6 @@ export async function callProblemToolAndSavePDF(file: File, tempDir: string) {
   formData.append('file', file);
 
   const response = await axios.postForm(`${PROBLEM_TOOL_URL}/problem2pdf`, formData, {
-
     responseType: 'arraybuffer'
   });
 

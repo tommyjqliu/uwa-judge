@@ -4,6 +4,8 @@ import { z } from "zod";
 import ProblemSolver from "./problem-solver";
 import { Card, CardContent, MenuItem, Select } from "@mui/material";
 import Link from "next/link";
+import PdfReader from "@/lib/components/pdf-reader";
+
 export default async function Code({
   searchParams,
 }: {
@@ -58,7 +60,7 @@ export default async function Code({
       </div>
       <Card>
         <CardContent sx={{ m: 1 }}>
-          TODO: will add the Problem Statement here or something
+          <PdfReader url={`api/problems/${problemId}/statement`}/>
         </CardContent>
       </Card>
       <div>
