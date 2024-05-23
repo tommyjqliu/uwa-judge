@@ -49,12 +49,9 @@ services:
 
   uwajudge:
     image: tommyjqliu/uwajudge:latest
-    environment:
-      - NEXTAUTH_SECRET
-      - NEXTAUTH_URL=https://uwajudge.tommydev.net/
-      - DOMJUDGE_URL=http://domserver:8000
-      - DOMJUDGE_DATABASE_URL=mysql://${MYSQL_USER}:${MYSQL_PASSWORD}@mariadb:3306/domjudge?schema=public
-      - UWAJUDGE_DATABASE_URL=mysql://${MYSQL_USER}:${MYSQL_PASSWORD}@mariadb:3306/uwajudge?schema=public
+    env_file:
+      - .env
+      - production.env
     ports:
       - "3000:3000"
     depends_on:
