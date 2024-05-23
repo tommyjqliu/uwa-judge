@@ -1,13 +1,12 @@
-import dotenv from 'dotenv';
+
 import { CONTEST_CID, CONTEST_SETTING } from '@/lib/constant';
 import { domjudgeDB, uwajudgeDB } from '@/lib/database-client';
 import { readProblems } from '@/tests/utils/read-problems';
 import { createProblems } from '@/lib/services/problem-service';
 import bcrypt from 'bcrypt';
-import { checkEnvs } from '@/lib/utils';
+import { readEnvs } from '@/lib/utils';
 
-dotenv.config({ path: ['.env.production', '.development'] })
-checkEnvs()
+readEnvs()
 
 async function main() {
     // Initial setup

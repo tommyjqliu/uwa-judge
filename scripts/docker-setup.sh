@@ -56,8 +56,7 @@ if [ "$response" -eq 200 ]; then
     # docker compose -p $DOCKER_PROJECT exec domserver cat /opt/domjudge/domserver/etc/initial_admin_password.secret >password.admin
     # docker compose -p $DOCKER_PROJECT exec domserver cat /opt/domjudge/domserver/etc/restapi.secret | grep '^[^#]' | awk '{print $4}' >password.judgehost
      if [ "$NODE_ENV" = "production" ]; then
-        # docker compose -p $DOCKER_PROJECT exec uwajudge npx prisma migrate reset --force
-        echo "Production mode"
+        docker compose -p $DOCKER_PROJECT exec uwajudge npx prisma migrate reset --force
     else
         npx prisma migrate reset --force
     fi
