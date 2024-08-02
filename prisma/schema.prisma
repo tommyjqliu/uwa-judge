@@ -116,6 +116,7 @@ model Submission {
   problemId      String      @db.VarChar(255)
   userId         Int
   comment        String?
+  mark           String?
   Assignment     Assignment? @relation(fields: [assignmentId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "fk_assignment_submission")
   Problem        Problem?    @relation(fields: [problemId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "fk_problem_submission")
   User           User?       @relation(fields: [userId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "fk_user_submission")
