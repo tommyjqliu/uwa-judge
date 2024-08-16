@@ -39,6 +39,7 @@ export const DELETE = errorHandler(async function (
   const assignmentId = Number(params.assignmentId);
   const body = await request.json();
   const problemsId = body.problems;
+  /** 
   try {
     //Delete ProblemsOnAssignments
     if (problemsId) {
@@ -71,6 +72,17 @@ export const DELETE = errorHandler(async function (
       },
     });
   }
+  */
+  let json = {
+    status: 200,
+    msg: "Not Implemented",
+  };
+  return new Response(JSON.stringify(json), {
+    status: 200,
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
 });
 
 /**
@@ -94,6 +106,7 @@ export const POST = errorHandler(async function (
 ) {
   const parsedData = assignmentSchema.parse(await request.formData());
   const { assignmentId, problems } = parsedData;
+  /** 
   try {
     let response: Response = new Response();
     if (problems) {
@@ -132,4 +145,16 @@ export const POST = errorHandler(async function (
       },
     );
   }
+  */
+  let json = {
+    status: 200,
+    msg: "Not Implemented",
+  }
+  return new Response(JSON.stringify(json), {
+    status: 200,
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
 });
