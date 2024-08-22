@@ -59,6 +59,7 @@ model Assignment {
   students    StudentsOnAssignments[]
   Submission  Submission[]
   tutors      TutorsOnAssignments[]
+  clarifications Clarification[] 
 }
 
 model AdminsOnAssignments {
@@ -123,5 +124,17 @@ model Submission {
   @@index([assignmentId], map: "fk_assignment_submission")
   @@index([problemId], map: "fk_problem_submission")
   @@index([userId], map: "fk_user_submission")
+
+  
+  
 }
+model Clarification {
+  id           Int       @id @default(autoincrement())
+  text         String    // 澄清的文本内容
+  assignmentId Int       // 外键，引用 Assignment 模型的 id
+  assignment   Assignment @relation(fields: [assignmentId], references: [id]) // 外键关系
+
+  @@index([assignmentId]) // 为外键字段创建索引
+}
+
 
