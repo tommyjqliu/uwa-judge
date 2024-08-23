@@ -10,3 +10,5 @@ test account: demo demo
 - Use camelCase for variable names
 - Use PascalCase for class names
 
+## Future Task
+- [] 1. Unified database schema naming convention, use "Executable" for table and "executable" for entity
