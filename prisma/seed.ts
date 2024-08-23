@@ -130,8 +130,94 @@ async function main() {
       }
     }
   }
+  const studentUserIds1 = [7, 8, 9];
+  const studentUserIds2 = [10, 11];
+  const studentUserIds3 = [12, 13];
+  const group1 = await uwajudgeDB.userGroup.create({ data: { name: 'Group 1', description: 'Group for users 7, 8, 9' } });
+  const group2 = await uwajudgeDB.userGroup.create({ data: { name: 'Group 2', description: 'Group for users 10, 11' } });
+  const group3 = await uwajudgeDB.userGroup.create({ data: { name: 'Group 3', description: 'Group for users 12, 13' } });
+
+  for (let userId of studentUserIds1) {
+    await uwajudgeDB.usersOnGroups.create({
+      data: {
+        userId: userId,
+        groupId: group1.id,
+        isAdmin: false,  
+      }
+    });
+  }
+
+ 
+  for (let userId of studentUserIds2) {
+    await uwajudgeDB.usersOnGroups.create({
+      data: {
+        userId: userId,
+        groupId: group2.id,
+        isAdmin: false,  
+      }
+    });
+  }
+
+  
+  for (let userId of studentUserIds3) {
+    await uwajudgeDB.usersOnGroups.create({
+      data: {
+        userId: userId,
+        groupId: group3.id,
+        isAdmin: false, 
+      }
+    });
+  }
+
+  
+  await uwajudgeDB.usersOnGroups.create({
+    data: {
+      userId: tutorUserIds[0],
+      groupId: group1.id,
+      isAdmin: true,  
+    }
+  });
+
+  await uwajudgeDB.usersOnGroups.create({
+    data: {
+      userId: tutorUserIds[1],
+      groupId: group2.id,
+      isAdmin: true,  
+    }
+  });
+
+  await uwajudgeDB.usersOnGroups.create({
+    data: {
+      userId: tutorUserIds[2],
+      groupId: group3.id,
+      isAdmin: true, 
+    }
+  });
 
 
+  for (let adminUserId of adminUserIds) {
+    await uwajudgeDB.usersOnGroups.create({
+      data: {
+        userId: adminUserId,
+        groupId: group1.id,
+        isAdmin: true,  
+      }
+    });
+    await uwajudgeDB.usersOnGroups.create({
+      data: {
+        userId: adminUserId,
+        groupId: group2.id,
+        isAdmin: true,  
+      }
+    });
+    await uwajudgeDB.usersOnGroups.create({
+      data: {
+        userId: adminUserId,
+        groupId: group3.id,
+        isAdmin: true,  
+      }
+    });
+  }
 
 
 }
