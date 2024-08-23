@@ -19,6 +19,7 @@
     "test": "docker compose exec webapp npx vitest",
     "db-push": "docker compose exec webapp npx prisma db push",
     "db-migrate": "docker compose exec webapp npx prisma migrate dev",
+    "db-reset": "docker compose exec webapp npx prisma migrate reset --force",
     "docker-dev-up": "docker compose up -d && docker compose exec webapp npx prisma migrate reset --force",
     "docker-dev-down": "docker compose down",
     "docker-dev-reset": "docker compose down && rm -rf ./.mariadb && rm -rf ./.postgres",
