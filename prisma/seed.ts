@@ -64,6 +64,76 @@ async function main() {
         await createProblems(problems, assignment.id)
 
     }
+
+    const studentUserIds = [7, 8, 9, 10, 11, 12, 13];
+  const tutorUserIds = [4, 5, 6];
+  const adminUserIds = [1, 2, 3];
+  
+  for (let assignmentId = 1; assignmentId <= 5; assignmentId++) {
+    for (let studentUserId of studentUserIds) {
+      await uwajudgeDB.studentsOnAssignments.create({
+        data: {
+          assignmentId: assignmentId,
+          userId: studentUserId,
+        },
+      });
+    }
+    
+
+    for (let tutorUserId of tutorUserIds) {
+      await uwajudgeDB.tutorsOnAssignments.create({
+        data: {
+          assignmentId: assignmentId,
+          userId: tutorUserId,
+        },
+      });
+    }
+    
+    
+    for (let adminUserId of adminUserIds) {
+      await uwajudgeDB.adminsOnAssignments.create({
+        data: {
+          assignmentId: assignmentId,
+          userId: adminUserId,
+        },
+      });
+    }
+  }
+
+  const userIds = [7, 8, 9, 10, 11, 12, 13];
+
+  
+  for (let assignmentId = 1; assignmentId <= 5; assignmentId++) {
+    
+    const problems = await uwajudgeDB.problemsOnAssignments.findMany({
+      where: {
+        assignmentId: assignmentId,
+      },
+      include: {
+        problem: true,
+      },
+    });
+
+    for (let problem of problems) {
+      for (let userId of userIds) {
+        await uwajudgeDB.submission.create({
+          data: {
+            id: `${assignmentId}-${problem.problemId}-${userId}`,  
+            submissionDate: new Date(),
+            assignmentId: assignmentId,
+            problemId: problem.problemId,
+            userId: userId,
+            comment: `Submission from user ${userId} for assignment ${assignmentId} and problem ${problem.problemId}`,
+            mark: null,  
+          },
+        });
+      }
+    }
+  }
+
+
+
+
 }
 
 
