@@ -1,76 +1,71 @@
 services:
   # Database
-  mariadb:
-    image: mariadb
+  postgres:
+    image: postgres:latest
     env_file:
       - .env
     ports:
-      - "3306:3306"
+      - "5432:5432"
     volumes:
-      - ./.mariadb:/var/lib/mysql
-
-  # Database Management
-  phpmyadmin:
-    image: phpmyadmin
-    env_file:
-      - .env
+      - ./.postgres:/var/lib/postgresql/data
+  
+  pgadmin:
+    image: dpage/pgadmin4:latest
     environment:
-      PMA_HOST: mariadb
+      PGADMIN_DEFAULT_EMAIL: user@domain.com
+      PGADMIN_DEFAULT_PASSWORD: SuperSecret
     ports:
-      - 8080:80
-    profiles:
-      - dev
-
-  domserver:
-    image: domjudge/domserver:8.2.2
-    env_file:
-      - .env
+      - "5050:80"
+  
+  rabbitmq:
+    image: "rabbitmq:3-management"
     ports:
-      - "8000:80"
-    depends_on:
-      - mariadb
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: user
+      RABBITMQ_DEFAULT_PASS: password
 
   judgehost:
-    image: domjudge/judgehost:8.2.2
-    restart: always # TODO: give warning when fail
+    image: test-judgehost-inject-build:latest
     privileged: true
-    # volumes:
-    #   - /sys/fs/cgroup:/sys/fs/cgroup
     environment:
-      DAEMON_ID: 0
-      JUDGEDAEMON_PASSWORD: ${JUDGEDAEMON_PASSWORD}
+      - JUDGEDAEMON_PASSWORD=yourpassword
+      - JUDGEDAEMON_READ_ONLY_PASSWORD=yourreadonlypassword
+      - JUDGEDAEMON_MASTER=domserver
+      - JUDGEDAEMON_NAME=judgehost
     depends_on:
-      - domserver
+      - rabbitmq
   
-  problemtools:
-    image: tommyjqliu/problemtools-web:latest
-    ports:
-      - "5000:5000"
-
-  uwajudge:
-    image: tommyjqliu/uwajudge:latest
+  # problemtools:
+  #   image: tommyjqliu/problemtools-web:latest
+  #   ports:
+  #     - "5000:5000"
+  
+  webapp:
+    image: node:20-alpine
+    working_dir: /app
+    volumes:
+      - .:/app
     env_file:
       - .env
       - production.env
     ports:
       - "3000:3000"
-    depends_on:
-      - mariadb
-    profiles:
-      - prod
+    command: npm run dev
   
-  nginx:
-    image: nginx:latest
-    volumes:
-      - ./nginx.conf:/etc/nginx/conf.d/default.conf
-      - /etc/letsencrypt/live/uwajudge.tommydev.net/fullchain.pem:/etc/fullchain.pem
-      - /etc/letsencrypt/live/uwajudge.tommydev.net/privkey.pem:/etc/privkey.pem
-    ports:
-      - "80:80"
-      - "443:443"
-    profiles:
-      - prod
-    depends_on:
-      - uwajudge
+  # nginx:
+  #   image: nginx:latest
+  #   volumes:
+  #     - ./nginx.conf:/etc/nginx/conf.d/default.conf
+  #     - /etc/letsencrypt/live/uwajudge.tommydev.net/fullchain.pem:/etc/fullchain.pem
+  #     - /etc/letsencrypt/live/uwajudge.tommydev.net/privkey.pem:/etc/privkey.pem
+  #   ports:
+  #     - "80:80"
+  #     - "443:443"
+  #   profiles:
+  #     - prod 
+  #   depends_on:
+  #     - uwajudge
   
 

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Press_Start_2P } from "next/font/google";
-import getSession from "@/lib/auth/get-session";
+import { getSession } from "@/lib/auth/session";
 import Link from "next/link";
 
 import "./globals.css";
