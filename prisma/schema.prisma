@@ -137,7 +137,7 @@ model Submission {
   code     String
   comment  String?
   judge    Judge[]
-
+  mark           String?
   languageId       String
   userId           Int
   problemVersionId Int?
@@ -220,3 +220,4 @@ model ExecutableFile {
   executable       Executable? @relation(fields: [executableExecId], references: [id])
   executableExecId String?
 }
+
