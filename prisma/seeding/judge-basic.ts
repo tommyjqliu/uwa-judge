@@ -33,14 +33,11 @@ export default async function main() {
                         create: files.map((file, index) => ({
                             name: fileNames[index],
                             content: file,
-                            isExecutable: isExecutable(filePaths[index]) || ['compile', 'run'].includes(fileNames[index]),
+                            isExecutable: isExecutable(filePaths[index]) || ['build', 'run'].includes(fileNames[index]),
                         })),
                     },
                 },
             });
-
-            console.log(`Executable ${id} created`);
-
         }
     }
 }

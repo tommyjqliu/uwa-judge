@@ -8,3 +8,8 @@ export const readProblems = async () => {
     const fileNames = paths.map(path => path.split("/").pop() || "")
     return nodeFiles.map((file, i) => new File([file], fileNames[i]))
 }
+
+export const readProblem = async (problemName: string) => {
+    const file = await readFile(problemPath + '/' + problemName)
+    return new File([file], problemName)
+}

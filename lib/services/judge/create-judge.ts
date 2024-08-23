@@ -7,17 +7,26 @@ export async function createJudge(submissionId: number) {
             id: submissionId,
         },
         include: {
-            ProblemVersion: {
+            problem: {
                 include: {
-                    Testcase: true,
+                    problemVersion: true,
                 },
-            },
-            
+            }
         },
     });
     assert(!!submission, 'Submission not found');
+    const versionId = submission.problemVersionId || submission.problem?.problemVersion.id
+    const version = await uwajudgeDB.problemVersion.findUnique({
+        where: {
+            id: versionId,
+        },
+        include: {
+            testcase: true,
+        },
+    });
+    assert(!!version, 'No valid problem version is found');
 
-    uwajudgeDB.$transaction(async (db) => {
+    return uwajudgeDB.$transaction(async (db) => {
         const judge = await db.judge.create({
             data: {
                 submissionId,
@@ -25,10 +34,12 @@ export async function createJudge(submissionId: number) {
         });
 
         await db.judgeTask.createMany({
-            data: submission.ProblemVersion.Testcase.map((testcase) => ({
+            data: version.testcase.map((testcase) => ({
                 judgeId: judge.id,
                 testcaseId: testcase.id,
             })),
         });
+
+        return judge;
     })
 }

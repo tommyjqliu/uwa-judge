@@ -1,4 +1,5 @@
 import { uwajudgeDB } from "@/lib/database-client";
+import { assert } from "@/lib/error";
 import { getHash } from "@/lib/file";
 import { withZipFile } from "@/lib/zip";
 import { TestCaseType } from "@prisma/client";
@@ -12,7 +13,7 @@ export const importProblemVersion = (file: File) => withZipFile(file, async (zip
     });
 
     if (existVersion) {
-        throw new Error("Problem version already exists");
+        return existVersion;
     }
 
     const yamlFile = 'problem.yaml';
@@ -39,6 +40,8 @@ export const importProblemVersion = (file: File) => withZipFile(file, async (zip
         })
     ).flat();
 
+    assert(testCases.length > 0, 'No test case found');
+
     return uwajudgeDB.problemVersion.create({
         data: {
             hash,
@@ -52,3 +55,4 @@ export const importProblemVersion = (file: File) => withZipFile(file, async (zip
     });
 })
 
+export default importProblemVersion;

@@ -58,6 +58,9 @@ export async function withZipFile<T>(file: File, callback: (controller: ZipContr
             getEntries: (filePath: string = ""): string[] => {
                 const entries: string[] = [];
                 const readDirRecursively = (dir: string) => {
+                    if (!fs.existsSync(dir)) {
+                        return;
+                    }
                     const files = fs.readdirSync(dir);
                     for (const file of files) {
                         const fullPath = path.join(dir, file);

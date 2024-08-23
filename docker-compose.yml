@@ -29,10 +29,11 @@ services:
   judgehost:
     image: test-judgehost-inject-build:latest
     privileged: true
+    restart: always 
     environment:
       - JUDGEDAEMON_PASSWORD=yourpassword
       - JUDGEDAEMON_READ_ONLY_PASSWORD=yourreadonlypassword
-      - JUDGEDAEMON_MASTER=domserver
+      - DOMSERVER_BASEURL=http://webapp:3000/
       - JUDGEDAEMON_NAME=judgehost
     depends_on:
       - rabbitmq

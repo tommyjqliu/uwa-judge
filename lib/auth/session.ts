@@ -5,6 +5,7 @@ import type {
 } from "next";
 import { getServerSession } from "next-auth";
 import authConfig from "./auth-config";
+import { getMockSession } from "@/tests/utils/mock-session";
 
 /**
  * @Description: Get the session of the user from client side or server side
@@ -15,6 +16,9 @@ export function getSession(
     | [NextApiRequest, NextApiResponse]
     | []
 ) {
+  if (process.env.VITEST) {
+    return getMockSession();
+  }
   return getServerSession(...args, authConfig);
 }
 

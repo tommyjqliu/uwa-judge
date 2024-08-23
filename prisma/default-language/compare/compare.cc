@@ -11,7 +11,6 @@
 #include <cassert>
 #include <cmath>
 #include <cstdarg>
-#include <cctype>
 
 const int EXIT_AC = 42;
 const int EXIT_WA = 43;
@@ -73,65 +72,33 @@ FILE *openfeedback(const char *feedbackdir, const char *feedback, const char *wh
 	return res;
 }
 
-// The behavior of std::tolower on (signed) char is undefined.
-char tolower_char(char c)
-{
-    return static_cast<char>(std::tolower(static_cast<unsigned char>(c)));
-}
-
-bool equal_case_insensitive(std::string a, std::string b)
-{
-	for (char &c : a) c = tolower_char(c);
-	for (char &c : b) c = tolower_char(c);
-
-	return a==b;
-}
-
-/* Test two floating-point numbers for equality, accounting for +/-INF, NaN, and precision.
- * Float `jval` is considered the reference value for relative error.
+/* Test two numbers for equality, accounting for +/-INF, NaN and
+ * precision. Float f2 is considered the reference value for relative
+ * error.
  */
-void compare_float(const std::string &judge, const std::string &team, flt jval, flt tval, flt float_abs_tol, flt float_rel_tol, const std::string &extra_msg) {
+int equal(flt f1, flt f2, flt float_abs_tol, flt float_rel_tol)
+{
+	flt absdiff, reldiff;
 	/* Finite values are compared with some tolerance */
-	if (std::isfinite(tval) && std::isfinite(jval)) {
-		flt absdiff = fabsl(tval-jval);
-		flt reldiff = fabsl((tval-jval)/jval);
-		if (float_abs_tol >= 0 && float_rel_tol >= 0) {
-			if (absdiff > float_abs_tol && reldiff > float_rel_tol) {
-				wrong_answer("Too large difference.\n Judge: %s\n Team: %s\n Absolute difference: %Lg (tolerance: %Lg)\n Relative difference: %Lg (tolerance: %Lg)%s",
-				             judge.c_str(), team.c_str(),
-				             absdiff, float_abs_tol,
-				             reldiff, float_rel_tol,
-				             extra_msg.c_str());
-			}
-		} else if (float_abs_tol >= 0) {
-			if (absdiff > float_abs_tol) {
-				wrong_answer("Too large difference.\n Judge: %s\n Team: %s\n Absolute difference: %Lg (tolerance: %Lg)%s",
-				             judge.c_str(), team.c_str(), absdiff, float_abs_tol, extra_msg.c_str());
-			}
-		} else if (float_rel_tol >= 0) {
-			if (reldiff > float_rel_tol) {
-				wrong_answer("Too large difference.\n Judge: %s\n Team: %s\n Relative difference: %Lg (tolerance: %Lg)%s",
-				             judge.c_str(), team.c_str(), reldiff, float_rel_tol, extra_msg.c_str());
-			}
-		}
-	/* NaN is equal to NaN */
-	} else if (std::isnan(jval) && std::isnan(tval)) {
-		return;
-	/* Infinite values are equal if their sign matches */
-	} else if (std::isinf(jval) && std::isinf(tval)) {
-		if (std::signbit(jval) != std::signbit(tval)) {
-			wrong_answer("Expected float %s, got: %s%s", judge.c_str(), team.c_str(), extra_msg.c_str());
-		}
-	/* Values in different classes are always different. */
-	} else {
-		wrong_answer("Expected float %s, got: %s%s", judge.c_str(), team.c_str(), extra_msg.c_str());
+	if ( std::isfinite(f1) && std::isfinite(f2) ) {
+		absdiff = fabsl(f1-f2);
+		reldiff = fabsl((f1-f2)/f2);
+		return !(absdiff > float_abs_tol && reldiff > float_rel_tol);
 	}
+	/* NaN is equal to NaN */
+	if ( std::isnan(f1) && std::isnan(f2) ) return 1;
+	/* Infinite values are equal if their sign matches */
+	if ( std::isinf(f1) && std::isinf(f2) ) {
+		return std::signbit(f1) == std::signbit(f2);
+	}
+	/* Values in different classes are always different. */
+	return 0;
 }
 
 const char *USAGE = "Usage: %s judge_in judge_ans feedback_dir [options] < team_out";
 
 int main(int argc, char **argv) {
-	if (argc < 4) {
+	if(argc < 4) {
 		judge_error(USAGE, argv[0]);
 	}
 	judgemessage = openfeedback(argv[3], "judgemessage.txt", argv[0]);
@@ -175,7 +142,7 @@ int main(int argc, char **argv) {
 	std::string judge, team;
 	while (true) {
 		// Space!  Can't live with it, can't live without it...
-		while (std::isspace(static_cast<unsigned char>(judgeans.peek()))) {
+		while (isspace(judgeans.peek())) {
 			char c = (char)judgeans.get();
 			if (space_change_sensitive) {
 				int d = std::cin.get();
@@ -188,7 +155,7 @@ int main(int argc, char **argv) {
 			if (c == '\n') ++judgeans_line;
 			++judgeans_pos;
 		}
-		while (std::isspace(static_cast<unsigned char>(std::cin.peek()))) {
+		while (isspace(std::cin.peek())) {
 			char d = (char)std::cin.get();
 			if (space_change_sensitive) {
 				wrong_answer("Space change error: judge out of space, got %d from team", d);
@@ -204,42 +171,22 @@ int main(int argc, char **argv) {
 			wrong_answer("User EOF while judge had more output\n(Next judge token: %s)", judge.c_str());
 		}
 
-		std::string extra_msg = "";
-		bool nonprintable = false;
-		for (char c : judge) {
-			if (!std::isprint(static_cast<unsigned char>(c))) {
-				nonprintable = true;
-				extra_msg += "judge";
-				break;
-			}
-		}
-		for (char c : team) {
-			if (!std::isprint(static_cast<unsigned char>(c))) {
-				if (nonprintable) extra_msg += ',';
-				nonprintable = true;
-				extra_msg += "team";
-				break;
-			}
-		}
-		if (nonprintable) {
-			extra_msg = "\nNote: " + extra_msg + " token contains non-printable characters";
-		}
-
 		flt jval, tval;
 		if (use_floats && isfloat(judge.c_str(), jval)) {
 			if (!isfloat(team.c_str(), tval)) {
-				wrong_answer("Expected float, got: %s%s", team.c_str(), extra_msg.c_str());
+				wrong_answer("Expected float, got: %s", team.c_str());
 			}
-			compare_float(judge, team, jval, tval, float_abs_tol, float_rel_tol, extra_msg);
+			if (!equal(tval, jval, float_abs_tol, float_rel_tol)) {
+				wrong_answer("Too large difference.\n Judge: %s\n Team: %s\n Difference: %Lg\n (abs tol %Lg rel tol %Lg)",
+							 judge.c_str(), team.c_str(), fabsl(jval-tval), float_abs_tol, float_rel_tol);
+			}
 		} else if (case_sensitive) {
-			if (judge != team) {
-				wrong_answer("String tokens mismatch\nJudge: \"%s\"\nTeam: \"%s\"%s",
-				             judge.c_str(), team.c_str(), extra_msg.c_str());
+			if (strcmp(judge.c_str(), team.c_str()) != 0) {
+				wrong_answer("String tokens mismatch\nJudge: \"%s\"\nTeam: \"%s\"", judge.c_str(), team.c_str());
 			}
 		} else {
-			if (!equal_case_insensitive(judge, team)) {
-				wrong_answer("String tokens mismatch\nJudge: \"%s\"\nTeam: \"%s\"%s",
-				             judge.c_str(), team.c_str(), extra_msg.c_str());
+			if(strcasecmp(judge.c_str(), team.c_str()) != 0) {
+				wrong_answer("String tokens mismatch\nJudge: \"%s\"\nTeam: \"%s\"", judge.c_str(), team.c_str());
 			}
 		}
 		judgeans_pos += judge.length();
