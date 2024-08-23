@@ -27,7 +27,7 @@ services:
       RABBITMQ_DEFAULT_PASS: password
 
   judgehost:
-    image: test-judgehost-inject-build:latest
+    image: tommyjqliu/judgehost:latest
     privileged: true
     restart: always 
     environment:
@@ -37,12 +37,7 @@ services:
       - JUDGEDAEMON_NAME=judgehost
     depends_on:
       - rabbitmq
-  
-  # problemtools:
-  #   image: tommyjqliu/problemtools-web:latest
-  #   ports:
-  #     - "5000:5000"
-  
+
   webapp:
     image: node:20-alpine
     working_dir: /app
@@ -54,6 +49,11 @@ services:
     ports:
       - "3000:3000"
     command: npm run dev
+    
+  # problemtools:
+  #   image: tommyjqliu/problemtools-web:latest
+  #   ports:
+  #     - "5000:5000"
   
   # nginx:
   #   image: nginx:latest
@@ -68,5 +68,3 @@ services:
   #     - prod 
   #   depends_on:
   #     - uwajudge
-  
-
