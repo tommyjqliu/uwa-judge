@@ -15,15 +15,14 @@ export function ensureDir(path: string) {
   }
 }
 
-export async function getHash(file: File) {
-  const reader = file.stream().getReader();
-  const chunks: Uint8Array[] = [];
-  let chunk;
-  while (!(chunk = await reader?.read()).done) {
-    chunks.push(chunk.value);
+export async function getHash(input: File | Buffer) {
+  let buffer: ArrayBuffer;
+  if (input instanceof File) {
+    buffer = Buffer.from(await input.arrayBuffer());
+  } else {
+    buffer = input;
   }
-  const fileData = new Blob(chunks);
-  const buffer = await fileData.arrayBuffer();
+
   const hashBuffer = await crypto.subtle.digest("SHA-256", buffer);
   const hashArray = Array.from(new Uint8Array(hashBuffer));
   const hashHex = hashArray

@@ -5,6 +5,7 @@ import { Assignment, StudentsOnAssignments, TutorsOnAssignments, AdminsOnAssignm
 
 import { uwajudgeDB } from "@/lib/database-client";
 import { createProblems } from "@/lib/services/problem-service";
+import getSession from "@/lib/auth/get-session";
 
 const assignmentSchema = zfd.formData({
   title: z.string(),
@@ -120,6 +121,7 @@ export const POST = errorHandler(async function (request: Request) {
   ]
  */
 export const GET = errorHandler(async function (request: Request) {
+
   try {
     const assignmentsFromDB = await uwajudgeDB.assignment.findMany();
     const assignments: Assignment[] = assignmentsFromDB.map(

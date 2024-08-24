@@ -1,5 +1,5 @@
 
-import { domjudgeDB, uwajudgeDB } from "@/lib/database-client";
+import { uwajudgeDB } from "@/lib/database-client";
 import { readEnvs } from "@/lib/utils";
 import { beforeAll, afterAll } from "vitest";
 
@@ -11,5 +11,4 @@ beforeAll(() => {
 
 afterAll(async () => {
     uwajudgeDB.$disconnect()
-    domjudgeDB.$disconnect()
 })
