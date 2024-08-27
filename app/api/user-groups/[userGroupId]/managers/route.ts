@@ -9,7 +9,7 @@ import errorHandler from "@/lib/error-handler";
 
 export const GET = errorHandler(async function (request:Request,context:any) {
     const params = context.params;
-    const userId = Number(params.userId);
+    const userId = Number(params.userGroupId);
 
     const managedGroups = await uwajudgeDB.usersOnGroups.findMany({
       where: {
@@ -19,11 +19,7 @@ export const GET = errorHandler(async function (request:Request,context:any) {
       include: { group: true } 
     });
   
-    const groups = managedGroups.map((g) => ({
-      id: g.group.id,
-      name: g.group.name,
-      description: g.group.description
-    }));
+    const groups = managedGroups.map((g) => g.group);
   
     return new Response(JSON.stringify(groups), {
       status: 200,
@@ -31,7 +27,5 @@ export const GET = errorHandler(async function (request:Request,context:any) {
         "Content-Type": "application/json",
       },
     });
-
-  
   });
   

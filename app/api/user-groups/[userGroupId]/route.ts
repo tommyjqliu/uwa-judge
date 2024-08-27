@@ -59,6 +59,4 @@ export const GET = errorHandler(async function (request:Request,context:any) {
   });
 });
 
-
-
   
