@@ -18,6 +18,28 @@ model User {
   Submission          Submission[]
   TutorsOnAssignments TutorsOnAssignments[]
   permissions         Permission[]            @relation("PermissionToUser")
+  groups              UsersOnGroups[]
+}
+
+model UserGroup {
+  id          Int          @id @default(autoincrement())
+  name        String
+  description String?
+  permissions Permission[] @relation("PermissionToUserGroup")
+  users       UsersOnGroups[]
+}
+
+
+model UsersOnGroups {
+  userId     Int
+  groupId    Int
+  isAdmin    Boolean    
+  user       User      @relation(fields: [userId], references: [id])
+  group      UserGroup @relation(fields: [groupId], references: [id])
+
+  @@id([userId, groupId])
+  @@index([userId], map: "UsersOnGroups_userId_idx")
+  @@index([groupId], map: "UsersOnGroups_groupId_idx")
 }
 
 model ExternalAccount {
@@ -40,12 +62,7 @@ model Permission {
   userGroups  UserGroup[] @relation("PermissionToUserGroup")
 }
 
-model UserGroup {
-  id          Int          @id @default(autoincrement())
-  name        String
-  description String?
-  permissions Permission[] @relation("PermissionToUserGroup")
-}
+
 
 model Assignment {
   id          Int                     @id @default(autoincrement())
