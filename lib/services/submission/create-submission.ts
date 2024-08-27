@@ -1,8 +1,6 @@
 import { getUser } from "@/lib/auth/session";
 import { uwajudgeDB } from "@/lib/database-client";
 import { assert, ParamsInvalidError } from "@/lib/error";
-import { version } from "os";
-import versionInAssignment from "../problem-version/version-in-asignment";
 
 // Todo: improve relationship between problem and problemVersion
 interface SubmissionOptions {
