@@ -30,7 +30,8 @@ export const importProblemVersion = (file: File) => withZipFile(file, async (zip
     const problemYaml = zip.readFileString(yamlFile);
     assert(!!problemYaml, 'problem.yaml is required');
     const metadata = parseLegacyMetadata(problemYaml);
-    
+    const fileName = file.name.replace(/\.[^/.]+$/, "");
+    const name = metadata.name || fileName;
     const testCases = (['sample', 'secret'] as TestCaseType[]).map((type) =>
         zip.getEntries(`data/${type}`).filter((entry) => entry.endsWith('.in')).map((inputPath) => {
             const name = inputPath.match(/\/([^/]+)\.in$/)?.[1] ?? '';
@@ -60,15 +61,34 @@ export const importProblemVersion = (file: File) => withZipFile(file, async (zip
         const filePaths = zip.getFullEntries('output_validators');
         const firstDir = path.dirname(filePaths[0]);
         assert(filePaths.every(filePath => path.dirname(filePath) === firstDir), 'All output validators must be in the same directory');
-        outputValidator = await createExecutable(`Validator for Problem ${metadata.name} ${hash}`, 'Special Validator', combinedRunCompare ? 'run' : 'compare', filePaths);
+        outputValidator = await createExecutable(`${name}-${hash}`, `Validator for Problem ${name}`, combinedRunCompare ? 'run' : 'compare', filePaths);
     }
 
 
     // TODO: Obtain Statement
     // TODO: Submit example submission
-
+    console.log("temp: ", metadata.name || fileName, {
+        data: {
+            name,
+            hash,
+            metadata,
+            combinedRunCompare,
+            file: Buffer.from(await file.arrayBuffer()),
+            testcase: {
+                createMany: {
+                    data: testCases,
+                }
+            },
+            outputValidator: outputValidator ? {
+                connect: {
+                    id: outputValidator.id,
+                }
+            } : undefined,
+        }
+    }.data.outputValidator?.connect.id)
     return uwajudgeDB.problemVersion.create({
         data: {
+            name,
             hash,
             metadata,
             combinedRunCompare,

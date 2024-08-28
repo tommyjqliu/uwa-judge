@@ -15,7 +15,7 @@ export async function createJudge(submissionId: number) {
         },
     });
     assert(!!submission, 'Submission not found');
-    const versionId = submission.problemVersionId || submission.problem?.problemVersion.id
+    const versionId = (submission.problemVersionId || submission.problem?.problemVersion.id)!
     const version = await uwajudgeDB.problemVersion.findUnique({
         where: {
             id: versionId,
@@ -30,6 +30,7 @@ export async function createJudge(submissionId: number) {
         const judge = await db.judge.create({
             data: {
                 submissionId,
+                problemVersionId: versionId
             },
         });
 
