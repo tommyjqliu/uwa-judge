@@ -13,6 +13,7 @@ interface ZipController {
      * @returns {string[]} entries
      */
     getEntries: (filePath?: string) => string[];
+    getFullEntries: (filePath?: string) => string[];
 }
 
 export async function withZipFile<T>(file: File, callback: (controller: ZipController) => Promise<T>): Promise<T> {
@@ -28,7 +29,7 @@ export async function withZipFile<T>(file: File, callback: (controller: ZipContr
                 const fullPath = path.join(unzippedPath, filePath);
                 return fs.existsSync(fullPath) && fs.statSync(fullPath).isFile();
             },
-    
+
             readFile: (filePath: string): File | null => {
                 const fullPath = path.join(unzippedPath, filePath);
                 if (controller.hasFile(filePath)) {
@@ -69,6 +70,27 @@ export async function withZipFile<T>(file: File, callback: (controller: ZipContr
                             readDirRecursively(fullPath);
                         } else {
                             entries.push(relativePath);
+                        }
+                    }
+                };
+                readDirRecursively(path.join(unzippedPath, filePath));
+                return entries;
+            },
+
+            // TODO: Refactor
+            getFullEntries: (filePath: string = ""): string[] => {
+                const entries: string[] = [];
+                const readDirRecursively = (dir: string) => {
+                    if (!fs.existsSync(dir)) {
+                        return;
+                    }
+                    const files = fs.readdirSync(dir);
+                    for (const file of files) {
+                        const fullPath = path.join(dir, file);
+                        if (fs.statSync(fullPath).isDirectory()) {
+                            readDirRecursively(fullPath);
+                        } else {
+                            entries.push(fullPath);
                         }
                     }
                 };

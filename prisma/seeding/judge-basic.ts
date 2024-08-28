@@ -1,5 +1,5 @@
 import { uwajudgeDB } from "@/lib/database-client";
-import { isExecutable } from "@/lib/utils";
+import createExecutable from "@/lib/services/executable/create";
 import fs from 'fs';
 
 // Example data, adjust as necessary
@@ -21,23 +21,9 @@ export default async function main() {
             const folderPath = `./prisma/default-language/${id}`;
             const fileNames = fs.readdirSync(folderPath);
             const filePaths = fileNames.map((file) => `${folderPath}/${file}`);
-            const files = filePaths.map((file) => fs.readFileSync(file));
 
             // Create executable
-            await uwajudgeDB.executable.create({
-                data: {
-                    id: id,
-                    description,
-                    type,
-                    files: {
-                        create: files.map((file, index) => ({
-                            name: fileNames[index],
-                            content: file,
-                            isExecutable: isExecutable(filePaths[index]) || ['build', 'run'].includes(fileNames[index]),
-                        })),
-                    },
-                },
-            });
+            await createExecutable(id, description, type, filePaths);
         }
     }
 }

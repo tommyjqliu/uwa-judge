@@ -45,7 +45,7 @@ export async function sendMessage(queue: string, message: string): Promise<void>
             persistent: true // Make sure that RabbitMQ will never lose the message if it crashes
         });
 
-        console.log(`Message sent to queue ${queue}: ${message}`);
+        // console.log(`Message sent to queue ${queue}: ${message}`);
 
         // Close the channel and connection
         await channel.close();

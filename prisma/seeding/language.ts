@@ -1,5 +1,5 @@
 import { uwajudgeDB } from "@/lib/database-client";
-import { isExecutable } from "@/lib/utils";
+import createExecutable from "@/lib/services/executable/create";
 import fs from 'fs';
 
 // ref: DOMjudge: domjudge/webapp/src/DataFixtures/default-language/LanguageFixture.php
@@ -46,22 +46,8 @@ export default async function main() {
                 const folderPath = `./prisma/default-language/${item[9]}`;
                 const fileNames = fs.readdirSync(folderPath);
                 const filePaths = fileNames.map((file) => `${folderPath}/${file}`);
-                const files = filePaths.map((file) => fs.readFileSync(file));
 
-                executable = await uwajudgeDB.executable.create({
-                    data: {
-                        id: item[9],
-                        description: item[9],
-                        type: 'compile',
-                        files: {
-                            create: files.map((file, index) => ({
-                                name: fileNames[index],
-                                content: file,
-                                isExecutable: isExecutable(filePaths[index]) || ['build', 'run'].includes(fileNames[index]),
-                            })),
-                        },
-                    },
-                });
+                executable = await createExecutable(item[9], item[2], 'compile', filePaths);
             }
 
             await uwajudgeDB.language.create({

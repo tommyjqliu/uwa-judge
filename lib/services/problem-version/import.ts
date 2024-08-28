@@ -1,9 +1,19 @@
 import { uwajudgeDB } from "@/lib/database-client";
-import { assert } from "@/lib/error";
+import { assert, ParamsInvalidError } from "@/lib/error";
 import { getHash } from "@/lib/file";
 import { withZipFile } from "@/lib/zip";
-import { TestCaseType } from "@prisma/client";
+import { Executable, TestCaseType } from "@prisma/client";
+import { parseLegacyMetadata } from "./metadata/legacy";
+import path from "path";
+import createExecutable from "../executable/create";
 
+/**
+ * 
+ * @param file Problem zip in Kattis format
+ * https://icpc.io/problem-package-format/spec/2023-07-draft.html
+ * https://www.problemarchive.org/wiki/index.php/Introduction_to_the_Kattis_Problem_Format
+ * @returns 
+ */
 export const importProblemVersion = (file: File) => withZipFile(file, async (zip) => {
     const hash = await getHash(file);
     const existVersion = await uwajudgeDB.problemVersion.findFirst({
@@ -11,18 +21,17 @@ export const importProblemVersion = (file: File) => withZipFile(file, async (zip
             hash,
         },
     });
-
     if (existVersion) {
         return existVersion;
     }
 
+
     const yamlFile = 'problem.yaml';
-    const tleFile = '.timelimit';
-    const submissionFile = 'submissions.json';
-
     const problemYaml = zip.readFileString(yamlFile);
-    // TODO: Obtain Statement
-
+    assert(!!problemYaml, 'problem.yaml is required');
+    const metadata = parseLegacyMetadata(problemYaml);
+    const fileName = file.name.replace(/\.[^/.]+$/, "");
+    const name = metadata.name || fileName;
     const testCases = (['sample', 'secret'] as TestCaseType[]).map((type) =>
         zip.getEntries(`data/${type}`).filter((entry) => entry.endsWith('.in')).map((inputPath) => {
             const name = inputPath.match(/\/([^/]+)\.in$/)?.[1] ?? '';
@@ -40,17 +49,60 @@ export const importProblemVersion = (file: File) => withZipFile(file, async (zip
         })
     ).flat();
 
-    assert(testCases.length > 0, 'No test case found');
+    assert(testCases.filter(i => i.type === 'secret').length > 0, 'At least one secret test case is required');
 
-    return uwajudgeDB.problemVersion.create({
+    let combinedRunCompare = false;
+    let outputValidator: Executable | undefined;
+    if (metadata.validation.includes('custom')) {
+        if (metadata.validation.includes('interactive')) {
+            combinedRunCompare = true;
+        }
+
+        const filePaths = zip.getFullEntries('output_validators');
+        const firstDir = path.dirname(filePaths[0]);
+        assert(filePaths.every(filePath => path.dirname(filePath) === firstDir), 'All output validators must be in the same directory');
+        outputValidator = await createExecutable(`${name}-${hash}`, `Validator for Problem ${name}`, combinedRunCompare ? 'run' : 'compare', filePaths);
+    }
+
+
+    // TODO: Obtain Statement
+    // TODO: Submit example submission
+    console.log("temp: ", metadata.name || fileName, {
         data: {
+            name,
             hash,
+            metadata,
+            combinedRunCompare,
             file: Buffer.from(await file.arrayBuffer()),
             testcase: {
                 createMany: {
                     data: testCases,
                 }
             },
+            outputValidator: outputValidator ? {
+                connect: {
+                    id: outputValidator.id,
+                }
+            } : undefined,
+        }
+    }.data.outputValidator?.connect.id)
+    return uwajudgeDB.problemVersion.create({
+        data: {
+            name,
+            hash,
+            metadata,
+            combinedRunCompare,
+            file: Buffer.from(await file.arrayBuffer()),
+            testcase: {
+                createMany: {
+                    data: testCases,
+                }
+            },
+            outputValidator: outputValidator ? {
+                connect: {
+                    id: outputValidator.id,
+                }
+            } : undefined,
         }
     });
 })

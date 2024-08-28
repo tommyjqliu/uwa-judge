@@ -22,20 +22,19 @@ model User {
 }
 
 model UserGroup {
-  id          Int          @id @default(autoincrement())
+  id          Int             @id @default(autoincrement())
   name        String
   description String?
-  permissions Permission[] @relation("PermissionToUserGroup")
+  permissions Permission[]    @relation("PermissionToUserGroup")
   users       UsersOnGroups[]
 }
 
-
 model UsersOnGroups {
-  userId     Int
-  groupId    Int
-  isAdmin    Boolean    
-  user       User      @relation(fields: [userId], references: [id])
-  group      UserGroup @relation(fields: [groupId], references: [id])
+  userId  Int
+  groupId Int
+  isAdmin Boolean
+  user    User      @relation(fields: [userId], references: [id])
+  group   UserGroup @relation(fields: [groupId], references: [id])
 
   @@id([userId, groupId])
   @@index([userId], map: "UsersOnGroups_userId_idx")
@@ -61,8 +60,6 @@ model Permission {
   users       User[]      @relation("PermissionToUser")
   userGroups  UserGroup[] @relation("PermissionToUserGroup")
 }
-
-
 
 model Assignment {
   id          Int                     @id @default(autoincrement())
@@ -120,13 +117,19 @@ model Problem {
 // Different versions of the same problem
 model ProblemVersion {
   id        Int      @id @default(autoincrement())
+  name      String
   createdAt DateTime @default(now())
-  hash      String
+  hash      String   @unique
   file      Bytes
+  metadata  Json
+
+  combinedRunCompare Boolean     @default(false) // For a custom interactive problem, two stages are combined into one
+  outputValidator    Executable?
 
   testcase   Testcase[]
   problem    Problem[]
   submission Submission[]
+  Judge      Judge[]
 
   @@index([hash])
 }
@@ -152,52 +155,58 @@ model Submission {
   id       Int      @id @default(autoincrement())
   dateTime DateTime @default(now())
   code     String
+  mark     String?
   comment  String?
   judge    Judge[]
-  mark           String?
-  languageId       String
-  userId           Int
-  problemVersionId Int?
-  problemId        Int?
 
-  language       Language        @relation(fields: [languageId], references: [id])
-  user           User            @relation(fields: [userId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  languageId String
+  language   Language @relation(fields: [languageId], references: [id])
+
+  // A submission can be a system submission so not user connected
+  userId Int?
+  user   User? @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   // A submission is either for a problem or a problem version directly
-  problemVersion ProblemVersion? @relation(fields: [problemVersionId], references: [id], onDelete: Restrict, onUpdate: Restrict)
-  problem        Problem?        @relation(fields: [problemId], references: [id])
+  problemVersionId Int?
+  problemVersion   ProblemVersion? @relation(fields: [problemVersionId], references: [id], onDelete: Cascade)
+  problemId        Int?
+  problem          Problem?        @relation(fields: [problemId], references: [id])
 
   @@index([problemVersionId])
   @@index([userId])
 }
 
 model Judge {
-  id           Int         @id @default(autoincrement())
+  id           Int  @id @default(autoincrement())
   submissionId Int
   score        Int?
   time         Int?
   memory       Int?
-  submission   Submission  @relation(fields: [submissionId], references: [id])
-  judgeTask    JudgeTask[]
+
+  submission       Submission     @relation(fields: [submissionId], references: [id])
+  problemVersionId Int
+  problemVersion   ProblemVersion @relation(fields: [problemVersionId], references: [id], onDelete: Cascade)
+  judgeTask        JudgeTask[]
 }
 
 model JudgeTask {
-  id     Int     @id @default(autoincrement())
+  id         Int      @id @default(autoincrement())
   judgeId    Int
   testcaseId Int
-  testcase   Testcase @relation(fields: [testcaseId], references: [id])
-  judge      Judge    @relation(fields: [judgeId], references: [id])
+  testcase   Testcase @relation(fields: [testcaseId], references: [id], onDelete: Cascade)
+  judge      Judge    @relation(fields: [judgeId], references: [id], onDelete: Cascade)
 
   compileSuccess  Boolean?
   compileOutput   String?
   compileMetadata String?
 
-  runResult String?
-  runTime   Float?
-  runOutput String?
-  runError  String?
-  runSystem String?
-  runMetadata  String?
-  runDiff String?
+  runResult   String?
+  runTime     Float?
+  runOutput   String?
+  runError    String?
+  runSystem   String?
+  runMetadata String?
+  runDiff     String?
 }
 
 model Language {
@@ -219,13 +228,16 @@ model Language {
 }
 
 model Executable {
-  id          String           @id @map("execId")
+  id          String           @id
   description String
   type        String
   files       ExecutableFile[]
 
   languageId String?
   language   Language?
+
+  problemVersionId Int?            @unique
+  ProblemVersion   ProblemVersion? @relation(fields: [problemVersionId], references: [id], onDelete: Cascade)
 }
 
 model ExecutableFile {
@@ -234,7 +246,6 @@ model ExecutableFile {
   content      Bytes
   isExecutable Boolean
 
-  executable       Executable? @relation(fields: [executableExecId], references: [id])
-  executableExecId String?
+  executable   Executable? @relation(fields: [executableId], references: [id])
+  executableId String?
 }
-
