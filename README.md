@@ -1,4 +1,6 @@
 # uwa-judge
+https://arno.surfacew.com/posts/en/nextjs-architecture
+https://arno.surfacew.com/posts/cn/nextjs-architecture-cn
 ## Setup
 https://www.notion.so/tommyjqliu/Dev-env-setup-59617b3ae5c1482e8da2f4b65ed1d057?pvs=4
 

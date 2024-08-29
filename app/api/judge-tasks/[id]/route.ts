@@ -1,4 +1,6 @@
 import { uwajudgeDB } from "@/lib/database-client";
+import { assert } from "@/lib/error";
+import { refreshJudgeResult } from "@/lib/services/judge/check-judge";
 import { decodeBase64 } from "@/lib/utils";
 import { z } from "zod";
 import { zfd } from "zod-form-data";
@@ -20,7 +22,9 @@ const schema = zfd.formData({
 export async function PUT(request: Request, context: { params: { id: string } }) {
     const formData = await request.formData();
     const data = schema.parse(formData);
-    console.log(Number(context.params.id), data)
+    const judgeTaskId = Number(context.params.id);
+    assert(!!judgeTaskId, "Judge task id is required");
+
     const transformedData = {
         compileSuccess: data.compile_success,
         compileOutput: data.output_compile,
@@ -36,12 +40,18 @@ export async function PUT(request: Request, context: { params: { id: string } })
 
     const filteredData = Object.fromEntries(Object.entries(transformedData).filter(([_, v]) => v !== undefined));
 
-    await uwajudgeDB.judgeTask.update({
+    const judgeTask = await uwajudgeDB.judgeTask.update({
         where: {
             id: Number(context.params.id),
         },
         data: filteredData,
+        include: {
+            judge: true
+        }
     });
+
+    refreshJudgeResult(judgeTask.judge.id);
+
 
     return new Response('ok', {
         status: 200,

@@ -1,14 +1,11 @@
 import { describe, expect, it } from "vitest";
 import { readProblem, readProblems } from "../utils/read-problems";
-import { uwajudgeDB } from "@/lib/database-client";
 import importProblemVersion from "@/lib/services/problem-version/import";
-import { createSubmission } from "@/lib/services/submission/create-submission";
-import { createJudge } from "@/lib/services/judge/create-judge";
-import dispatchJudge from "@/lib/services/judge/dispatch-judge";
+import realtimeSubmission from "@/lib/services/submission/realtime-submission";
 
 
 describe.concurrent("Judge problem", () => {
-    it.skip("Judge hello problem should success", async () => {
+    it("Judge hello problem should be normal", async () => {
         const file = await readProblem("hello.zip");
         const problemVersion = await importProblemVersion(file);
 
@@ -34,9 +31,8 @@ describe.concurrent("Judge problem", () => {
                 languageId: "cpp",
                 problemVersionId: problemVersion.id,
             }].map(async (item) => {
-                const submission = await createSubmission(item);
-                const judge = await createJudge(submission.id);
-                await dispatchJudge(judge.id);
+                const judge = await realtimeSubmission(item);
+                console.log(`Judge ${judge.id} finished`);
             })
 
         await Promise.all(promises);
@@ -52,8 +48,10 @@ describe.concurrent("Judge problem", () => {
                 #include <cstdio>
                 #include <cstring>
 
+
                 int main(void) {
                     int lo = 1, hi = 1000;
+                    int t = 0;
                     while (true) {
                         int m = (lo+hi)/2;
                         printf("%d\\n", m);
@@ -72,12 +70,12 @@ describe.concurrent("Judge problem", () => {
         ];
 
         const promises = testCases.map(async (item) => {
-            const submission = await createSubmission({
+            const submission = {
                 ...item,
                 problemVersionId: problemVersion.id,
-            });
-            const judge = await createJudge(submission.id);
-            await dispatchJudge(judge.id);
+            }
+            const judge = await realtimeSubmission(submission);
+            console.log(`Judge ${judge.id} finished`);
         });
 
         await Promise.all(promises);

@@ -37,7 +37,7 @@ export default async function dispatchJudge(judgeId: number) {
         const run_config = `{"time_limit":10.0,"memory_limit":524288,"output_limit":8192,"process_limit":64,"entry_point":null, "hash": "123asdf45sfd6"}`;
         const compare_config = `{"script_timelimit":30,"script_memory_limit":2097152,"script_filesize_limit":2621440,"compare_args":null,"combined_run_compare": ${problem.combinedRunCompare}, "hash": "1234sdf5f6"}`
 
-        return sendMessage('judgeTask', JSON.stringify({
+        return sendMessage('judge_task', JSON.stringify({
             uuid: "1sdf2sdf3",
             jobid: judge.id,
             judgeId: judge.id,
@@ -48,6 +48,7 @@ export default async function dispatchJudge(judgeId: number) {
             input: task.testcase.input,
             output: task.testcase.output,
             code: Buffer.from(judge.submission.code).toString('base64'),
+            stop_on_error: judge.stopOnError,
 
             compile_config,
             run_config,

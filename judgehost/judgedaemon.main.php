@@ -432,7 +432,7 @@ function fetch_executable_internal(
         } else {
             $content = request(sprintf('judgehosts/get_files/%s/%s', $type, $execid), 'GET');
         }
-        logmsg(LOG_ERR, "  📦 Fetched executable from database." . $content);
+        // logmsg(LOG_INFO, "  📦 Fetched executable from database." . $content);
         $files = dj_json_decode($content);
         unset($content);
         $concatenatedMd5s = '';
@@ -748,6 +748,7 @@ $broker_pass = 'password';
 $max_attempts = 5;
 $attempt = 0;
 $connected = false;
+$finished_judges = [];
 
 while ($uwajudge_bit && $attempt < $max_attempts && !$connected) {
     try {
@@ -770,8 +771,34 @@ if ($connected) {
     $endpointID = $endpointIDs[0];
     $workdirpath = JUDGEDIR . "/$myhost/endpoint-$endpointID";
 
-    $callback = function ($msg) {
-        global $workdirpath, $lastWorkdir, $myhost;
+    $channel->exchange_declare('judge_finished', 'fanout', false, false, false);
+    list($tempQueue, ,) = $channel->queue_declare("", false, false, true, false);
+    $channel->queue_bind($tempQueue, 'judge_finished');
+    // $finishCallback = function ($msg) {
+    //     global $finished_judges;
+    //     logmsg(LOG_INFO, "Received judge finished message: " . $msg->body);
+    //     $finished_judges[] = $msg->body;
+    // };
+    // $channel->basic_consume($tempQueue, '', false, false, false, false, $finishCallback);
+
+    $channel->queue_declare('judge_task', false, true, false, false);
+    $judgeCallback = function ($msg) {
+        global $workdirpath, $lastWorkdir, $myhost, $finished_judges, $channel, $tempQueue;
+        $message = $channel->basic_get($tempQueue);
+        while ($message) {
+            logmsg(LOG_INFO, "Receiving judge finished message: " . $message->body);
+            $finished_judges[] = $message->body;
+            $channel->basic_ack($message->delivery_info['delivery_tag']);
+            $message = $channel->basic_get($tempQueue);
+        }
+
+        // Create workdir for judging.
+        $judgeTask = json_decode($msg->body, true);
+        if (in_array($judgeTask['jobid'], $finished_judges)) {
+            logmsg(LOG_INFO, "Skipping judge task: " . $judgeTask['judgetaskid'] . " because judge " . $judgeTask['judgeId'] . " has already finished.");
+            return;
+        }
+
         // Check for available disk space
         $free_space = disk_free_space(JUDGEDIR);
         $allowed_free_space  = djconfig_get_value('diskspace_error'); // in kB
@@ -818,8 +845,8 @@ if ($connected) {
             }
         }
 
-        // Create workdir for judging.
-        $judgeTask = json_decode($msg->body, true);
+
+
         $workdir = judging_directory($workdirpath, $judgeTask);
         logmsg(LOG_INFO, "  Working directory: $workdir");
 
@@ -900,15 +927,16 @@ if ($connected) {
             //             " in my name; given back unfinished runs from me.");
             //     }
             // }
+            if ($judgeTask['stop_on_error']) {
+                $finished_judges[] = $judgeTask['jobid'];
+            }
             logmsg(LOG_ERR, "Judging failed for jobid " . $judgeTask['jobid'] . ", returning to queue.");
         }
 
         file_put_contents($success_file, $expected_uuid_pid);
     };
-
-    $channel->queue_declare('judgeTask', false, true, false, false);
-    $channel->basic_consume('judgeTask', '', false, true, false, false, $callback);
-
+    $channel->basic_consume('judge_task', '', false, true, false, false, $judgeCallback);
+   
     try {
         $channel->consume();
     } catch (\Throwable $exception) {
@@ -1722,6 +1750,7 @@ function judge(array $judgeTask): bool
             . ' -j ' . $tmpfile
             . ' >> /dev/null & ';
         shell_exec($cmd);
+        $ret = $result === 'correct';
     } else {
         if ($result === 'correct') {
             // Post result back asynchronously. PHP is lacking multi-threading, so

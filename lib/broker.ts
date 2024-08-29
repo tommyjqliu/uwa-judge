@@ -26,33 +26,55 @@ export async function connectRabbitMQ() {
     }
 }
 
-
-export async function sendMessage(queue: string, message: string): Promise<void> {
-    try {
-        // Connect to RabbitMQ server
+export function withQueue(queueName: string, options?: amqp.Options.AssertQueue) {
+    return async (callback: (channel: amqp.Channel) => Promise<void>) => {
         const connection = await amqp.connect(rabbitMQUrl);
-
-        // Create a channel
         const channel = await connection.createChannel();
-
-        // Assert a queue into existence
-        await channel.assertQueue(queue, {
-            durable: true // Make sure that RabbitMQ will never lose the queue if it crashes
-        });
-
-        // Send the message to the queue
-        channel.sendToQueue(queue, Buffer.from(message), {
-            persistent: true // Make sure that RabbitMQ will never lose the message if it crashes
-        });
-
-        // console.log(`Message sent to queue ${queue}: ${message}`);
-
-        // Close the channel and connection
-        await channel.close();
-        await connection.close();
-    } catch (error) {
-        console.error('Failed to send message:', error);
+        try {
+            await channel.assertQueue(queueName, options);
+            await callback(channel);
+        } catch (error) {
+            console.error('Broker error:', error);
+        } finally {
+            await channel.close();
+            await connection.close();
+        }
     }
 }
 
+export function sendMessage(queue: string, message: string, options: amqp.Options.AssertQueue = {
+    durable: true
+}): Promise<void> {
+    return withQueue(queue, options)(async (channel) => {
+        channel.sendToQueue(queue, Buffer.from(message), {
+            persistent: true // Make sure that RabbitMQ will never lose the message if it crashes
+        });
+    });
+}
 
+
+export function waitMessage(queue: string): Promise<void> {
+    return withQueue(queue, {
+        autoDelete: true
+    })(async (channel) => {
+        return new Promise((resolve, reject) => {
+            channel.consume(queue, (msg) => resolve());
+        });
+    })
+}
+
+export async function publishMessage(exchange: string, message: string) {
+    const connection = await amqp.connect(rabbitMQUrl);
+    const channel = await connection.createChannel();
+    try {
+        channel.assertExchange(exchange, 'fanout', {
+            durable: false
+        });
+        channel.publish(exchange, '', Buffer.from(message));
+    } catch (error) {
+        console.error('Broker error:', error);
+    } finally {
+        await channel.close();
+        await connection.close();
+    }
+}
