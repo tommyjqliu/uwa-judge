@@ -178,6 +178,9 @@ model Submission {
 
 model Judge {
   id           Int  @id @default(autoincrement())
+  stopOnError  Boolean  @default(true)
+  finished     Boolean  @default(false)
+  
   submissionId Int
   score        Int?
   time         Int?

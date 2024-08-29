@@ -46,6 +46,9 @@ services:
       - JUDGEDAEMON_NAME=judgehost
     depends_on:
       - rabbitmq
+    # deploy:
+    #   mode: replicated
+    #   replicas: 2
 
   webapp:
     image: node:20-alpine
