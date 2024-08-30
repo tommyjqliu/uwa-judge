@@ -4,11 +4,11 @@ import fs from 'fs';
 import path from 'path';
 import { readProblems } from '../utils/read-problems';
 
-describe.skip('File Upload Endpoint', async () => {
+describe('File Upload Endpoint', async () => {
   
 const problems = await readProblems()
   it('should upload a zip file and receive a PDF file in response', async () => {
-    const url = 'http://localhost:5000/problem2pdf'; // URL to your Flask app
+    const url = 'http://problemtools:5000/problem2pdf'; // URL to your Flask app
 
     // Create form data
     const form = new FormData();
@@ -22,6 +22,10 @@ const problems = await readProblems()
     // Check response status and headers
     expect(response.status).toBe(200);
     expect(response.headers['content-type']).toBe('application/pdf');
+    
+    if (!fs.existsSync('temp')) {
+      fs.mkdirSync('temp');
+    }
 
     // Optionally, you could write the response data to a file to manually verify, or perform additional automated checks
     fs.writeFileSync('temp/output.pdf', response.data);

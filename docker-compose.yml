@@ -60,12 +60,13 @@ services:
       - production.env
     ports:
       - "3000:3000"
+    user: node
     command: npm run dev
     
-  # problemtools:
-  #   image: tommyjqliu/problemtools-web:latest
-  #   ports:
-  #     - "5000:5000"
+  problemtools:
+    image: tommyjqliu/problemtools-web:latest
+    ports:
+      - "5000:5000"
   
   # nginx:
   #   image: nginx:latest

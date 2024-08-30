@@ -9,16 +9,6 @@ import Paper from "@mui/material/Paper";
 import { Assignment } from "@prisma/client";
 import Link from "next/link";
 
-function createData(
-  name: string,
-  calories: number,
-  fat: number,
-  carbs: number,
-  protein: number,
-) {
-  return { name, calories, fat, carbs, protein };
-}
-
 interface AssignmentListProps {
   assignments: Assignment[];
 }

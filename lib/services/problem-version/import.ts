@@ -1,6 +1,6 @@
 import { uwajudgeDB } from "@/lib/database-client";
 import { assert, ParamsInvalidError } from "@/lib/error";
-import { getHash } from "@/lib/file";
+import { Problem2PDF, getHash } from "@/lib/file";
 import { withZipFile } from "@/lib/zip";
 import { Executable, TestCaseType } from "@prisma/client";
 import { parseLegacyMetadata } from "./metadata/legacy";
@@ -64,28 +64,34 @@ export const importProblemVersion = (file: File) => withZipFile(file, async (zip
         outputValidator = await createExecutable(`${name}-${hash}`, `Validator for Problem ${name}`, combinedRunCompare ? 'run' : 'compare', filePaths);
     }
 
+    // Obtain Statement
+    const statementPaths = zip.getEntries('problem_statement');
+    const pdfPath = statementPaths.find(path => path.endsWith('en.pdf'));
+    let pdf: File | undefined;
+    if (pdfPath) {
+        pdf = zip.readFile(pdfPath)!;
+    } else {
+        pdf = await Problem2PDF(file!);
+    }
 
-    // TODO: Obtain Statement
-    // TODO: Submit example submission
-    console.log("temp: ", metadata.name || fileName, {
-        data: {
-            name,
-            hash,
-            metadata,
-            combinedRunCompare,
-            file: Buffer.from(await file.arrayBuffer()),
-            testcase: {
-                createMany: {
-                    data: testCases,
-                }
-            },
-            outputValidator: outputValidator ? {
-                connect: {
-                    id: outputValidator.id,
-                }
-            } : undefined,
+    assert(!!pdf, 'pdf is required');
+    const pdfHash = await getHash(pdf);
+
+    let problemStatement = await uwajudgeDB.problemStatement.findUnique({
+        where: {
+            hash: pdfHash,
         }
-    }.data.outputValidator?.connect.id)
+    });
+    if (!problemStatement) {
+        problemStatement = await uwajudgeDB.problemStatement.create({
+            data: {
+                file: Buffer.from(await pdf.arrayBuffer()),
+                hash: pdfHash,
+            }
+        });
+    }
+
+    // TODO: Submit example submission
     return uwajudgeDB.problemVersion.create({
         data: {
             name,
@@ -103,6 +109,12 @@ export const importProblemVersion = (file: File) => withZipFile(file, async (zip
                     id: outputValidator.id,
                 }
             } : undefined,
+            problemStatement: {
+                connect: {
+                    hash: problemStatement.hash,
+                }
+            }
+
         }
     });
 })

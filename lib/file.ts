@@ -46,7 +46,7 @@ export async function extractAndCheckFile(zipFile: string, tempDir: string) {
   return problemStatements.length > 0;
 }
 
-export async function callProblemToolAndSavePDF(file: File, tempDir: string) {
+export async function Problem2PDF(file: File): Promise<File> {
   const PROBLEM_TOOL_URL = process.env.PROBLEM_TOOL_URL;
   if (!PROBLEM_TOOL_URL) {
     throw new Error('PROBLEM_TOOL_URL is not defined in the environment variables.');
@@ -59,8 +59,10 @@ export async function callProblemToolAndSavePDF(file: File, tempDir: string) {
     responseType: 'arraybuffer'
   });
 
-  const pdfPath = path.join(tempDir, 'problem.pdf');
-  await fs.promises.writeFile(pdfPath, response.data);
+  const buffer = Buffer.from(response.data);
+  const hash = await getHash(buffer);
+  const pdf = new File([buffer], `${hash}.pdf`, { type: 'application/pdf' });
+  return pdf;
 }
 
 export async function rezipDirectory(sourceDir: string, outPath: string) {

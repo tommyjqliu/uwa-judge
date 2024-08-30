@@ -3,14 +3,16 @@ import { uwajudgeDB } from '@/lib/database-client';
 import { readProblems } from '@/tests/utils/read-problems';
 import bcrypt from 'bcrypt';
 import { readEnvs } from '@/lib/utils';
-import judgeBasic from './seeding/judge-basic';
-import language from './seeding/language';
+import importJudgeBasic from './seeding/judge-basic';
+import importLanguage from './seeding/language';
+import importProblemVersion from './seeding/problem-version';
 
 readEnvs()
 
 async function main() {
-  judgeBasic();
-  language();
+  importJudgeBasic();
+  importLanguage();
+  importProblemVersion()
 }
 
 
