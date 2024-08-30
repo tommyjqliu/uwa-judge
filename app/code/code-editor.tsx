@@ -22,9 +22,9 @@ import {
 import { request } from "http";
 import { useCallback, useState } from "react";
 
-export interface ProblemSolverProps {
-  problemId: string;
-  assignmentId?: number;
+export interface CodeEditorProps {
+  problemId?: number;
+  problemVersionId?: number;
 }
 
 const ResultsTable = styled(TableContainer)`
@@ -46,10 +46,10 @@ const TableBodyCell = styled(TableCell)`
   border-bottom: 1px solid #ccc;
 `;
 
-export default function ProblemSolver({
+export default function CodeEditor({
   problemId,
-  assignmentId,
-}: ProblemSolverProps) {
+  problemVersionId,
+}: CodeEditorProps) {
   const [language, setLanguage] = useState("python");
   const [code, setCode] = useState("");
   const [submissionStatus, setSubmissionStatus] = useState<string | null>(null);
@@ -63,14 +63,14 @@ export default function ProblemSolver({
   const submit = useCallback(async () => {
     setIsLoading(true);
     setSubmissionStatus(null);
+
     try {
       const response = await axios.postForm("/api/submissions", {
         problemId,
         language,
         code,
-        assignmentId,
-        userId: 1,
       });
+
       console.log(response);
       if (response.status === 200) {
         const { judging, testcaseResults } = response.data;
@@ -86,7 +86,7 @@ export default function ProblemSolver({
     } finally {
       setIsLoading(false);
     }
-  }, [code, language, problemId, assignmentId]);
+  }, [code, language, problemId]);
 
   return (
     <ClientContext>
@@ -99,12 +99,8 @@ export default function ProblemSolver({
                   value={language}
                   onChange={(e) => setLanguage(e.target.value as string)}
                   entityQuery={{
-                    db: "DOMjudgeDB",
                     entity: "language",
                     action: "findMany",
-                    query: {
-                      where: { allow_submit: { equals: true } },
-                    },
                   }}
                 />
               </Box>

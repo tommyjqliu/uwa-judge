@@ -1,36 +1,42 @@
 import { uwajudgeDB } from "@/lib/database-client";
 import { stringToInt } from "@/lib/zod";
 import { z } from "zod";
-import ProblemSolver from "./problem-solver";
+import CodeEditor from "./code-editor";
 import { Card, CardContent, MenuItem, Select } from "@mui/material";
 import Link from "next/link";
 import PdfReader from "@/lib/components/pdf-reader";
+import CodeModule from "./code-module";
 
 export default async function Code({
   searchParams,
 }: {
-  searchParams?: { assignmentId?: string; problemId?: string };
+  searchParams?: { assignmentId?: string; problemId?: string; problemVersionId?: string; submissionId?: string };
 }) {
-  const { assignmentId, problemId: paramProblemId } = z
+  const { assignmentId, problemId, problemVersionId, submissionId } = z
     .object({
       assignmentId: stringToInt.optional(),
-      problemId: z.string().optional(),
+      problemId: stringToInt.optional(),
+      problemVersionId: stringToInt.optional(),
+      submissionId: stringToInt.optional(),
     })
     .parse(searchParams);
 
   const assignment =
     undefined !== assignmentId
       ? await uwajudgeDB.assignment.findUnique({
-          where: { id: assignmentId },
-          include: {
-            problems: { include: { problem: true } },
+        where: { id: assignmentId },
+        include: {
+          problems: {
+            include: {
+              problemVersion: true,
+            },
           },
-        })
+        },
+      })
       : undefined;
 
   const problems =
-    assignment && assignment.problems.map(({ problem }) => problem);
-  const problemId = paramProblemId || (problems && problems[0].id);
+    assignment && assignment.problems;
 
   return (
     <main className="p-8">
@@ -49,23 +55,12 @@ export default async function Code({
                   href={`/code?assignmentId=${assignmentId}&problemId=${problem.id}`}
                   className="h-full w-full absolute inset-0"
                 />
-                {problem.name}
+                {problem.problemVersion.name}
               </MenuItem>
             ))}
         </Select>
       </div>
-      <Card>
-        <CardContent className="h-[450px]">
-          <PdfReader url={`api/problems/${problemId}/statement`}/>
-        </CardContent>
-      </Card>
-      <div>
-        {problemId ? (
-          <ProblemSolver problemId={problemId} assignmentId={assignmentId} />
-        ) : (
-          "No Problem"
-        )}
-      </div>
+      <CodeModule problemId={problemId} problemVersionId={problemVersionId} />
     </main>
   );
 }
