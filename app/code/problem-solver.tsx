@@ -23,7 +23,8 @@ import { request } from "http";
 import { useCallback, useState } from "react";
 
 export interface ProblemSolverProps {
-  problemId: string;
+  problemId?: number;
+  problemVersionId?: number;
   assignmentId?: number;
 }
 
@@ -48,6 +49,7 @@ const TableBodyCell = styled(TableCell)`
 
 export default function ProblemSolver({
   problemId,
+  problemVersionId,
   assignmentId,
 }: ProblemSolverProps) {
   const [language, setLanguage] = useState("python");
@@ -60,6 +62,7 @@ export default function ProblemSolver({
     const file = event.target.files?.[0];
     setSelectedFile(file || null);
   };
+
   const submit = useCallback(async () => {
     setIsLoading(true);
     setSubmissionStatus(null);
@@ -99,12 +102,8 @@ export default function ProblemSolver({
                   value={language}
                   onChange={(e) => setLanguage(e.target.value as string)}
                   entityQuery={{
-                    db: "DOMjudgeDB",
                     entity: "language",
                     action: "findMany",
-                    query: {
-                      where: { allow_submit: { equals: true } },
-                    },
                   }}
                 />
               </Box>

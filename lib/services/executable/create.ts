@@ -5,6 +5,14 @@ import fs from 'fs';
 import path from 'path';
 
 export default async function createExecutable(id: string, description: string, type: string, filePaths: string[]) {
+    const executable = await uwajudgeDB.executable.findUnique({
+        where: {
+            id,
+        }
+    });
+    if (executable) {
+        return executable;
+    }
     assert(filePaths.length > 0, 'File paths are required');
     const files = filePaths.map((file) => fs.readFileSync(file));
     const fileNames = filePaths.map((file) => path.basename(file));

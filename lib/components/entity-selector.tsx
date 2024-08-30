@@ -1,25 +1,22 @@
 import {
-  DB,
-  EntityQueryOptions,
-  SupportedDB,
+  EntityQueryOptions
 } from "@/lib/actions/entity-query";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import { Merge, ModelOfDB } from "../type";
 import { useEntityQuery } from "../hooks/use-entity-query";
+import { UWAjudgeDB } from "../database-client";
 
 export type EntitySelectorProps<
-  E extends keyof ModelOfDB<DB<DBK>>,
-  A extends keyof DB<DBK>[E],
-  DBK extends SupportedDB = "UWAjudgeDB",
+  E extends keyof ModelOfDB<UWAjudgeDB>,
+  A extends keyof UWAjudgeDB[E],
 > = React.ComponentProps<typeof Select> & {
-  entityQuery: EntityQueryOptions<E, A, DBK>;
+  entityQuery: EntityQueryOptions<E, A>;
 };
 
 export default function EntitySelector<
-  E extends keyof ModelOfDB<DB<DBK>>,
-  A extends keyof DB<DBK>[E],
-  DBK extends SupportedDB = "UWAjudgeDB",
->({ entityQuery, ...rest }: EntitySelectorProps<E, A, DBK>) {
+  E extends keyof ModelOfDB<UWAjudgeDB>,
+  A extends keyof UWAjudgeDB[E],
+>({ entityQuery, ...rest }: EntitySelectorProps<E, A>) {
   const { data: entities } = useEntityQuery(entityQuery);
   return (
     <FormControl>

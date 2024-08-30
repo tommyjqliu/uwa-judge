@@ -3,14 +3,26 @@ import { uwajudgeDB } from '@/lib/database-client';
 import { readProblems } from '@/tests/utils/read-problems';
 import bcrypt from 'bcrypt';
 import { readEnvs } from '@/lib/utils';
-import judgeBasic from './seeding/judge-basic';
-import language from './seeding/language';
+import importJudgeBasic from './seeding/judge-basic';
+import importLanguage from './seeding/language';
+import importProblemVersion from './seeding/problem-version';
+import { createAssignment } from '@/lib/services/assignment/create-assignment';
 
 readEnvs()
 
 async function main() {
-  judgeBasic();
-  language();
+  await importJudgeBasic();
+  await importLanguage();
+  await importProblemVersion()
+
+  const problems = await readProblems();
+  for (let i = 0; i < 5; i++) {
+    await createAssignment({
+      title: "test assignment",
+      description: "test description",
+      problems,
+    })
+  }
 }
 
 

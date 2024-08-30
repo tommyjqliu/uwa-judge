@@ -11,7 +11,7 @@ const data = [
     ['run', 'default run script', 'run'],
 ];
 
-export default async function main() {
+export default async function importJudgeBasic() {
     for (const [id, description, type] of data) {
         // Check if executable exists
         const existingExecutable = await uwajudgeDB.executable.findUnique({
