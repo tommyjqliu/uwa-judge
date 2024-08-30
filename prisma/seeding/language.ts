@@ -3,7 +3,7 @@ import createExecutable from "@/lib/services/executable/create";
 import fs from 'fs';
 
 // ref: DOMjudge: domjudge/webapp/src/DataFixtures/default-language/LanguageFixture.php
-export default async function main() {
+export default async function importLanguage() {
     // Todo: Parallelize the process
     const data = [
         // ID      external ID   name           extensions                 require  entry point   allow   allow   time   compile

@@ -105,11 +105,11 @@ model StudentsOnAssignments {
 
 // Business layer problem
 model Problem {
-  id           Int @id @default(autoincrement())
-  assignmentId Int
+  id         Int          @id @default(autoincrement())
+  submission Submission[]
 
   assignment       Assignment     @relation(fields: [assignmentId], references: [id])
-  submission       Submission[]
+  assignmentId     Int
   problemVersion   ProblemVersion @relation(fields: [problemVersionId], references: [id])
   problemVersionId Int
 }
@@ -126,12 +126,20 @@ model ProblemVersion {
   combinedRunCompare Boolean     @default(false) // For a custom interactive problem, two stages are combined into one
   outputValidator    Executable?
 
-  testcase   Testcase[]
-  problem    Problem[]
-  submission Submission[]
-  Judge      Judge[]
+  testcase             Testcase[]
+  problem              Problem[]
+  submission           Submission[]
+  judge                Judge[]
+  problemStatement     ProblemStatement @relation(fields: [problemStatementHash], references: [hash])
+  problemStatementHash String
 
   @@index([hash])
+}
+
+model ProblemStatement {
+  hash           String           @id
+  problemVersion ProblemVersion[]
+  file           Bytes
 }
 
 enum TestCaseType {
@@ -177,10 +185,10 @@ model Submission {
 }
 
 model Judge {
-  id           Int  @id @default(autoincrement())
-  stopOnError  Boolean  @default(true)
-  finished     Boolean  @default(false)
-  
+  id          Int     @id @default(autoincrement())
+  stopOnError Boolean @default(true)
+  finished    Boolean @default(false)
+
   submissionId Int
   score        Int?
   time         Int?

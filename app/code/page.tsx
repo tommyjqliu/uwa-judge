@@ -21,15 +21,14 @@ export default async function Code({
   const assignment =
     undefined !== assignmentId
       ? await uwajudgeDB.assignment.findUnique({
-          where: { id: assignmentId },
-          include: {
-            problems: { include: { problem: true } },
-          },
-        })
+        where: { id: assignmentId },
+        include: {
+          problems: { include: { problemVersion: true } },
+        },
+      })
       : undefined;
 
-  const problems =
-    assignment && assignment.problems.map(({ problem }) => problem);
+  const problems = assignment && assignment.problems;
   const problemId = paramProblemId || (problems && problems[0].id);
 
   return (
@@ -49,14 +48,14 @@ export default async function Code({
                   href={`/code?assignmentId=${assignmentId}&problemId=${problem.id}`}
                   className="h-full w-full absolute inset-0"
                 />
-                {problem.name}
+                {problem.problemVersion.name}
               </MenuItem>
             ))}
         </Select>
       </div>
       <Card>
         <CardContent className="h-[450px]">
-          <PdfReader url={`api/problems/${problemId}/statement`}/>
+          <PdfReader url={`api/problems/${problemId}/statement`} />
         </CardContent>
       </Card>
       <div>

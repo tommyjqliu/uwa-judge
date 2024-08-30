@@ -3,17 +3,7 @@ import { z } from "zod";
 import { zfd } from "zod-form-data";
 import { Assignment, StudentsOnAssignments, TutorsOnAssignments, AdminsOnAssignments } from "@prisma/client";
 import { uwajudgeDB } from "@/lib/database-client";
-
-const assignmentSchema = zfd.formData({
-  title: z.string(),
-  description: z.string().optional(),
-  publishDate: z.coerce.date().optional(),
-  dueDate: z.coerce.date().optional(),
-  students: zfd.repeatable(z.coerce.number().array().default([])).optional(),
-  tutors: zfd.repeatable(z.coerce.number().array().default([])).optional(),
-  admins: zfd.repeatable(z.coerce.number().array().default([])).optional(),
-  problems: zfd.repeatable(z.array(zfd.file())), // repearable is nessary for parsing signle file
-});
+import { createAssignment, assignmentSchema } from "@/lib/services/assignment/create-assignment";
 
 /**
  * @Description: Add an assignment 
@@ -39,56 +29,8 @@ const assignmentSchema = zfd.formData({
  * @Return: Response
  */
 export const POST = errorHandler(async function (request: Request) {
-
   const parsedData = assignmentSchema.parse(await request.formData());
-  const { title, description, publishDate, dueDate, students, tutors, admins, problems } =
-    parsedData;
-
-  const assignment = await uwajudgeDB.assignment.create({
-    data: {
-      title,
-      description,
-      publishDate,
-      dueDate
-    },
-  });
-
-  let assignmentId = assignment.id;
-
-  if (students) {
-    //process with students
-    const dataStudent = students.map(userId => ({
-      assignmentId,
-      userId,
-    }));
-    const st = await uwajudgeDB.studentsOnAssignments.createMany({
-      data: dataStudent
-    });
-  }
-
-  //process with admins
-  if (admins) {
-    const data_admins = admins.map(userId => ({
-      assignmentId,
-      userId,
-    }));
-    const ad = await uwajudgeDB.adminsOnAssignments.createMany({
-      data: data_admins
-    });
-  }
-
-  //process with tutors
-  if (tutors) {
-    const data_tutors = tutors.map(userId => ({
-      assignmentId,
-      userId,
-    }));
-    const tu = await uwajudgeDB.tutorsOnAssignments.createMany({
-      data: data_tutors
-    });
-  }
-
-  // problems.length && await createProblems(problems, assignment.id);
+  const assignment = await createAssignment(parsedData);
 
   return new Response(JSON.stringify(assignment), {
     status: 200,
