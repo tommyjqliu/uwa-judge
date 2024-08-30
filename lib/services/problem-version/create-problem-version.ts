@@ -14,7 +14,7 @@ import createExecutable from "../executable/create";
  * https://www.problemarchive.org/wiki/index.php/Introduction_to_the_Kattis_Problem_Format
  * @returns 
  */
-export const importProblemVersion = (file: File) => withZipFile(file, async (zip) => {
+export const createProblemVersion = (file: File) => withZipFile(file, async (zip) => {
     const hash = await getHash(file);
     const existVersion = await uwajudgeDB.problemVersion.findFirst({
         where: {
@@ -119,4 +119,9 @@ export const importProblemVersion = (file: File) => withZipFile(file, async (zip
     });
 })
 
-export default importProblemVersion;
+export default createProblemVersion;
+
+
+export function createProblemVersions(files: File[]) {
+    return Promise.all(files.map(createProblemVersion));
+}

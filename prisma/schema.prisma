@@ -105,11 +105,11 @@ model StudentsOnAssignments {
 
 // Business layer problem
 model Problem {
-  id           Int @id @default(autoincrement())
-  assignmentId Int
+  id         Int          @id @default(autoincrement())
+  submission Submission[]
 
   assignment       Assignment     @relation(fields: [assignmentId], references: [id])
-  submission       Submission[]
+  assignmentId     Int
   problemVersion   ProblemVersion @relation(fields: [problemVersionId], references: [id])
   problemVersionId Int
 }

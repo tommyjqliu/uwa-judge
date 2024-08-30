@@ -60,6 +60,7 @@ export default function CodeEditor({
     const file = event.target.files?.[0];
     setSelectedFile(file || null);
   };
+
   const submit = useCallback(async () => {
     setIsLoading(true);
     setSubmissionStatus(null);
