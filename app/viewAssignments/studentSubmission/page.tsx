@@ -1,5 +1,9 @@
 'use client';
 
+//Need to add a put request for the grade
+//Need to be able to see current grade from the student assignments 
+//should also show current mark and current grade
+
 import React, { useState } from 'react';
 import {
     Container,
@@ -20,7 +24,7 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 
-// Fake data for demonstration
+// Fake data for demonstration - this will need to show 
 const studentSubmission = {
     studentName: "Alice Johnson",
     assignmentName: "Assignment 1",
