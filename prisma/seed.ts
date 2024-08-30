@@ -6,13 +6,23 @@ import { readEnvs } from '@/lib/utils';
 import importJudgeBasic from './seeding/judge-basic';
 import importLanguage from './seeding/language';
 import importProblemVersion from './seeding/problem-version';
+import { createAssignment } from '@/lib/services/assignment/create-assignment';
 
 readEnvs()
 
 async function main() {
-  importJudgeBasic();
-  importLanguage();
-  importProblemVersion()
+  await importJudgeBasic();
+  await importLanguage();
+  await importProblemVersion()
+
+  const problems = await readProblems();
+  for (let i = 0; i < 5; i++) {
+    await createAssignment({
+      title: "test assignment",
+      description: "test description",
+      problems,
+    })
+  }
 }
 
 

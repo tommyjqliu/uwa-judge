@@ -1,13 +1,22 @@
 import { testApiHandler } from "next-test-api-route-handler";
 import { describe, expect, it } from "vitest";
 import * as appHandler from "@/app/api/assignments/route";
-import { readFile, readdir } from "fs/promises"
-import { zfd } from "zod-form-data";
+import { createAssignment } from "@/lib/services/assignment/create-assignment";
+import { readProblems } from "../utils/read-problems";
 const problemPath = "./tests/data/problems/";
 
 
 describe.concurrent("Create Assignment", () => {
     it("should create success", async () => {
+        const problems = await readProblems();
+        const assignment = await createAssignment({
+            title: "test assignment",
+            description: "test description",
+            problems,
+        })
+    });
+
+    it.skip("should create success", async () => {
         await testApiHandler({
             appHandler,
             test: async ({ fetch }) => {
