@@ -40,6 +40,6 @@ password.judgehost
 password.admin
 
 #database
-.mariadb
+.postgres
 
 /temp

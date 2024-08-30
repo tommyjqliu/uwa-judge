@@ -35,7 +35,7 @@ export const PUT = errorHandler(async function (
     
     const parsedData = receiveSchema.parse(await request.formData());
     const { comment,mark } = parsedData;
-  
+    try{
     const updatedUser = await prisma.submission.update({
         where: { id: submissionId },  
         data: { comment: comment,
@@ -49,4 +49,14 @@ export const PUT = errorHandler(async function (
           "Content-Type": "application/json",
         },
       });
+    }
+    catch(error){
+      let json = {msg:"submission not found / need to insert some submissions data to test"}
+      return new Response(JSON.stringify(json), {
+        status: 500,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    }
   });

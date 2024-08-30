@@ -1,4 +1,6 @@
 # uwa-judge
+https://arno.surfacew.com/posts/en/nextjs-architecture
+https://arno.surfacew.com/posts/cn/nextjs-architecture-cn
 ## Setup
 https://www.notion.so/tommyjqliu/Dev-env-setup-59617b3ae5c1482e8da2f4b65ed1d057?pvs=4
 
@@ -10,3 +12,5 @@ test account: demo demo
 - Use camelCase for variable names
 - Use PascalCase for class names
 
+## Future Task
+- [] 1. Unified database schema naming convention, use "Executable" for table and "executable" for entity

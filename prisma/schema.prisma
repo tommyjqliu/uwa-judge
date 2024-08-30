@@ -3,10 +3,9 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("UWAJUDGE_DATABASE_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
-
 
 model User {
   id                  Int                     @id @default(autoincrement())
@@ -19,18 +18,39 @@ model User {
   Submission          Submission[]
   TutorsOnAssignments TutorsOnAssignments[]
   permissions         Permission[]            @relation("PermissionToUser")
+  groups              UsersOnGroups[]
+}
+
+model UserGroup {
+  id          Int             @id @default(autoincrement())
+  name        String
+  description String?
+  permissions Permission[]    @relation("PermissionToUserGroup")
+  users       UsersOnGroups[]
+}
+
+model UsersOnGroups {
+  userId  Int
+  groupId Int
+  isAdmin Boolean
+  user    User      @relation(fields: [userId], references: [id])
+  group   UserGroup @relation(fields: [groupId], references: [id])
+
+  @@id([userId, groupId])
+  @@index([userId], map: "UsersOnGroups_userId_idx")
+  @@index([groupId], map: "UsersOnGroups_groupId_idx")
 }
 
 model ExternalAccount {
-  id         Int             @id @default(autoincrement())
+  id         Int    @id @default(autoincrement())
   userId     Int
   provider   String
   providerId String
-  user       User            @relation(fields: [userId], references: [id])
+  user       User   @relation(fields: [userId], references: [id])
 
   @@unique([provider, userId])
   @@unique([provider, providerId])
-  @@index([userId], map: "ExternalAccount_userId_fkey")
+  @@index([userId])
 }
 
 model Permission {
@@ -41,13 +61,6 @@ model Permission {
   userGroups  UserGroup[] @relation("PermissionToUserGroup")
 }
 
-model UserGroup {
-  id          Int          @id @default(autoincrement())
-  name        String
-  description String?
-  permissions Permission[] @relation("PermissionToUserGroup")
-}
-
 model Assignment {
   id          Int                     @id @default(autoincrement())
   title       String
@@ -55,9 +68,8 @@ model Assignment {
   publishDate DateTime?
   dueDate     DateTime?
   admins      AdminsOnAssignments[]
-  problems    ProblemsOnAssignments[]
+  problems    Problem[]
   students    StudentsOnAssignments[]
-  Submission  Submission[]
   tutors      TutorsOnAssignments[]
 }
 
@@ -68,7 +80,7 @@ model AdminsOnAssignments {
   user         User       @relation(fields: [userId], references: [id])
 
   @@id([assignmentId, userId])
-  @@index([userId], map: "AdminsOnAssignments_userId_fkey")
+  @@index([userId])
 }
 
 model TutorsOnAssignments {
@@ -78,7 +90,7 @@ model TutorsOnAssignments {
   user         User       @relation(fields: [userId], references: [id])
 
   @@id([assignmentId, userId])
-  @@index([userId], map: "TutorsOnAssignments_userId_fkey")
+  @@index([userId])
 }
 
 model StudentsOnAssignments {
@@ -88,41 +100,155 @@ model StudentsOnAssignments {
   user         User       @relation(fields: [userId], references: [id])
 
   @@id([assignmentId, userId])
-  @@index([userId], map: "StudentsOnAssignments_userId_fkey")
+  @@index([userId])
 }
 
+// Business layer problem
 model Problem {
-  id          String                  @id
-  name        String
-  description String?
-  assignments ProblemsOnAssignments[]
-  Submission  Submission[]
+  id           Int @id @default(autoincrement())
+  assignmentId Int
+
+  assignment       Assignment     @relation(fields: [assignmentId], references: [id])
+  submission       Submission[]
+  problemVersion   ProblemVersion @relation(fields: [problemVersionId], references: [id])
+  problemVersionId Int
 }
 
-model ProblemsOnAssignments {
-  problemId    String
-  assignmentId Int
-  assignment   Assignment @relation(fields: [assignmentId], references: [id])
-  problem      Problem    @relation(fields: [problemId], references: [id])
+// Different versions of the same problem
+model ProblemVersion {
+  id        Int      @id @default(autoincrement())
+  name      String
+  createdAt DateTime @default(now())
+  hash      String   @unique
+  file      Bytes
+  metadata  Json
 
-  @@id([problemId, assignmentId])
-  @@index([assignmentId], map: "ProblemsOnAssignments_assignmentId_fkey")
+  combinedRunCompare Boolean     @default(false) // For a custom interactive problem, two stages are combined into one
+  outputValidator    Executable?
+
+  testcase   Testcase[]
+  problem    Problem[]
+  submission Submission[]
+  Judge      Judge[]
+
+  @@index([hash])
+}
+
+enum TestCaseType {
+  sample
+  secret
+}
+
+model Testcase {
+  id     Int          @id @default(autoincrement())
+  type   TestCaseType
+  name   String
+  input  String
+  output String
+
+  problemVersionId Int
+  problemVersion   ProblemVersion @relation(fields: [problemVersionId], references: [id], onDelete: Cascade)
+  JudgeTask        JudgeTask[]
 }
 
 model Submission {
-  id             String      @id @db.VarChar(255)
-  submissionDate DateTime
-  assignmentId   Int
-  problemId      String      @db.VarChar(255)
-  userId         Int
-  comment        String?
-  mark           String?
-  Assignment     Assignment? @relation(fields: [assignmentId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "fk_assignment_submission")
-  Problem        Problem?    @relation(fields: [problemId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "fk_problem_submission")
-  User           User?       @relation(fields: [userId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "fk_user_submission")
+  id       Int      @id @default(autoincrement())
+  dateTime DateTime @default(now())
+  code     String
+  mark     String?
+  comment  String?
+  judge    Judge[]
 
-  @@index([assignmentId], map: "fk_assignment_submission")
-  @@index([problemId], map: "fk_problem_submission")
-  @@index([userId], map: "fk_user_submission")
+  languageId String
+  language   Language @relation(fields: [languageId], references: [id])
+
+  // A submission can be a system submission so not user connected
+  userId Int?
+  user   User? @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // A submission is either for a problem or a problem version directly
+  problemVersionId Int?
+  problemVersion   ProblemVersion? @relation(fields: [problemVersionId], references: [id], onDelete: Cascade)
+  problemId        Int?
+  problem          Problem?        @relation(fields: [problemId], references: [id])
+
+  @@index([problemVersionId])
+  @@index([userId])
 }
 
+model Judge {
+  id           Int  @id @default(autoincrement())
+  stopOnError  Boolean  @default(true)
+  finished     Boolean  @default(false)
+  
+  submissionId Int
+  score        Int?
+  time         Int?
+  memory       Int?
+
+  submission       Submission     @relation(fields: [submissionId], references: [id])
+  problemVersionId Int
+  problemVersion   ProblemVersion @relation(fields: [problemVersionId], references: [id], onDelete: Cascade)
+  judgeTask        JudgeTask[]
+}
+
+model JudgeTask {
+  id         Int      @id @default(autoincrement())
+  judgeId    Int
+  testcaseId Int
+  testcase   Testcase @relation(fields: [testcaseId], references: [id], onDelete: Cascade)
+  judge      Judge    @relation(fields: [judgeId], references: [id], onDelete: Cascade)
+
+  compileSuccess  Boolean?
+  compileOutput   String?
+  compileMetadata String?
+
+  runResult   String?
+  runTime     Float?
+  runOutput   String?
+  runError    String?
+  runSystem   String?
+  runMetadata String?
+  runDiff     String?
+}
+
+model Language {
+  id                     String   @id @default(uuid())
+  externalId             String
+  name                   String
+  extensions             String[]
+  requireEntryPoint      Boolean
+  entryPointDescription  String?
+  allowSubmit            Boolean
+  allowJudge             Boolean
+  timeFactor             Float
+  compilerVersionCommand String?
+  runnerVersionCommand   String?
+
+  submission   Submission[]
+  executableId String       @unique
+  executable   Executable   @relation(fields: [executableId], references: [id])
+}
+
+model Executable {
+  id          String           @id
+  description String
+  type        String
+  files       ExecutableFile[]
+
+  languageId String?
+  language   Language?
+
+  problemVersionId Int?            @unique
+  ProblemVersion   ProblemVersion? @relation(fields: [problemVersionId], references: [id], onDelete: Cascade)
+}
+
+model ExecutableFile {
+  id           String  @id @default(uuid())
+  name         String
+  content      Bytes
+  isExecutable Boolean
+
+  executable   Executable? @relation(fields: [executableId], references: [id])
+  executableId String?
+}

@@ -2,9 +2,7 @@ import errorHandler from "@/lib/error-handler";
 import { z } from "zod";
 import { zfd } from "zod-form-data";
 import { Assignment, StudentsOnAssignments, TutorsOnAssignments, AdminsOnAssignments } from "@prisma/client";
-
 import { uwajudgeDB } from "@/lib/database-client";
-import { createProblems } from "@/lib/services/problem-service";
 
 const assignmentSchema = zfd.formData({
   title: z.string(),
@@ -90,7 +88,7 @@ export const POST = errorHandler(async function (request: Request) {
     });
   }
 
-  problems.length && await createProblems(problems, assignment.id);
+  // problems.length && await createProblems(problems, assignment.id);
 
   return new Response(JSON.stringify(assignment), {
     status: 200,
@@ -120,6 +118,7 @@ export const POST = errorHandler(async function (request: Request) {
   ]
  */
 export const GET = errorHandler(async function (request: Request) {
+
   try {
     const assignmentsFromDB = await uwajudgeDB.assignment.findMany();
     const assignments: Assignment[] = assignmentsFromDB.map(

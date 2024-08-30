@@ -16,12 +16,8 @@ describe.concurrent("Get Assignment", () => {
                     console.error("Failed to get assignments. Status code:", res.status);
                     return;
                 }
-                console.log("1");
-
-                console.log("Response:", res);
-
-
-                console.log("JSON data:", await res.json());
+                // console.log("Response:", res);
+                // console.log("JSON data:", await res.json());
             }
         });
     });
