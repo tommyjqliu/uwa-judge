@@ -1,13 +1,6 @@
 import * as React from "react";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
 import { ProblemVersion } from "@prisma/client";
-import Link from "next/link";
+import { Table, TableBody, TableCell, TableHead, TableRow } from "@/lib/components/ui/table";
 
 interface ProblemVersionListProps {
   problemVersions: ProblemVersion[];
@@ -15,8 +8,7 @@ interface ProblemVersionListProps {
 
 export function ProblemVersionList({ problemVersions }: ProblemVersionListProps) {
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
+      <Table aria-label="simple table">
         <TableHead>
           <TableRow>
             <TableCell>id</TableCell>
@@ -35,6 +27,6 @@ export function ProblemVersionList({ problemVersions }: ProblemVersionListProps)
           }
         </TableBody>
       </Table>
-    </TableContainer>
+
   );
 }

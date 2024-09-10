@@ -1,3 +1,5 @@
+import { clsx, type ClassValue } from "clsx"
+import { twMerge } from "tailwind-merge"
 import dotenv from 'dotenv';
 import fs from 'fs';
 
@@ -23,4 +25,8 @@ export function isExecutable(filePath: string) {
 
 export function decodeBase64(data: string) {
   return Buffer.from(data, 'base64').toString('utf-8');
+}
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs))
 }

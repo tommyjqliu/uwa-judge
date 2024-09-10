@@ -2,9 +2,10 @@ import { uwajudgeDB } from "@/lib/database-client";
 import { stringToInt } from "@/lib/zod";
 import { z } from "zod";
 import ProblemSolver from "./problem-solver";
-import { Card, CardContent, MenuItem, Select } from "@mui/material";
 import Link from "next/link";
 import PdfReader from "@/lib/components/pdf-reader";
+import { Card, CardContent } from "@/lib/components/ui/card";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/lib/components/ui/select";
 
 export default async function Code({
   searchParams,
@@ -39,18 +40,23 @@ export default async function Code({
       </div>
       <div className="mb-6">
         <label className="block mb-2 font-semibold">Problem:</label>
-        <Select value={problemId} className="w-full max-w-xs">
-          {problems &&
-            problems.map((problem) => (
-              <MenuItem key={problem.id} value={problem.id}>
-                <Link
-                  key={problem.id}
-                  href={`/code?assignmentId=${assignmentId}&problemId=${problem.id}`}
-                  className="h-full w-full absolute inset-0"
-                />
-                {problem.problemVersion.name}
-              </MenuItem>
-            ))}
+        <Select>
+          <SelectTrigger className="w-[180px]">
+            <SelectValue placeholder="Value" />
+          </SelectTrigger>
+          <SelectContent>
+            {problems &&
+              problems.map((problem) => (
+                <SelectItem key={problem.id} value={String(problem.id)}>
+                  <Link
+                    key={problem.id}
+                    href={`/code?assignmentId=${assignmentId}&problemId=${problem.id}`}
+                    className="h-full w-full absolute inset-0"
+                  />
+                  {problem.problemVersion.name}
+                </SelectItem>
+              ))}
+          </SelectContent>
         </Select>
       </div>
       <Card>

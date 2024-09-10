@@ -2,6 +2,7 @@ services:
   # Database
   postgres:
     image: postgres:latest
+    user: postgres
     env_file:
       - .env
     ports:

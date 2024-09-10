@@ -1,6 +1,7 @@
 import { Press_Start_2P } from "next/font/google";
 import CodeAnimation from "./code-animation";
 import TerminalLoading from "@/lib/components/terminal-loading";
+import { Button } from "@/lib/components/ui/button";
 
 const pressStart2P = Press_Start_2P({ weight: "400", subsets: ["latin"] });
 
