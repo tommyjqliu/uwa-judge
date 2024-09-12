@@ -1,5 +1,5 @@
 import { uwajudgeDB } from "@/lib/database-client";
-import createExecutable from "@/lib/services/executable/create";
+import createExecutable from "@/services/executable/create";
 import fs from 'fs';
 
 // Example data, adjust as necessary

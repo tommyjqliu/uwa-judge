@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { readProblem, readProblems } from "../utils/read-problems";
 import importProblemVersion from "@/lib/services/problem-version/import";
-import realtimeSubmission from "@/lib/services/submission/realtime-submission";
+import realtimeSubmission from "@/services/submission/realtime-submission";
 
 
 describe.concurrent("Judge problem", () => {

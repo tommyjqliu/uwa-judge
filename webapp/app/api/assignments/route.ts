@@ -3,7 +3,7 @@ import { z } from "zod";
 import { zfd } from "zod-form-data";
 import { Assignment, StudentsOnAssignments, TutorsOnAssignments, AdminsOnAssignments } from "@prisma/client";
 import { uwajudgeDB } from "@/lib/database-client";
-import { createAssignment, assignmentSchema } from "@/lib/services/assignment/create-assignment";
+import { createAssignment, assignmentSchema } from "@/services/assignment/create-assignment";
 
 /**
  * @Description: Add an assignment 

@@ -1,4 +1,4 @@
-import { createProblemVersions } from "@/lib/services/problem-version/create-problem-version";
+import { createProblemVersions } from "@/services/problem-version/create-problem-version";
 
 import { readProblems } from "@/tests/utils/read-problems";
 

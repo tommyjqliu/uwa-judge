@@ -4,6 +4,7 @@ import { getSession } from "@/lib/auth/session";
 import Link from "next/link";
 
 import "./globals.css";
+import { Button } from "@/components/ui/button";
 
 const inter = Inter({ subsets: ["latin"] });
 const pressStart2P = Press_Start_2P({ weight: "400", subsets: ["latin"] });
@@ -23,20 +24,20 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <header className="flex justify-between p-2 bg-gray-100">
+        <header className="flex justify-between p-2 bg-gray-100 items-center">
           <div className="flex gap-4">
             <Link href="/">
               <h1 className={pressStart2P.className}>UWA Judge</h1>
             </Link>
             <Link href="/assignments">Assignments</Link>
           </div>
-          <div className="flex gap-2">
+          <div className="flex gap-2 items-center">
             <span>{session?.user?.userId}</span>
             <span>{session?.user?.name}</span>
             {session ? (
-              <Link href="api/auth/signout">Logout</Link>
+              <Link href="api/auth/signout"><Button>Logout</Button></Link>
             ) : (
-              <Link href="api/auth/signin">Login</Link>
+              <Link href="api/auth/signin"><Button>Login</Button></Link>
             )}
           </div>
         </header>

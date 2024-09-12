@@ -6,7 +6,7 @@ import { readEnvs } from '@/lib/utils';
 import importJudgeBasic from './seeding/judge-basic';
 import importLanguage from './seeding/language';
 import importProblemVersion from './seeding/problem-version';
-import { createAssignment } from '@/lib/services/assignment/create-assignment';
+import { createAssignment } from '@/services/assignment/create-assignment';
 
 readEnvs()
 

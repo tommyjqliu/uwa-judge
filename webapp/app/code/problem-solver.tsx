@@ -1,7 +1,7 @@
 "use client";
 import axios from "@/lib/axios";
-import ClientContext from "@/lib/components/client-context";
-import EntitySelector from "@/lib/components/entity-selector";
+import ClientContext from "@/components/client-context";
+import EntitySelector from "@/components/entity-selector";
 import { Editor } from "@monaco-editor/react";
 import {
   Button,

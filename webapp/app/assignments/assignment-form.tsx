@@ -1,11 +1,11 @@
 "use client";
 
 import axios from "@/lib/axios";
-import ClientContext from "@/lib/components/client-context";
-import EntitySelector from "@/lib/components/entity-selector";
-import FileUploader from "@/lib/components/file-uploader";
-import { Button } from "@/lib/components/ui/button"
-import { Textarea } from "@/lib/components/ui/textarea";
+import ClientContext from "@/components/client-context";
+import EntitySelector from "@/components/entity-selector";
+import FileUploader from "@/components/file-uploader";
+import { Button } from "@/components/ui/button"
+import { Textarea } from "@/components/ui/textarea";
 import { DateTimePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { useRouter } from "next/navigation";

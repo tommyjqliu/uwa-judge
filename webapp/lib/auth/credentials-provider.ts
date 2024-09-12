@@ -16,12 +16,16 @@ export const credentialsProvider = CredentialsProvider({
     username: { label: "Username", type: "text" },
     password: { label: "Password", type: "password" },
   },
+
   async authorize(credentials, req) {
     const { username, password } = credentials || {};
+  
     if (!username || !password) {
       return null;
     }
+  
     const hashedPassword = password && (await bcrypt.hash(password, 10));
+  
     const user =
       username &&
       (await uwajudgeDB.user.findFirst({

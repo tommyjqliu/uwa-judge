@@ -7,6 +7,12 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+
+enum Permission {
+  developAdmin
+  manageUsers
+}
+
 model User {
   id                  Int                     @id @default(autoincrement())
   email               String?
@@ -17,7 +23,7 @@ model User {
   assignments         StudentsOnAssignments[]
   Submission          Submission[]
   TutorsOnAssignments TutorsOnAssignments[]
-  permissions         Permission[]            @relation("PermissionToUser")
+  permissions         Permission[]
   groups              UsersOnGroups[]
 }
 
@@ -25,7 +31,7 @@ model UserGroup {
   id          Int             @id @default(autoincrement())
   name        String
   description String?
-  permissions Permission[]    @relation("PermissionToUserGroup")
+  permissions Permission[]
   users       UsersOnGroups[]
 }
 
@@ -53,13 +59,6 @@ model ExternalAccount {
   @@index([userId])
 }
 
-model Permission {
-  id          Int         @id @default(autoincrement())
-  name        String
-  description String?
-  users       User[]      @relation("PermissionToUser")
-  userGroups  UserGroup[] @relation("PermissionToUserGroup")
-}
 
 model Assignment {
   id          Int                     @id @default(autoincrement())

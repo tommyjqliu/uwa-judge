@@ -2,9 +2,9 @@ import {
   EntityQueryOptions
 } from "@/lib/actions/entity-query";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
-import { Merge, ModelOfDB } from "../type";
-import { useEntityQuery } from "../hooks/use-entity-query";
-import { UWAjudgeDB } from "../database-client";
+import { Merge, ModelOfDB } from "../lib/type";
+import { useEntityQuery } from "../lib/hooks/use-entity-query";
+import { UWAjudgeDB } from "../lib/database-client";
 
 export type EntitySelectorProps<
   E extends keyof ModelOfDB<UWAjudgeDB>,
