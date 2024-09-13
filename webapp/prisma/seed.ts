@@ -6,10 +6,12 @@ import importLanguage from './seeding/language';
 import importProblemVersions from './seeding/problem-version';
 import { createAssignment } from '@/services/assignment/create-assignment';
 import { readEnvs } from '@/lib/server-utils';
+import seedUser from './seeding/user';
 
 readEnvs()
 
 async function main() {
+  await seedUser();
   await importJudgeBasic();
   await importLanguage();
   await importProblemVersions()

@@ -16,15 +16,20 @@ enum Permission {
 model User {
   id                  Int                     @id @default(autoincrement())
   email               String?
+  // Login
   username            String?                 @unique
   password            String?
-  AdminsOnAssignments AdminsOnAssignments[]
   externalAccounts    ExternalAccount[]
-  assignments         StudentsOnAssignments[]
-  Submission          Submission[]
-  TutorsOnAssignments TutorsOnAssignments[]
+  // Management
   permissions         Permission[]
-  groups              UsersOnGroups[]
+  groups              UserGroup[]
+  // Business
+  Submission          Submission[]
+  AdminsOnAssignments AdminsOnAssignments[]
+  TutorsOnAssignments TutorsOnAssignments[]
+  assignments         StudentsOnAssignments[]
+
+  @@index([username])
 }
 
 model UserGroup {
@@ -32,19 +37,7 @@ model UserGroup {
   name        String
   description String?
   permissions Permission[]
-  users       UsersOnGroups[]
-}
-
-model UsersOnGroups {
-  userId  Int
-  groupId Int
-  isAdmin Boolean
-  user    User      @relation(fields: [userId], references: [id])
-  group   UserGroup @relation(fields: [groupId], references: [id])
-
-  @@id([userId, groupId])
-  @@index([userId], map: "UsersOnGroups_userId_idx")
-  @@index([groupId], map: "UsersOnGroups_groupId_idx")
+  users       User[]
 }
 
 model ExternalAccount {

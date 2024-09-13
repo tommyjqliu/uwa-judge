@@ -1,20 +1,12 @@
 import { uwajudgeDB } from "@/lib/database-client";
+import { batchCreateUsers } from "@/services/user/create-user";
 // Not working, fix later
-export default async function seed_user() {
-    // Insert test data
-    const usersToInsert = Array.from({ length: 20 }, (_, i) => {
-        const username = `user${i + 1}`;
-        return {
-            username,
-            password: username,
-        };
-    });
+export default async function seedUser() {
+    const usersToInsert = Array.from({ length: 20 }, (_, i) => `user${i + 1}`);
+    await batchCreateUsers(usersToInsert, "password");
+}
 
-    await uwajudgeDB.user.createMany({
-        data: usersToInsert,
-        skipDuplicates: true,
-    })
-
+async function outDate() {
 
     // const problems = await readProblems()
 
