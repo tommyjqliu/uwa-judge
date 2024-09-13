@@ -3,9 +3,9 @@ import { stringToInt } from "@/lib/zod";
 import { z } from "zod";
 import ProblemSolver from "./problem-solver";
 import Link from "next/link";
-import PdfReader from "@/lib/components/pdf-reader";
-import { Card, CardContent } from "@/lib/components/ui/card";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/lib/components/ui/select";
+import PdfReader from "@/components/pdf-reader";
+import { Card, CardContent } from "@/components/ui/card";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 export default async function Code({
   searchParams,

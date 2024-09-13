@@ -1,6 +1,6 @@
 import * as React from "react";
 import { ProblemVersion } from "@prisma/client";
-import { Table, TableBody, TableCell, TableHead, TableRow } from "@/lib/components/ui/table";
+import { Table, TableBody, TableCell, TableHead, TableRow } from "@/components/ui/table";
 
 interface ProblemVersionListProps {
   problemVersions: ProblemVersion[];

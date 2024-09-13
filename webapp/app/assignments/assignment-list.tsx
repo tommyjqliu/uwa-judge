@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Table, TableBody, TableCell, TableHead, TableRow } from "@/lib/components/ui/table";
+import { Table, TableBody, TableCell, TableHead, TableRow } from "@/components/ui/table";
 
 import { Assignment } from "@prisma/client";
 import Link from "next/link";

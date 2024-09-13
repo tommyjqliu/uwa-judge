@@ -1,7 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import axios from 'axios';
 import fs from 'fs';
-import path from 'path';
 import { readProblems } from '../utils/read-problems';
 
 describe('File Upload Endpoint', async () => {

@@ -1,4 +1,7 @@
 -- CreateEnum
+CREATE TYPE "Permission" AS ENUM ('developAdmin', 'manageUsers');
+
+-- CreateEnum
 CREATE TYPE "TestCaseType" AS ENUM ('sample', 'secret');
 
 -- CreateTable
@@ -7,6 +10,7 @@ CREATE TABLE "User" (
     "email" TEXT,
     "username" TEXT,
     "password" TEXT,
+    "permissions" "Permission"[],
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
@@ -16,6 +20,7 @@ CREATE TABLE "UserGroup" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "description" TEXT,
+    "permissions" "Permission"[],
 
     CONSTRAINT "UserGroup_pkey" PRIMARY KEY ("id")
 );
@@ -37,15 +42,6 @@ CREATE TABLE "ExternalAccount" (
     "providerId" TEXT NOT NULL,
 
     CONSTRAINT "ExternalAccount_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "Permission" (
-    "id" SERIAL NOT NULL,
-    "name" TEXT NOT NULL,
-    "description" TEXT,
-
-    CONSTRAINT "Permission_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -95,11 +91,23 @@ CREATE TABLE "Problem" (
 -- CreateTable
 CREATE TABLE "ProblemVersion" (
     "id" SERIAL NOT NULL,
+    "name" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "hash" TEXT NOT NULL,
     "file" BYTEA NOT NULL,
+    "metadata" JSONB NOT NULL,
+    "combinedRunCompare" BOOLEAN NOT NULL DEFAULT false,
+    "problemStatementHash" TEXT NOT NULL,
 
     CONSTRAINT "ProblemVersion_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "ProblemStatement" (
+    "hash" TEXT NOT NULL,
+    "file" BYTEA NOT NULL,
+
+    CONSTRAINT "ProblemStatement_pkey" PRIMARY KEY ("hash")
 );
 
 -- CreateTable
@@ -119,10 +127,10 @@ CREATE TABLE "Submission" (
     "id" SERIAL NOT NULL,
     "dateTime" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "code" TEXT NOT NULL,
-    "comment" TEXT,
     "mark" TEXT,
+    "comment" TEXT,
     "languageId" TEXT NOT NULL,
-    "userId" INTEGER NOT NULL,
+    "userId" INTEGER,
     "problemVersionId" INTEGER,
     "problemId" INTEGER,
 
@@ -132,10 +140,13 @@ CREATE TABLE "Submission" (
 -- CreateTable
 CREATE TABLE "Judge" (
     "id" SERIAL NOT NULL,
+    "stopOnError" BOOLEAN NOT NULL DEFAULT true,
+    "finished" BOOLEAN NOT NULL DEFAULT false,
     "submissionId" INTEGER NOT NULL,
     "score" INTEGER,
     "time" INTEGER,
     "memory" INTEGER,
+    "problemVersionId" INTEGER NOT NULL,
 
     CONSTRAINT "Judge_pkey" PRIMARY KEY ("id")
 );
@@ -179,12 +190,13 @@ CREATE TABLE "Language" (
 
 -- CreateTable
 CREATE TABLE "Executable" (
-    "execId" TEXT NOT NULL,
+    "id" TEXT NOT NULL,
     "description" TEXT NOT NULL,
     "type" TEXT NOT NULL,
     "languageId" TEXT,
+    "problemVersionId" INTEGER,
 
-    CONSTRAINT "Executable_pkey" PRIMARY KEY ("execId")
+    CONSTRAINT "Executable_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -193,21 +205,9 @@ CREATE TABLE "ExecutableFile" (
     "name" TEXT NOT NULL,
     "content" BYTEA NOT NULL,
     "isExecutable" BOOLEAN NOT NULL,
-    "executableExecId" TEXT,
+    "executableId" TEXT,
 
     CONSTRAINT "ExecutableFile_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "_PermissionToUser" (
-    "A" INTEGER NOT NULL,
-    "B" INTEGER NOT NULL
-);
-
--- CreateTable
-CREATE TABLE "_PermissionToUserGroup" (
-    "A" INTEGER NOT NULL,
-    "B" INTEGER NOT NULL
 );
 
 -- CreateIndex
@@ -238,6 +238,9 @@ CREATE INDEX "TutorsOnAssignments_userId_idx" ON "TutorsOnAssignments"("userId")
 CREATE INDEX "StudentsOnAssignments_userId_idx" ON "StudentsOnAssignments"("userId");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "ProblemVersion_hash_key" ON "ProblemVersion"("hash");
+
+-- CreateIndex
 CREATE INDEX "ProblemVersion_hash_idx" ON "ProblemVersion"("hash");
 
 -- CreateIndex
@@ -250,16 +253,7 @@ CREATE INDEX "Submission_userId_idx" ON "Submission"("userId");
 CREATE UNIQUE INDEX "Language_executableId_key" ON "Language"("executableId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "_PermissionToUser_AB_unique" ON "_PermissionToUser"("A", "B");
-
--- CreateIndex
-CREATE INDEX "_PermissionToUser_B_index" ON "_PermissionToUser"("B");
-
--- CreateIndex
-CREATE UNIQUE INDEX "_PermissionToUserGroup_AB_unique" ON "_PermissionToUserGroup"("A", "B");
-
--- CreateIndex
-CREATE INDEX "_PermissionToUserGroup_B_index" ON "_PermissionToUserGroup"("B");
+CREATE UNIQUE INDEX "Executable_problemVersionId_key" ON "Executable"("problemVersionId");
 
 -- AddForeignKey
 ALTER TABLE "UsersOnGroups" ADD CONSTRAINT "UsersOnGroups_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -295,16 +289,19 @@ ALTER TABLE "Problem" ADD CONSTRAINT "Problem_assignmentId_fkey" FOREIGN KEY ("a
 ALTER TABLE "Problem" ADD CONSTRAINT "Problem_problemVersionId_fkey" FOREIGN KEY ("problemVersionId") REFERENCES "ProblemVersion"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "ProblemVersion" ADD CONSTRAINT "ProblemVersion_problemStatementHash_fkey" FOREIGN KEY ("problemStatementHash") REFERENCES "ProblemStatement"("hash") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "Testcase" ADD CONSTRAINT "Testcase_problemVersionId_fkey" FOREIGN KEY ("problemVersionId") REFERENCES "ProblemVersion"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Submission" ADD CONSTRAINT "Submission_languageId_fkey" FOREIGN KEY ("languageId") REFERENCES "Language"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Submission" ADD CONSTRAINT "Submission_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE RESTRICT;
+ALTER TABLE "Submission" ADD CONSTRAINT "Submission_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Submission" ADD CONSTRAINT "Submission_problemVersionId_fkey" FOREIGN KEY ("problemVersionId") REFERENCES "ProblemVersion"("id") ON DELETE RESTRICT ON UPDATE RESTRICT;
+ALTER TABLE "Submission" ADD CONSTRAINT "Submission_problemVersionId_fkey" FOREIGN KEY ("problemVersionId") REFERENCES "ProblemVersion"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Submission" ADD CONSTRAINT "Submission_problemId_fkey" FOREIGN KEY ("problemId") REFERENCES "Problem"("id") ON DELETE SET NULL ON UPDATE CASCADE;
@@ -313,25 +310,19 @@ ALTER TABLE "Submission" ADD CONSTRAINT "Submission_problemId_fkey" FOREIGN KEY 
 ALTER TABLE "Judge" ADD CONSTRAINT "Judge_submissionId_fkey" FOREIGN KEY ("submissionId") REFERENCES "Submission"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "JudgeTask" ADD CONSTRAINT "JudgeTask_testcaseId_fkey" FOREIGN KEY ("testcaseId") REFERENCES "Testcase"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Judge" ADD CONSTRAINT "Judge_problemVersionId_fkey" FOREIGN KEY ("problemVersionId") REFERENCES "ProblemVersion"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "JudgeTask" ADD CONSTRAINT "JudgeTask_judgeId_fkey" FOREIGN KEY ("judgeId") REFERENCES "Judge"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "JudgeTask" ADD CONSTRAINT "JudgeTask_testcaseId_fkey" FOREIGN KEY ("testcaseId") REFERENCES "Testcase"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Language" ADD CONSTRAINT "Language_executableId_fkey" FOREIGN KEY ("executableId") REFERENCES "Executable"("execId") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "JudgeTask" ADD CONSTRAINT "JudgeTask_judgeId_fkey" FOREIGN KEY ("judgeId") REFERENCES "Judge"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "ExecutableFile" ADD CONSTRAINT "ExecutableFile_executableExecId_fkey" FOREIGN KEY ("executableExecId") REFERENCES "Executable"("execId") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "Language" ADD CONSTRAINT "Language_executableId_fkey" FOREIGN KEY ("executableId") REFERENCES "Executable"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "_PermissionToUser" ADD CONSTRAINT "_PermissionToUser_A_fkey" FOREIGN KEY ("A") REFERENCES "Permission"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "Executable" ADD CONSTRAINT "Executable_problemVersionId_fkey" FOREIGN KEY ("problemVersionId") REFERENCES "ProblemVersion"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "_PermissionToUser" ADD CONSTRAINT "_PermissionToUser_B_fkey" FOREIGN KEY ("B") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "_PermissionToUserGroup" ADD CONSTRAINT "_PermissionToUserGroup_A_fkey" FOREIGN KEY ("A") REFERENCES "Permission"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "_PermissionToUserGroup" ADD CONSTRAINT "_PermissionToUserGroup_B_fkey" FOREIGN KEY ("B") REFERENCES "UserGroup"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "ExecutableFile" ADD CONSTRAINT "ExecutableFile_executableId_fkey" FOREIGN KEY ("executableId") REFERENCES "Executable"("id") ON DELETE SET NULL ON UPDATE CASCADE;

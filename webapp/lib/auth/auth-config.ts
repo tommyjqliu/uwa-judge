@@ -1,12 +1,15 @@
 import type { NextAuthOptions } from "next-auth";
-import credentialsProvider from "./credentials-provider";
+import passwordProvider from "./password-provider";
 import { azureAdProvider, providerId as azureId } from "./azure-provider";
-import { providerId as credentialsId } from "./credentials-provider";
+import { providerId as credentialsId } from "./password-provider";
 import { uwajudgeDB } from "../database-client";
 
 export const authConfig = {
-  providers: [credentialsProvider, azureAdProvider],
+  providers: [passwordProvider, azureAdProvider],
   callbacks: {
+    /**
+     * ref: https://next-auth.js.org/configuration/callbacks#session-callback
+     */
     async jwt(params) {
       console.log("jwt", params);
       const { token, account, profile, user } = params;

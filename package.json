@@ -14,6 +14,7 @@
     "deprecated-start": "next start",
     "lint": "next lint",
     "test": "docker compose exec webapp npx vitest",
+    "webapp-console": "docker compose exec webapp sh",
     "db-push": "docker compose exec webapp npx prisma db push",
     "db-migrate": "docker compose exec webapp npx prisma migrate dev",
     "db-reset": "docker compose exec webapp npx prisma migrate reset --force",

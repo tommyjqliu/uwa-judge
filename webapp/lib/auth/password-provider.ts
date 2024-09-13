@@ -1,9 +1,10 @@
 import CredentialsProvider from "next-auth/providers/credentials";
 import { uwajudgeDB } from "../database-client";
 import bcrypt from "bcrypt";
+import { createUser } from "@/services/user/create-user";
 
 export const providerId = "username-password";
-export const credentialsProvider = CredentialsProvider({
+export const passwordProvider = CredentialsProvider({
   id: providerId,
   // The name to display on the sign in form (e.g. "Sign in with...")
   name: "Credentials (Auto Sign Up)",
@@ -16,20 +17,20 @@ export const credentialsProvider = CredentialsProvider({
     username: { label: "Username", type: "text" },
     password: { label: "Password", type: "password" },
   },
+
   async authorize(credentials, req) {
     const { username, password } = credentials || {};
     if (!username || !password) {
       return null;
     }
-    const hashedPassword = password && (await bcrypt.hash(password, 10));
-    const user =
-      username &&
-      (await uwajudgeDB.user.findFirst({
-        where: {
-          username,
-        },
-      }));
 
+    const user = await uwajudgeDB.user.findFirst({
+      where: {
+        username,
+      },
+    });
+  
+    console.log("user", user);
     if (user) {
       // Any object returned will be saved in `user` property of the JWT
       if (
@@ -47,12 +48,7 @@ export const credentialsProvider = CredentialsProvider({
       // You can also Reject this callback with an Error thus the user will be sent to the error page with the error message as a query parameter
       return null;
     } else {
-      const user = await uwajudgeDB.user.create({
-        data: {
-          username,
-          password: hashedPassword,
-        },
-      });
+      const user = await createUser(username, password);
       return {
         ...user,
         id: user.id.toString(),
@@ -62,4 +58,4 @@ export const credentialsProvider = CredentialsProvider({
   },
 });
 
-export default credentialsProvider;
+export default passwordProvider;

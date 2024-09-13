@@ -1,7 +1,7 @@
 import { testApiHandler } from "next-test-api-route-handler";
 import { describe, expect, it } from "vitest";
 import * as appHandler from "@/app/api/assignments/route";
-import { createAssignment } from "@/lib/services/assignment/create-assignment";
+import { createAssignment } from "@/services/assignment/create-assignment";
 import { readProblems } from "../utils/read-problems";
 const problemPath = "./tests/data/problems/";
 

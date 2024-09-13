@@ -1,6 +1,6 @@
 import { uwajudgeDB } from '@/lib/database-client';
 import { assert } from '@/lib/error';
-import { isExecutable } from '@/lib/utils';
+import { isExecutable } from '@/lib/server-utils';
 import fs from 'fs';
 import path from 'path';
 
