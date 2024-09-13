@@ -7,6 +7,9 @@ import { uwajudgeDB } from "../database-client";
 export const authConfig = {
   providers: [credentialsProvider, azureAdProvider],
   callbacks: {
+    /**
+     * ref: https://next-auth.js.org/configuration/callbacks#session-callback
+     */
     async jwt(params) {
       console.log("jwt", params);
       const { token, account, profile, user } = params;

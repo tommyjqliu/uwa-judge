@@ -19,13 +19,13 @@ export const credentialsProvider = CredentialsProvider({
 
   async authorize(credentials, req) {
     const { username, password } = credentials || {};
-  
+    console.log("credentials authorize", credentials);
     if (!username || !password) {
       return null;
     }
-  
+    console.log("credentials authorize", credentials);
     const hashedPassword = password && (await bcrypt.hash(password, 10));
-  
+    console.log("hashedPassword", 11);
     const user =
       username &&
       (await uwajudgeDB.user.findFirst({
@@ -33,7 +33,7 @@ export const credentialsProvider = CredentialsProvider({
           username,
         },
       }));
-
+    console.log("user", user);
     if (user) {
       // Any object returned will be saved in `user` property of the JWT
       if (
@@ -57,6 +57,7 @@ export const credentialsProvider = CredentialsProvider({
           password: hashedPassword,
         },
       });
+    
       return {
         ...user,
         id: user.id.toString(),

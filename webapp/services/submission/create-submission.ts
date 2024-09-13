@@ -1,4 +1,3 @@
-import { getUser } from "@/lib/auth/session";
 import { uwajudgeDB } from "@/lib/database-client";
 import { assert, ParamsInvalidError } from "@/lib/error";
 

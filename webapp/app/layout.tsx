@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import { Inter, Press_Start_2P } from "next/font/google";
-import { getSession } from "@/lib/auth/session";
+import { getServerSession } from "@/lib/auth/session";
 import Link from "next/link";
 
 import "./globals.css";
 import { Button } from "@/components/ui/button";
+import SessionInjector from "@/components/session-injector";
 
 const inter = Inter({ subsets: ["latin"] });
 const pressStart2P = Press_Start_2P({ weight: "400", subsets: ["latin"] });
@@ -19,7 +20,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await getSession();
+  const session = await getServerSession();
   console.log("client session", session);
   return (
     <html lang="en">
@@ -42,6 +43,7 @@ export default async function RootLayout({
           </div>
         </header>
         {children}
+        <SessionInjector session={session} />
       </body>
     </html>
   );
