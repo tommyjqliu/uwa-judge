@@ -1,17 +1,25 @@
 import type { Metadata } from "next";
-import { Inter, Press_Start_2P } from "next/font/google";
-import { getServerSession } from "@/lib/auth/session";
-import Link from "next/link";
+import { Fira_Code } from "next/font/google";
 
 import "./globals.css";
-import { Button } from "@/components/ui/button";
 import SessionInjector from "@/components/session-injector";
 
 import TopNavigator from "./navigator";
-import { LayoutAvatar } from "@/components/layout-avatar";
+import { getSession } from "@/lib/auth/auth";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { CircleUser } from "lucide-react"
+import Link from "next/link"
+import { Button } from "@/components/ui/button";
 
-const inter = Inter({ subsets: ["latin"] });
-const pressStart2P = Press_Start_2P({ weight: "400", subsets: ["latin"] });
+
+const firaCode = Fira_Code({ weight: "400", subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "UWA Judge",
@@ -23,20 +31,37 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await getServerSession();
-
+  const session = await getSession();
+  const { profile } = session;
   return (
     <html lang="en" className="h-full">
-      <body className={`${inter.className} flex flex-col min-h-full`}>
-        <header className="sticky top-0 z-50 w-full flex justify-between p-4 items-center border-border/40 bg-background/10 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <body className={`${firaCode.className} flex flex-col min-h-full`}>
+        <header className="sticky top-0 z-50 w-full flex justify-between px-4 py-3 items-center border-border/40 bg-background/10 backdrop-blur supports-[backdrop-filter]:bg-background/60 shadow-sm">
           <div className="flex gap-6 items-center">
             <TopNavigator />
           </div>
-          <LayoutAvatar session={session}/>
+          {
+            !profile ? (
+              <div className="flex gap-2">
+                <Link href="/sign-in"><Button size='sm' variant="ghost">Sign-in</Button></Link>
+                <Link href="/sign-up"><Button size='sm' variant="outline">Sign-up</Button></Link>
+              </div>
+            ) :
+              <DropdownMenu>
+                <DropdownMenuTrigger className="p-1">
+                  <CircleUser strokeWidth={1.5} />
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <Link href="/api/auth/sign-out">
+                    <DropdownMenuItem>Logout</DropdownMenuItem>
+                  </Link>
+                </DropdownMenuContent>
+              </DropdownMenu>
+          }
         </header>
-        <main className="flex-1 overflow-auto">
-          {children}
-        </main>
+        {children}
         <SessionInjector session={session} />
       </body>
     </html>

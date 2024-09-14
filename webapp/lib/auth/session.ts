@@ -11,11 +11,13 @@ import { getMockSession } from "@/tests/utils/mock-session";
  * @Description: Get the session of the user from server side only
  */
 export interface Session {
+  accessToken: any;
   user?: {
     userId: number;
     name?: string;
     email?: string;
     image?: string;
+    accessToken?: string;
   };
 }
 

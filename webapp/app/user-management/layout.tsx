@@ -6,18 +6,14 @@ export default function DashboardLayout({
     children: React.ReactNode
 }) {
     return (
-        <div className="h-full flex flex-col p-4 overflow-hidden">
-            <header className="bg-white shadow-sm">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <h1 className="text-xl font-bold py-2">User Management</h1>
-                </div>
+        <main className="flex-grow h-0 flex flex-col gap-4 px-8 py-4 overflow-hidden">
+            <header>
+                <h1 className="text-xl font-bold">User Management</h1>
             </header>
-            <div className="h-0 flex-1 flex gap-2 p-2">
+            <div className="h-0 flex-1 flex gap-4">
                 <UserManagementNavigator />
-                <main className="flex-grow p-4">
-                    {children}
-                </main>
+                {children}
             </div>
-        </div>
+        </main>
     );
 }

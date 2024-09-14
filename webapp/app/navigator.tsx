@@ -18,8 +18,8 @@ export default function TopNavigator() {
                 <Image src={icon} alt="UWA Judge" width={24} height={24} />
                 <span className={inter.className} >UWAjudge</span>
             </Link>
-            <Link href="/user-management/user" className={cn("transition-colors hover:text-foreground/80", isActive("user-management") ? "text-foreground" : "text-foreground/60")}>Users</Link>
-            <Link href="/assignments" className={cn("transition-colors hover:text-foreground/80", isActive("assignments") ? "text-foreground" : "text-foreground/60")}>Assignments</Link>
+            <Link href="/user-management/user" className={cn("transition-colors hover:text-foreground/80", isActive("user-management") ? "text-foreground" : "text-foreground/60")}>User</Link>
+            <Link href="/assignments" className={cn("transition-colors hover:text-foreground/80", isActive("assignments") ? "text-foreground" : "text-foreground/60")}>Assignment</Link>
         </nav>
     )
 }

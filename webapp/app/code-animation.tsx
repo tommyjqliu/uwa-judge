@@ -34,7 +34,6 @@ export default function CodeAnimation() {
 
     return (
         <>
-            <Button onClick={() => console.log(getClientSession())}>Get Started</Button>
             <pre className="text-green-400 text-xs md:text-sm lg:text-base xl:text-lg bg-black bg-opacity-80 p-4 rounded-lg shadow-lg z-0 whitespace-pre-line min-w-[320px] min-h-[180px]">
                 {codeText}
             </pre>
