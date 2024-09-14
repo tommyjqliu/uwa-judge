@@ -1,5 +1,6 @@
 import { AxiosError } from "@/lib/axios";
 import { ZodError } from "zod";
+import { ParamsInvalidError } from "./error";
 
 export default function errorHandler(endpoint: (...args: any[]) => any) {
   return async function (...args: any[]) {
@@ -8,7 +9,7 @@ export default function errorHandler(endpoint: (...args: any[]) => any) {
     } catch (error) {
       console.error("error!", error);
 
-      if (error instanceof ZodError) {
+      if (error instanceof ZodError || error instanceof ParamsInvalidError) {
         return new Response(error.message, {
           status: 400,
         });

@@ -7,7 +7,7 @@ CREATE TYPE "TestCaseType" AS ENUM ('sample', 'secret');
 -- CreateTable
 CREATE TABLE "User" (
     "id" SERIAL NOT NULL,
-    "email" TEXT,
+    "email" TEXT NOT NULL,
     "username" TEXT,
     "password" TEXT,
     "permissions" "Permission"[],
@@ -23,15 +23,6 @@ CREATE TABLE "UserGroup" (
     "permissions" "Permission"[],
 
     CONSTRAINT "UserGroup_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "UsersOnGroups" (
-    "userId" INTEGER NOT NULL,
-    "groupId" INTEGER NOT NULL,
-    "isAdmin" BOOLEAN NOT NULL,
-
-    CONSTRAINT "UsersOnGroups_pkey" PRIMARY KEY ("userId","groupId")
 );
 
 -- CreateTable
@@ -210,14 +201,20 @@ CREATE TABLE "ExecutableFile" (
     CONSTRAINT "ExecutableFile_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "_UserToUserGroup" (
+    "A" INTEGER NOT NULL,
+    "B" INTEGER NOT NULL
+);
+
+-- CreateIndex
+CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
+
 -- CreateIndex
 CREATE UNIQUE INDEX "User_username_key" ON "User"("username");
 
 -- CreateIndex
-CREATE INDEX "UsersOnGroups_userId_idx" ON "UsersOnGroups"("userId");
-
--- CreateIndex
-CREATE INDEX "UsersOnGroups_groupId_idx" ON "UsersOnGroups"("groupId");
+CREATE INDEX "User_username_idx" ON "User"("username");
 
 -- CreateIndex
 CREATE INDEX "ExternalAccount_userId_idx" ON "ExternalAccount"("userId");
@@ -255,11 +252,11 @@ CREATE UNIQUE INDEX "Language_executableId_key" ON "Language"("executableId");
 -- CreateIndex
 CREATE UNIQUE INDEX "Executable_problemVersionId_key" ON "Executable"("problemVersionId");
 
--- AddForeignKey
-ALTER TABLE "UsersOnGroups" ADD CONSTRAINT "UsersOnGroups_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+-- CreateIndex
+CREATE UNIQUE INDEX "_UserToUserGroup_AB_unique" ON "_UserToUserGroup"("A", "B");
 
--- AddForeignKey
-ALTER TABLE "UsersOnGroups" ADD CONSTRAINT "UsersOnGroups_groupId_fkey" FOREIGN KEY ("groupId") REFERENCES "UserGroup"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+-- CreateIndex
+CREATE INDEX "_UserToUserGroup_B_index" ON "_UserToUserGroup"("B");
 
 -- AddForeignKey
 ALTER TABLE "ExternalAccount" ADD CONSTRAINT "ExternalAccount_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -326,3 +323,9 @@ ALTER TABLE "Executable" ADD CONSTRAINT "Executable_problemVersionId_fkey" FOREI
 
 -- AddForeignKey
 ALTER TABLE "ExecutableFile" ADD CONSTRAINT "ExecutableFile_executableId_fkey" FOREIGN KEY ("executableId") REFERENCES "Executable"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "_UserToUserGroup" ADD CONSTRAINT "_UserToUserGroup_A_fkey" FOREIGN KEY ("A") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "_UserToUserGroup" ADD CONSTRAINT "_UserToUserGroup_B_fkey" FOREIGN KEY ("B") REFERENCES "UserGroup"("id") ON DELETE CASCADE ON UPDATE CASCADE;

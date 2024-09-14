@@ -14,8 +14,10 @@ const columns: ColumnDef<User>[] = [{
 export default async function page() {
     const users = await uwajudgeDB.user.findMany();
     return (
-        <div>
-            <DataTable columns={columns} data={users} />
-        </div>
+        <main className="flex-1 h-full flex flex-col">
+            <div className="flex-1 h-0 flex flex-col">
+                <DataTable columns={columns} data={users} />
+            </div>
+        </main>
     );
 }

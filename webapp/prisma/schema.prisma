@@ -7,17 +7,16 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 enum Permission {
   developAdmin
   manageUsers
 }
 
 model User {
-  id                  Int                     @id @default(autoincrement())
-  email               String?
-  // Login
-  username            String?                 @unique
+  id       Int    @id @default(autoincrement())
+  email    String @unique
+  username String
+
   password            String?
   externalAccounts    ExternalAccount[]
   // Management
@@ -29,11 +28,11 @@ model User {
   TutorsOnAssignments TutorsOnAssignments[]
   assignments         StudentsOnAssignments[]
 
-  @@index([username])
+  @@index([email])
 }
 
 model UserGroup {
-  id          Int             @id @default(autoincrement())
+  id          Int          @id @default(autoincrement())
   name        String
   description String?
   permissions Permission[]
@@ -51,7 +50,6 @@ model ExternalAccount {
   @@unique([provider, providerId])
   @@index([userId])
 }
-
 
 model Assignment {
   id          Int                     @id @default(autoincrement())

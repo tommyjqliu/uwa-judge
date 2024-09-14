@@ -3,9 +3,10 @@ import passwordProvider from "./password-provider";
 import { azureAdProvider, providerId as azureId } from "./azure-provider";
 import { providerId as credentialsId } from "./password-provider";
 import { uwajudgeDB } from "../database-client";
+import { emailProvider } from "./email-provider";
 
 export const authConfig = {
-  providers: [passwordProvider, azureAdProvider],
+  providers: [passwordProvider, emailProvider, azureAdProvider],
   callbacks: {
     /**
      * ref: https://next-auth.js.org/configuration/callbacks#session-callback
@@ -49,6 +50,7 @@ export const authConfig = {
             });
           }
           token.userId = user.id;
+          token.accessToken = account.access_token;
         }
 
         if (account.provider === credentialsId) {
@@ -63,6 +65,7 @@ export const authConfig = {
         user: {
           ...session.user,
           userId: token.userId as string,
+          accessToken: token.accessToken as string,
         },
       };
     },

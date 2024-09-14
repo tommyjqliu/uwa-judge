@@ -17,7 +17,7 @@ export class PermissionError extends Error {
 type ErrorType = typeof ParamsInvalidError | typeof PermissionError;
 
 
-export function assert(condition: boolean, message: string, Err: ErrorType = ParamsInvalidError): asserts condition {
+export function assert(condition: unknown, message: string = "Request illegal", Err: ErrorType = ParamsInvalidError): asserts condition {
     if (!condition) {
         throw new Err(message);
     }
