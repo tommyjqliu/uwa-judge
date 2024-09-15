@@ -8,23 +8,6 @@ services:
     volumes:
       - ./temp/.postgres:/var/lib/postgresql/data
 
-  pgadmin:
-    image: dpage/pgadmin4:latest
-    ports:
-      - "5050:80"
-    environment:
-      - PGADMIN_DEFAULT_EMAIL=postgres@example.com
-      - PGADMIN_DEFAULT_PASSWORD=postgres
-      - PGADMIN_CONFIG_SERVER_MODE=False
-      - PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED=False
-    entrypoint: /bin/sh -c "chmod 600 /pgpass; /entrypoint.sh;"
-    user: root
-    configs:
-      - source: servers.json
-        target: /pgadmin4/servers.json
-      - source: pgpass
-        target: /pgpass
-
   rabbitmq:
     image: "rabbitmq:3-management"
     ports:
@@ -35,7 +18,7 @@ services:
       RABBITMQ_DEFAULT_PASS: password
 
   judgehost:
-    image: tommyjqliu/judgehost:latest
+    image: tommyjqliu/uwajudge-judgehost:latest
     privileged: true
     restart: always
     environment:
@@ -55,9 +38,10 @@ services:
       - .env
     ports:
       - "3000:3000"
+      - "5555:5555"
 
   problemtools:
-    image: tommyjqliu/problemtools-web:latest
+    image: tommyjqliu/uwajudge-problemtools:latest
     ports:
       - "5000:5000"
 
@@ -72,19 +56,3 @@ services:
       - "443:443"
     depends_on:
       - webapp
-
-configs:
-  pgpass:
-    content: postgres:5432:*:${POSTGRES_USER}:${POSTGRES_PASSWORD}
-  servers.json:
-    content: |
-      {"Servers": {"1": {
-        "Group": "Servers",
-        "Name": "Postgres",
-        "Host": "postgres",
-        "Port": 5432,
-        "MaintenanceDB": "postgres",
-        "Username": "${POSTGRES_USER}",
-        "PassFile": "/pgpass",
-        "SSLMode": "prefer"
-      }}}

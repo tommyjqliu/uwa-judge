@@ -10,3 +10,7 @@ services:
       - "3000:3000"
     user: node
     command: sh -c "npm install && npm run dev"
+
+  nginx:
+    profiles:
+      - disabled
