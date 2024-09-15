@@ -1,9 +1,13 @@
 
 import { cookies } from "next/headers";
 import { OAuth2RequestError } from "arctic";
-import { azureAD } from "@/lib/auth/auth";
+import { azureAD } from "@/lib/auth";
+import { z } from "zod";
+import { uwajudgeDB } from "@/lib/database-client";
+import refreshProfile from "@/services/user/refresh-profile";
+import { redirect } from "next/navigation";
 
-export async function GET(request: Request): Promise<Response> {
+export async function GET(request: Request) {
     const url = new URL(request.url);
     const code = url.searchParams.get("code");
     const state = url.searchParams.get("state");
@@ -48,19 +52,46 @@ export async function GET(request: Request): Promise<Response> {
         })();
 
         const [image, profile] = await Promise.all([imagePromise, profilePromise])
-
-        return new Response(null, {
-            status: 200
+    
+        const email = z.string().email().parse(profile.userPrincipalName);
+        let user = await uwajudgeDB.user.findUnique({
+            where: {
+                email
+            },
+            include: {
+                groups: true
+            }
         });
+
+        if (!user || !user.active) {
+            user = await uwajudgeDB.user.upsert({
+                where: {
+                    email
+                },
+                update: {
+                    email,
+                    username: profile.displayName,
+                    active: true
+                },
+                create: {
+                    email,
+                    username: profile.displayName,
+                    active: true
+                },
+                include: {
+                    groups: true
+                }
+            });
+        }
+
+        await refreshProfile(user);
+        redirect("/");
     } catch (e) {
         if (e instanceof OAuth2RequestError && e.message === "bad_verification_code") {
-            // invalid code
             return new Response(null, {
                 status: 400
             });
         }
-        return new Response(null, {
-            status: 500
-        });
+        throw e;
     }
 }

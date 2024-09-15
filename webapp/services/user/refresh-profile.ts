@@ -1,4 +1,4 @@
-import { getSession } from "@/lib/auth/auth";
+import { getSession } from "@/lib/auth";
 import { uwajudgeDB } from "@/lib/database-client";
 import { assert } from "@/lib/error";
 import { $Enums, User, UserGroup } from "@prisma/client";

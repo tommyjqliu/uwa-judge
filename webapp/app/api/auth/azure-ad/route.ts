@@ -1,4 +1,4 @@
-import { azureAD } from "@/lib/auth/auth";
+import { azureAD } from "@/lib/auth";
 import { generateCodeVerifier, generateState } from "arctic";
 import { cookies } from "next/headers";
 

@@ -5,6 +5,7 @@ import { cookies } from 'next/headers';
 
 export interface Session {
     pendingSignUpRequest?: {
+        username: string
         email: string
         passwordHash: string
         codeHash: string
@@ -21,4 +22,5 @@ export function getSession() {
     });
 }
 
-export const azureAD = new MicrosoftEntraId(process.env.AZURE_AD_TENANT_ID!, process.env.AZURE_AD_CLIENT_ID!, process.env.AZURE_AD_CLIENT_SECRET!, "http://localhost:3000/api/authenticate/azure-ad/callback");
+const host = process.env.NODE_ENV === "production" ? process.env.AUTH_CALLBACK_PROD! : process.env.AUTH_CALLBACK_DEV!;
+export const azureAD = new MicrosoftEntraId(process.env.AZURE_AD_TENANT_ID!, process.env.AZURE_AD_CLIENT_ID!, process.env.AZURE_AD_CLIENT_SECRET!, `${host}/api/auth/azure-ad/callback`);

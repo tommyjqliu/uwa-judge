@@ -5,7 +5,7 @@ import "./globals.css";
 import SessionInjector from "@/components/session-injector";
 
 import TopNavigator from "./navigator";
-import { getSession } from "@/lib/auth/auth";
+import { getSession } from "@/lib/auth";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,11 +13,10 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { CircleUser } from "lucide-react"
-import Link from "next/link"
+} from "@/components/ui/dropdown-menu";
+import { CircleUser } from "lucide-react";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
-
 
 const firaCode = Fira_Code({ weight: "400", subsets: ["latin"] });
 
@@ -40,29 +39,37 @@ export default async function RootLayout({
           <div className="flex gap-6 items-center">
             <TopNavigator />
           </div>
-          {
-            !profile ? (
-              <div className="flex gap-2">
-                <Link href="/sign-in"><Button size='sm' variant="ghost">Sign-in</Button></Link>
-                <Link href="/sign-up"><Button size='sm' variant="outline">Sign-up</Button></Link>
-              </div>
-            ) :
-              <DropdownMenu>
-                <DropdownMenuTrigger className="p-1">
-                  <CircleUser strokeWidth={1.5} />
-                </DropdownMenuTrigger>
-                <DropdownMenuContent>
-                  <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <Link href="/api/auth/sign-out">
-                    <DropdownMenuItem>Logout</DropdownMenuItem>
-                  </Link>
-                </DropdownMenuContent>
-              </DropdownMenu>
-          }
+          {!profile ? (
+            <div className="flex gap-2">
+              <Link href="/sign-in">
+                <Button size="sm" variant="ghost">
+                  Sign-in
+                </Button>
+              </Link>
+              <Link href="/sign-up">
+                <Button size="sm" variant="outline">
+                  Sign-up
+                </Button>
+              </Link>
+            </div>
+          ) : (
+            <DropdownMenu>
+              <DropdownMenuTrigger className="p-1">
+                <CircleUser strokeWidth={1.5} />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuLabel>{profile.username}</DropdownMenuLabel>
+                <DropdownMenuLabel className="font-normal text-foreground/80">{profile.email}</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <Link href="/api/auth/sign-out">
+                  <DropdownMenuItem>Logout</DropdownMenuItem>
+                </Link>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
         </header>
         {children}
-        <SessionInjector session={session} />
+        <SessionInjector session={JSON.parse(JSON.stringify(session))} />
       </body>
     </html>
   );

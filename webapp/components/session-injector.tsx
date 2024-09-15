@@ -1,6 +1,6 @@
 "use client"
 
-import { Session } from "@/lib/auth/auth";
+import { Session } from "@/lib/auth";
 
 
 let globalSession: Session | null = null;

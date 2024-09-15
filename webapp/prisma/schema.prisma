@@ -13,20 +13,21 @@ enum Permission {
 }
 
 model User {
-  id       Int    @id @default(autoincrement())
-  email    String @unique
-  username String
+  id               Int               @id @default(autoincrement())
+  email            String            @unique
+  username         String // Display name
+  active           Boolean           @default(false)
+  password         String?
+  externalAccounts ExternalAccount[]
 
-  password            String?
-  externalAccounts    ExternalAccount[]
   // Management
   permissions         Permission[]
   groups              UserGroup[]
   // Business
-  Submission          Submission[]
+  submission          Submission[]
+  assignments         StudentsOnAssignments[]
   AdminsOnAssignments AdminsOnAssignments[]
   TutorsOnAssignments TutorsOnAssignments[]
-  assignments         StudentsOnAssignments[]
 
   @@index([email])
 }

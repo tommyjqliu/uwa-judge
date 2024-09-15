@@ -1,19 +1,19 @@
-"use client"
-import Link from "next/link"
+"use client";
+import Link from "next/link";
 
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { signUpSchema } from "@/services/user/sign-up-user"
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { signUpSchema } from "@/services/user/sign-up-user";
 import {
   Form,
   FormControl,
@@ -21,9 +21,9 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
-import axios from "@/lib/axios"
-import { useRouter } from 'next/navigation'
+} from "@/components/ui/form";
+import axios from "@/lib/axios";
+import { useRouter } from "next/navigation";
 
 export default function LoginForm() {
   const router = useRouter();
@@ -33,10 +33,9 @@ export default function LoginForm() {
   });
 
   async function onSubmit(values: z.infer<typeof signUpSchema>) {
-    console.log(values)
-    const response = await axios.post("/api/auth/sign-up", values)
+    const response = await axios.post("/api/auth/sign-up", values);
     if (response.status === 200) {
-      router.push('/verify-code')
+      router.push("/verify-code");
     }
   }
 
@@ -53,42 +52,55 @@ export default function LoginForm() {
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
               <div className="grid gap-4">
-                <div className="grid gap-2">
-                  <FormField
-                    control={form.control}
-                    name="email"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel htmlFor="email">Email</FormLabel>
-                        <FormControl>
-                          <Input placeholder="m@example.com" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-                <div className="grid gap-2">
-                  <FormField
-                    control={form.control}
-                    name="password"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel htmlFor="password">Password</FormLabel>
-                        <FormControl>
-                          <Input type="password" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-                <Button type="submit" className="w-full">
+                <FormField
+                  control={form.control}
+                  name="username"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel htmlFor="username">Username</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Example" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel htmlFor="email">Email</FormLabel>
+                      <FormControl>
+                        <Input placeholder="m@example.com" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel htmlFor="password">Password</FormLabel>
+                      <FormControl>
+                        <Input type="password" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <Button
+                  type="submit"
+                  className="w-full"
+                  loading={form.formState.isSubmitting}
+                >
                   Create an account
                 </Button>
                 <Link href="/api/auth/azure-ad">
                   <Button variant="outline" className="w-full">
-                    Sign up with Azure
+                    Sign up with Azure AD
                   </Button>
                 </Link>
               </div>
@@ -103,5 +115,5 @@ export default function LoginForm() {
         </CardContent>
       </Card>
     </main>
-  )
+  );
 }
