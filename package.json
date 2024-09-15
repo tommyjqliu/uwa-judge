@@ -8,9 +8,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "build-docker": "docker build -t tommyjqliu/uwajudge .",
-    "tag-docker": "docker tag uwajudge tommyjqliu/uwajudge",
-    "push-docker": "docker push tommyjqliu/uwajudge",
+    "build-webapp": "docker build -t tommyjqliu/uwajudge-webapp ./webapp",
+    "push-webapp": "docker push tommyjqliu/uwajudge-webapp",
     "deprecated-start": "next start",
     "lint": "next lint",
     "test": "docker compose exec webapp npx vitest",
@@ -22,9 +21,7 @@
     "docker-dev-up": "docker compose up -d && sleep 1 && docker compose exec webapp npx prisma migrate reset --force",
     "docker-dev-down": "docker compose down",
     "docker-dev-reset": "docker compose down && rm -rf ./.mariadb && rm -rf ./.postgres",
-    "docker-pub-up": "export NODE_ENV=production && sh ./scripts/docker-up.sh",
-    "docker-pub-down": "export NODE_ENV=production && sh ./scripts/docker-down.sh",
-    "docker-pub-reset": "export NODE_ENV=production && sh ./scripts/docker-reset.sh",
+    "docker-pub-up": "docker compose -f docker-compose.prod.yml up  -d ",
     "build-problemtools-web": "docker build -t tommyjqliu/problemtools-web -f ./problemtools/dockerfile ./problemtools",
     "tag-problemtools-web": "docker tag problemtools-web tommyjqliu/problemtools-web",
     "push-problemtools-web": "docker push tommyjqliu/problemtools-web"

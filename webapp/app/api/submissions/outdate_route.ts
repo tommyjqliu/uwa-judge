@@ -1,8 +1,6 @@
 import { CONTEST_CID } from "@/lib/constant";
-import { domjudgeDB, uwajudgeDB } from "@/lib/database-client";
-import { SubmissionsApi, getDjConfig } from "@/lib/domjudge-api-client";
+import {  uwajudgeDB } from "@/lib/database-client";
 import errorHandler from "@/lib/error-handler";
-import { sleep } from "@/lib/utils";
 import { z } from "zod";
 import { zfd } from "zod-form-data";
 

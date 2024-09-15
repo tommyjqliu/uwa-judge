@@ -1,34 +1,6 @@
 "use client";
 import React, { ChangeEvent, useState } from "react";
-import {
-  Container,
-  Typography,
-  Box,
-  Button,
-  Paper,
-  Grid,
-  IconButton,
-  CircularProgress,
-  Tabs,
-  Tab,
-  TextField,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Select,
-  MenuItem,
-} from "@mui/material";
-import {
-  AttachFile as AttachFileIcon,
-  Send as SendIcon,
-  Code as CodeIcon,
-} from "@mui/icons-material";
-import { styled } from "@mui/material/styles";
-import Editor from "@monaco-editor/react";
-import { SelectChangeEvent } from "@mui/material";
+
 
 const SubmitButton = styled(Button)`
   background-color: #4caf50;
