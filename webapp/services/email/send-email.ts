@@ -1,7 +1,9 @@
 import nodemailer from "nodemailer";
+import throttle from "../lock/throttle";
 
 // Send email using SMTP
 export async function sendEmail(recipient: string, subject: string, body: string) {
+    await throttle("email", 10, 60); // A temporary throttle to prevent spamming
     const smtpAuthUsername = process.env.SMTP_USERNAME;
     const smtpAuthPassword = process.env.SMTP_PASSWORD;
     const sender = process.env.SMTP_SENDER;

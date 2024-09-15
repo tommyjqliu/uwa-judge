@@ -34,10 +34,12 @@ model User {
 
 model UserGroup {
   id          Int          @id @default(autoincrement())
-  name        String
+  name        String       @unique
   description String?
   permissions Permission[]
   users       User[]
+
+  @@index([name])
 }
 
 model ExternalAccount {
@@ -250,4 +252,9 @@ model ExecutableFile {
 
   executable   Executable? @relation(fields: [executableId], references: [id])
   executableId String?
+}
+
+model Cache {
+  key   String @id
+  value Json
 }
