@@ -3,7 +3,7 @@ import { uwajudgeDB } from "@/lib/database-client";
 import { assert } from "@/lib/error";
 import errorHandler from "@/lib/error-handler";
 import refreshProfile from "@/services/user/refresh-profile";
-import argon2 from "argon2";
+import argon2 from "@node-rs/argon2";
 
 export const POST = errorHandler(
     async (request: Request) => {

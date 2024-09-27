@@ -1,7 +1,7 @@
 import { uwajudgeDB } from "@/lib/database-client";
 import { assert } from "@/lib/error";
+import { decodeBase64 } from "@/lib/server-utils";
 import { refreshJudgeResult } from "@/services/judge/check-judge";
-import { decodeBase64 } from "@/lib/utils";
 import { z } from "zod";
 import { zfd } from "zod-form-data";
 

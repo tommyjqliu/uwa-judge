@@ -1,5 +1,5 @@
 import { signInSchema, signUpSchema } from "@/services/user/sign-up-user"
-import argon2 from "argon2";
+import argon2 from "@node-rs/argon2";
 import { uwajudgeDB } from "@/lib/database-client";
 import { assert } from "@/lib/error";
 import refreshProfile from "@/services/user/refresh-profile";

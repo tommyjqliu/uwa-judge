@@ -2,7 +2,7 @@ import { getSession } from "@/lib/auth";
 import { sendEmail } from "@/services/email/send-email";
 import { signUpSchema } from "@/services/user/sign-up-user"
 import { generateRandomString, alphabet } from "oslo/crypto";
-import argon2 from "argon2";
+import argon2 from "@node-rs/argon2";
 import { uwajudgeDB } from "@/lib/database-client";
 import { assert } from "console";
 

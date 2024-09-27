@@ -7,8 +7,10 @@ const nextConfig = {
         ignoreBuildErrors: true,
     },
     eslint: {
-        ignoreBuildErrors: true,
         ignoreDuringBuilds: true,
+    },
+    experimental: {
+        serverComponentsExternalPackages: ["@node-rs/argon2"]
     }
 };
 
