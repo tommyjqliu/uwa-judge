@@ -5,7 +5,7 @@
 #         echo "Usage $0 <docker tag>"
 # fi
 # docker_tag="$1"
-docker_tag="test-judgehost-inject"
+docker_tag="judgehost-prebuild"
 
 # Build the builder
 docker build -t "${docker_tag}-build" -f judgehost/Dockerfile.build .

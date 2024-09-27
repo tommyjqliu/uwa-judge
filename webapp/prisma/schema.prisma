@@ -1,5 +1,6 @@
 generator client {
   provider = "prisma-client-js"
+  binaryTargets = ["native", "debian-openssl-3.0.x"]
 }
 
 datasource db {
@@ -13,30 +14,33 @@ enum Permission {
 }
 
 model User {
-  id       Int    @id @default(autoincrement())
-  email    String @unique
-  username String
+  id               Int               @id @default(autoincrement())
+  email            String            @unique
+  username         String // Display name
+  active           Boolean           @default(false)
+  password         String?
+  externalAccounts ExternalAccount[]
 
-  password            String?
-  externalAccounts    ExternalAccount[]
   // Management
   permissions         Permission[]
   groups              UserGroup[]
   // Business
-  Submission          Submission[]
+  submission          Submission[]
+  assignments         StudentsOnAssignments[]
   AdminsOnAssignments AdminsOnAssignments[]
   TutorsOnAssignments TutorsOnAssignments[]
-  assignments         StudentsOnAssignments[]
 
   @@index([email])
 }
 
 model UserGroup {
   id          Int          @id @default(autoincrement())
-  name        String
+  name        String       @unique
   description String?
   permissions Permission[]
   users       User[]
+
+  @@index([name])
 }
 
 model ExternalAccount {
@@ -249,4 +253,9 @@ model ExecutableFile {
 
   executable   Executable? @relation(fields: [executableId], references: [id])
   executableId String?
+}
+
+model Cache {
+  key   String @id
+  value Json
 }
