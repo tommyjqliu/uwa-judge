@@ -6,13 +6,12 @@
     "node": ">=20.0.0"
   },
   "scripts": {
-    "//": "Development",
+    "//": "Deployment",
     "docker-dev-up": "docker compose up -d && sleep 1 && docker compose exec webapp npx prisma migrate reset --force",
     "docker-dev-down": "docker compose down",
     "docker-dev-reset": "docker compose down && rm -rf ./.mariadb && rm -rf ./.postgres",
     "test": "docker compose exec webapp npx vitest",
     "webapp-console": "docker compose exec webapp sh",
-    "//": "Database",
     "db-studio": "docker compose exec webapp npx prisma studio",
     "db-push": "docker compose exec webapp npx prisma db push",
     "db-migrate": "docker compose exec webapp npx prisma migrate dev",
@@ -22,7 +21,6 @@
     "db-put": "docker compose cp ./backup_file.dump postgres:/tmp/backup_file.dump",
     "db-restore": ". ./.env && docker compose exec postgres pg_restore -U $POSTGRES_USER -d $POSTGRES_DB -c -v /tmp/backup_file.dump",
     "t": ". ./.env && echo $POSTGRES_DB",
-    "//": "Deployment",
     "build-webapp": "docker build -t tommyjqliu/uwajudge-webapp:latest ./webapp",
     "push-webapp": "docker push tommyjqliu/uwajudge-webapp:latest",
     "build-judgehost": "cd judgehost && ./build-inject.sh",
@@ -32,5 +30,15 @@
     "docker-pub-up": "docker compose -f docker-compose.prod.yml up -d",
     "db-prod-deploy": ". ./.env && export DATABASE_URL=$(echo $DATABASE_URL | sed 's/postgres:5432/localhost:5433/') && cd webapp && npx prisma migrate deploy",
     "db-prod-seed": ". ./.env && export DATABASE_URL=$(echo $DATABASE_URL | sed 's/postgres:5432/localhost:5433/') && cd webapp && npx prisma db seed"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.13.3",
+    "@emotion/styled": "^11.13.0",
+    "@mui/material": "^6.1.1",
+    "@mui/x-date-pickers": "^7.18.0",
+    "@prisma/client": "^5.20.0",
+    "@prisma/engines": "^5.20.0",
+    "@tanstack/react-query": "^5.56.2",
+    "dayjs": "^1.11.13"
   }
 }

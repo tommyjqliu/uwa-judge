@@ -65,6 +65,7 @@ model Assignment {
   problems    Problem[]
   students    StudentsOnAssignments[]
   tutors      TutorsOnAssignments[]
+  clarifications Clarification[]
 }
 
 model AdminsOnAssignments {
@@ -259,3 +260,13 @@ model Cache {
   key   String @id
   value Json
 }
+
+model Clarification {
+  id           Int        @id @default(autoincrement())
+  text         String
+  assignment   Assignment @relation(fields: [assignmentId], references: [id])
+  assignmentId Int
+
+  @@index([assignmentId])
+}
+
