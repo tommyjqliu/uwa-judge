@@ -1,23 +1,35 @@
-export default function singleUpload() {
-    return new Promise<File | undefined>((resolve) => {
+interface uploadOptions<M extends boolean> {
+    accept?: string;
+    multiple?: M;
+}
+
+export default function triggerUpload<M extends boolean>(options: uploadOptions<M> = {}) {
+    return new Promise<(M extends true ? FileList : File) | null>((resolve) => {
         // Create a file input element
         const fileInput = document.createElement('input');
+        const { accept = "", multiple = false } = options;
         fileInput.type = 'file';
-        fileInput.accept = '.csv';
+        fileInput.multiple = multiple;
+        fileInput.accept = accept;
         fileInput.style.display = 'none';
         document.body.appendChild(fileInput);
 
         // Set up the change event listener
         fileInput.addEventListener('change', () => {
-            const file = fileInput.files?.[0];
-            resolve(file);
+            if (multiple) {
+                const files = fileInput.files;
+                resolve(files as M extends true ? FileList : File);
+            } else {
+                const file = fileInput.files?.[0];
+                resolve(file as M extends true ? FileList : File);
+            }
             // Clean up: remove the input element            
             document.body.removeChild(fileInput);
         });
 
         // Handle the case where the user cancels the file selection
         fileInput.addEventListener('cancel', () => {
-            resolve(undefined);
+            resolve(null);
             document.body.removeChild(fileInput);
         });
 
