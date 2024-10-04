@@ -1,3 +1,4 @@
+"use server"
 import { uwajudgeDB } from "@/lib/database-client";
 import { assert, ParamsInvalidError } from "@/lib/error";
 import { Problem2PDF, getHash } from "@/lib/file";
@@ -122,6 +123,6 @@ export const createProblemVersion = (file: File) => withZipFile(file, async (zip
 export default createProblemVersion;
 
 
-export function createProblemVersions(files: File[]) {
+export async function createProblemVersions(files: File[]) {
     return Promise.all(files.map(createProblemVersion));
 }

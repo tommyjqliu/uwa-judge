@@ -1,10 +1,8 @@
-"use client"
-
 import {
   ColumnDef,
+  createTable,
   flexRender,
   getCoreRowModel,
-  useReactTable,
 } from "@tanstack/react-table"
 
 import {
@@ -20,15 +18,24 @@ interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
 }
-
-export function DataTable<TData, TValue>({
+/**
+ * Server-side rendered data table
+ */
+export function ServerDataTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
-  const table = useReactTable({
+  const table = createTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
+    state: {
+      // Magic initial state to fix some bug in tanstack table
+      columnPinning: {},
+      rowSelection: {},
+    },
+    onStateChange: () => { },
+    renderFallbackValue: null
   })
 
   return (

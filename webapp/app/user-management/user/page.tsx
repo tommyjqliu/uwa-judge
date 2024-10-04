@@ -1,8 +1,10 @@
-import { DataTable } from "@/components/ui/data-table";
 import { uwajudgeDB } from "@/lib/database-client";
 import { User } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
 import UserOperation from "./operation";
+import ManagementLayout from "@/components/management-layout";
+import UserManagementNavigator from "../navigator";
+import { ServerDataTable } from "@/components/ui/server-data-table";
 
 const columns: ColumnDef<User>[] = [
   {
@@ -41,11 +43,14 @@ export default async function page() {
   }));
 
   return (
-    <main className="flex-1 h-full flex flex-col">
-      <UserOperation />
-      <div className="flex-1 h-0 flex flex-col">
-        <DataTable columns={columns} data={userTableData} />
-      </div>
-    </main>
+    <ManagementLayout
+      title="Users"
+      operation={<UserOperation />}
+      navigator={<UserManagementNavigator />}
+    >
+      <main className="flex-1 h-full flex flex-col">
+        <ServerDataTable columns={columns} data={userTableData} />
+      </main>
+    </ManagementLayout>
   );
 }
