@@ -33,7 +33,7 @@ import { useRouter } from "next/navigation"; // Import useRouter
 
 interface ClarificationListProps {
   clarifications: Clarification[];
-  onDataUpdate: () => void; // 添加一个回调函数用于通知 Page 组件数据更新
+  onDataUpdate: () => void; // Add a callback function to notify the Page component of data updates
 }
 
 export function ClarificationList({ clarifications, onDataUpdate }: ClarificationListProps) {
@@ -44,12 +44,14 @@ export function ClarificationList({ clarifications, onDataUpdate }: Clarificatio
   const [deleteId, setDeleteId] = useState<number | null>(null);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
+  // Handle editing clarification
   const handleEdit = (clarificationId: number, text: string, assignmentId: number) => {
     setEditId(clarificationId);
     setEditText(text);
     setCurrentAssignmentId(assignmentId);
   };
 
+  // Handle saving updated clarification
   const handleSave = async () => {
     if (editId !== null && currentAssignmentId !== null) {
       const response = await fetch(
@@ -64,17 +66,18 @@ export function ClarificationList({ clarifications, onDataUpdate }: Clarificatio
       );
 
       if (response.ok) {
-        // 更新成功后，调用 onDataUpdate 以便 Page 组件重新获取数据
+        // After a successful update, notify the parent component to refresh the data
         setEditId(null);
         setEditText("");
         setCurrentAssignmentId(null);
-        onDataUpdate(); // 通知父组件
+        onDataUpdate(); // Notify parent component
       } else {
         console.error("Failed to update clarification");
       }
     }
   };
 
+  // Handle deleting clarification
   const handleDelete = async (clarificationId: number, assignmentId: number) => {
     const response = await fetch(
       `/api/assignments/${assignmentId}/clarification/${clarificationId}`,
@@ -84,10 +87,10 @@ export function ClarificationList({ clarifications, onDataUpdate }: Clarificatio
     );
 
     if (response.ok) {
-      // 删除成功后，调用 onDataUpdate 以便 Page 组件重新获取数据
+      // After a successful deletion, notify the parent component to refresh the data
       setDeleteId(null);
       setIsDeleteDialogOpen(false);
-      onDataUpdate(); // 通知父组件
+      onDataUpdate(); // Notify parent component
     } else {
       console.error("Failed to delete clarification");
     }

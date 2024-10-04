@@ -1,15 +1,9 @@
-//單體實際執行
 import errorHandler from "@/lib/error-handler";
-import { object, z } from "zod";
-import { zfd } from "zod-form-data";
 import { PrismaClient } from "@prisma/client";
-//import { createClarifications } from "@/lib/services/clarification-service";
 
 const prisma = new PrismaClient();
 
-
-
-//單體delete
+// DELETE clarification
 export const DELETE = errorHandler(async function (
   request: Request,
   context: any,
@@ -18,7 +12,7 @@ export const DELETE = errorHandler(async function (
   const assignmentId123 = Number(params.assignmentId);
   const clarificationId = Number(params.id);
 
-  // 删除指定的 clarification
+  // Delete the specified clarification
   const deletedClarification = await prisma.clarification.deleteMany({
     where: {
       assignmentId: assignmentId123,
@@ -26,7 +20,7 @@ export const DELETE = errorHandler(async function (
     },
   });
 
-  if (!deletedClarification ||deletedClarification.count === 0) {
+  if (!deletedClarification || deletedClarification.count === 0) {
     return new Response(JSON.stringify({ message: "No clarification found or deletion failed" }), {
       status: 404,
       headers: {
@@ -43,29 +37,24 @@ export const DELETE = errorHandler(async function (
   });
 });
 
-
-//單體get
+// GET clarification
 export const GET = errorHandler(async function (
   request: Request,
   context: any,
 ) {
-  // 从 URL 中提取 assignmentId 和 id
+  // Extract assignmentId and id from URL params
   const params = context.params;
   const assignmentIdNumber = Number(params.assignmentId);
   let clarificationIdNumber = Number(params.id);
 
-  // // 检查 clarificationIdNumber 是否为整数
-  // if (isNaN(clarificationIdNumber) || !Number.isInteger(clarificationIdNumber)) {
-  //   clarificationIdNumber = 2; // 如果不是整数，设置为默认值 1
-  // }
-
-  // 根据 assignmentId 和 id 查询指定的 clarification
+  // Fetch the clarification based on assignmentId and clarificationId
   const clarifications = await prisma.clarification.findMany({
     where: {
       id: clarificationIdNumber,
       assignmentId: assignmentIdNumber,
     },
   });
+
   if (!clarifications || clarifications.length === 0) {
     return new Response(
       JSON.stringify({ message: 'No clarifications found for the given assignmentId' }),
@@ -78,7 +67,7 @@ export const GET = errorHandler(async function (
     );
   }
 
-  // 返回查询结果
+  // Return the result
   return new Response(JSON.stringify(clarifications), {
     status: 200,
     headers: {
@@ -87,8 +76,7 @@ export const GET = errorHandler(async function (
   });
 });
 
-
-//單體PUT 修改text
+// PUT update clarification text
 export const PUT = errorHandler(async function (
   request: Request,
   context: any,
@@ -97,13 +85,13 @@ export const PUT = errorHandler(async function (
   const assignmentId = Number(params.assignmentId);
   let clarificationId = Number(params.id);
 
-  // 解析请求体为 JSON 对象
+  // Parse the request body as JSON
   const body = await request.json();
 
-  // 从解析后的 body 中提取新的 text
+  // Extract new text from the body
   const { text } = body;
 
-  // 验证请求体中的数据
+  // Validate the text from the request body
   if (!text || typeof text !== 'string') {
     return new Response(
       JSON.stringify({ message: 'Invalid clarification text' }),
@@ -116,11 +104,11 @@ export const PUT = errorHandler(async function (
     );
   }
 
-  // 檢查 clarification 是否存在
+  // Check if the clarification exists
   const clarificationExists = await prisma.clarification.findUnique({
     where: {
-      id: clarificationId,//clarificationId
-      assignmentId: assignmentId,//assignmentId
+      id: clarificationId,
+      assignmentId: assignmentId,
     },
   });
 
@@ -136,17 +124,17 @@ export const PUT = errorHandler(async function (
     );
   }
 
-  // 更新 clarification 的 text
+  // Update the clarification text
   const updatedClarification = await prisma.clarification.update({
     where: {
-      id: clarificationId,//clarificationId
+      id: clarificationId,
     },
     data: {
       text: text,
     },
   });
 
-  // 返回成功响应
+  // Return the updated clarification
   return new Response(
     JSON.stringify(updatedClarification),
     {

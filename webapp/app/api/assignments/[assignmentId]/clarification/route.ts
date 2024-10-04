@@ -1,31 +1,24 @@
-// 多體實際執行
 import errorHandler from "@/lib/error-handler";
-import { object, z } from "zod";
-import { zfd } from "zod-form-data";
 import { PrismaClient } from "@prisma/client";
-//import { createClarifications } from "@/lib/services/clarification-service";
 
 const prisma = new PrismaClient();
 
-
-
-
-
-
-// 多體get
+// GET multiple clarifications
 export const GET = errorHandler(async function (
   request: Request,
   context: any,
 ) {
   const params = context.params;
   const assignmentId123 = Number(params.assignmentId);
+
+  // Find clarifications based on assignmentId
   const clarifications = await prisma.clarification.findMany({
     where: {
       assignmentId: assignmentId123
     }
   });
 
-  // // 检查是否找到 clarifications
+  // Check if any clarifications were found
   if (!clarifications || clarifications.length === 0) {
     return new Response(
       JSON.stringify({ message: 'No clarifications found for the given assignmentId' }),
@@ -37,34 +30,31 @@ export const GET = errorHandler(async function (
       }
     );
   }
-    // extract clarifications' objects' text
-    //const texts = clarifications.map(clarification => clarification.text);
-    return new Response(JSON.stringify(clarifications), {
-      status: 200,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }); 
+
+  // Return the clarifications as JSON
+  return new Response(JSON.stringify(clarifications), {
+    status: 200,
+    headers: {
+      "Content-Type": "application/json",
+    },
+  }); 
 });
 
-
-//單體post 完成
+// POST a new clarification
 export const POST = errorHandler(async function (
   request: Request,
   context: any,
 ) {
   const params = context.params;
   const assignmentId123 = Number(params.assignmentId);
-  //const id = Number(params.id);
 
-  // 解析请求体为 JSON 对象
-  const body = await request.json(); // 解析 request.body 为 JSON 对象
+  // Parse the request body as JSON
+  const body = await request.json();
 
-  // 从解析后的 body 中提取 clarification 的数据
-  //const { text } = body;
-  const { text} = body;//id,, assignmentId 
+  // Extract the text field from the request body
+  const { text } = body;
 
-  // 验证请求体中的数据
+  // Validate the text data
   if (!text || typeof text !== 'string') {
     return new Response(
       JSON.stringify({ message: 'Invalid clarification data' }),
@@ -76,8 +66,8 @@ export const POST = errorHandler(async function (
       }
     );
   }
-  
-  // 檢查 assignmentId 是否存在於 assignments 表中
+
+  // Check if the assignmentId exists in the assignments table
   const assignmentExists = await prisma.assignment.findUnique({
     where: {
       id: assignmentId123,
@@ -96,18 +86,15 @@ export const POST = errorHandler(async function (
     );
   }
 
-  // 创建新的 clarification
+  // Create a new clarification
   const newClarification = await prisma.clarification.create({
     data: {
-      //id: newid,
-      
       text: text,
       assignmentId: assignmentId123,
     },
   });
 
-  
-  // 返回成功响应
+  // Return a success response
   return new Response(
     JSON.stringify(newClarification),
     {

@@ -1,7 +1,7 @@
-"use client"; // 将此文件标记为客户端组件
+"use client"; // Marks this file as a client-side component
 
 import React, { useEffect, useState } from 'react';
-import { ClarificationList } from "./list1"; // 导入 ClarificationList 组件
+import { ClarificationList } from "./clarification_list"; // Import the ClarificationList component
 import {
   Pagination,
   PaginationContent,
@@ -10,10 +10,10 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from "@/components/ui/pagination"; // 导入 Pagination 组件
+} from "@/components/ui/pagination"; // Import Pagination components
 import Link from "next/link";
 
-// 定义澄清的类型
+// Define the Clarification type
 type Clarification = {
   id: number;
   text: string;
@@ -22,22 +22,22 @@ type Clarification = {
 
 export default function Page({
   searchParams,
-  fetchData = true,  // 新增 fetchData 参数，决定是否使用 API 调用作为默认数据来源
+  fetchData = true,  // Add fetchData parameter to determine if API should be used as default data source
 }: {
   searchParams?: {
     query?: string;
     page?: string;
   };
-  fetchData?: boolean;  // 新增的可选参数，默认为 true
+  fetchData?: boolean;  // New optional parameter, defaults to true
 }) {
   const [clarifications, setClarifications] = useState<Clarification[]>([]);
   const clarificationsPerPage = 10;
   const page = searchParams?.page ? parseInt(searchParams.page) : 1;
   const [totalPage, setTotalPage] = useState(0);
 
-  // 定义一个函数来获取数据
+  // Function to fetch clarifications data
   const fetchClarifications = async () => {
-    const response = await fetch('/api/clarificationall'); // 调用 API 路由
+    const response = await fetch('/api/clarificationall'); // Call the API route
     if (!response.ok) {
       console.error('Failed to fetch clarifications');
       return;
@@ -45,7 +45,7 @@ export default function Page({
     const allClarifications = await response.json();
     console.log("Total clarifications:", allClarifications.length);
     
-    // 更新总页数和当前页的澄清数据
+    // Update total page count and set the clarifications for the current page
     setTotalPage(Math.ceil(allClarifications.length / clarificationsPerPage));
     
     const startIndex = (page - 1) * clarificationsPerPage;
@@ -54,15 +54,15 @@ export default function Page({
   };
 
   useEffect(() => {
-    // 如果 fetchData 为 true，则调用 API 获取数据
+    // Fetch data if fetchData is true
     if (fetchData) {
       fetchClarifications(); 
     }
-  }, [fetchData]); // 空依赖数组，确保只在组件挂载时或 fetchData 改变时运行
+  }, [fetchData]); // Empty dependency array ensures it only runs on mount or when fetchData changes
 
-  // 处理 save 或 delete 后的重新获取数据
+  // Handle data updates after save or delete operations
   const handleDataUpdate = () => {
-    fetchClarifications();  // 再次调用 API 获取最新数据
+    fetchClarifications();  // Re-fetch data after an update
   };
 
   return (
@@ -71,7 +71,7 @@ export default function Page({
         <h2 className="mb-4">Clarifications</h2>
         <Link href="/clarifications/create">Create Clarification</Link>
       </div>
-      {/* 将 handleDataUpdate 函数传递给 ClarificationList */}
+      {/* Pass handleDataUpdate to ClarificationList */}
       <ClarificationList clarifications={clarifications} onDataUpdate={handleDataUpdate} />
       <Pagination className="mt-4">
         <PaginationContent>
