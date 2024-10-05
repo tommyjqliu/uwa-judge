@@ -1,7 +1,7 @@
 "use client"; // Marks this file as a client-side component
 
 import React, { useEffect, useState } from 'react';
-import { ClarificationList } from "./clarification_list"; // Import the ClarificationList component
+import { ClarificationList } from "./clarification-list"; // Import the ClarificationList component
 import {
   Pagination,
   PaginationContent,

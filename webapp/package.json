@@ -16,7 +16,6 @@
     "test": "vitest"
   },
   "dependencies": {
-    
     "@hookform/resolvers": "^3.9.0",
     "@monaco-editor/react": "^4.6.0",
     "@mui/material": "^6.1.1",

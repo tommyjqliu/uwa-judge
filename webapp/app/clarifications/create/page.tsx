@@ -1,4 +1,4 @@
-import ClarificationForm from "../clarification_form";
+import ClarificationForm from "../clarification-form";
 import { uwajudgeDB } from "@/lib/database-client";
 export default async function page() {
 
