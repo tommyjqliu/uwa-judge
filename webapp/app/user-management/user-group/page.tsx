@@ -1,8 +1,11 @@
-import { DataTable } from "@/components/ui/data-table";
 import { uwajudgeDB } from "@/lib/database-client";
 import { User, UserGroup } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
 import UserGroupOperation from "./operation";
+import ManagementLayout from "@/components/management-layout";
+import UserManagementNavigator from "../navigator";
+import UserOperation from "../user/operation";
+import { ServerDataTable } from "@/components/ui/server-data-table";
 
 const columns: ColumnDef<UserGroup>[] = [
   {
@@ -18,11 +21,14 @@ const columns: ColumnDef<UserGroup>[] = [
 export default async function page() {
   const users = await uwajudgeDB.userGroup.findMany();
   return (
-    <main className="flex-1 h-full flex flex-col">
-        <UserGroupOperation/>
-      <div className="flex-1 h-0 flex flex-col">
-        <DataTable columns={columns} data={users} />
+    <ManagementLayout
+      title="Users"
+      operation={<UserOperation />}
+      navigator={<UserManagementNavigator />}
+    >
+      <div className="flex-1 h-full flex flex-col">
+        <ServerDataTable columns={columns} data={users} />
       </div>
-    </main>
+    </ManagementLayout>
   );
 }
