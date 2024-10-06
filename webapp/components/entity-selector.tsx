@@ -1,38 +1,50 @@
-import {
-  EntityQueryOptions
-} from "@/lib/actions/entity-query";
-import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import { useQuery } from "@tanstack/react-query";
+import { Label } from "./ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
+import { ComponentProps } from "react";
+import { cn } from "@/lib/utils";
 
-import { Merge, ModelOfDB } from "../lib/type";
-import { useEntityQuery } from "../lib/hooks/use-entity-query";
-import { UWAjudgeDB } from "../lib/database-client";
+interface Entity {
+  id: string | number;
+  title?: string;
+  name?: string;
+  username?: string;
+}
 
-export type EntitySelectorProps<
-  E extends keyof ModelOfDB<UWAjudgeDB>,
-  A extends keyof UWAjudgeDB[E],
-> = React.ComponentProps<typeof Select> & {
-  entityQuery: EntityQueryOptions<E, A>;
+export type EntitySelectorProps<A extends () => Promise<Entity[]>> = {
+  queryAction: A;
+  label?: string;
+  defaultValue?: string;
+  onChange?: ComponentProps<typeof Select>["onValueChange"];
+  className?: string;
 };
 
-export default function EntitySelector<
-  E extends keyof ModelOfDB<UWAjudgeDB>,
-  A extends keyof UWAjudgeDB[E],
->({ entityQuery, ...rest }: EntitySelectorProps<E, A>) {
-  const { data: entities } = useEntityQuery(entityQuery);
+export default function EntitySelector<A extends () => Promise<Entity[]>>({ queryAction, label, defaultValue, onChange, className }: EntitySelectorProps<A>) {
+  const { data: entities } = useQuery({
+    queryKey: ["test"],
+    queryFn: () => queryAction(), // In next.js, server action need to be called in our code instead of in dependency lib
+  });
+
+
   return (
-    <FormControl>
-      {rest.label && <InputLabel>{rest.label}</InputLabel>}
-      <Select {...rest}>
-        {(entities as any[])?.map((entity: any) => {
-          const id = entity.id || entity.externalid;
-          const displayName = entity.title || entity.name || entity.username;
-          return (
-            <MenuItem key={id} value={id}>
-              {displayName}
-            </MenuItem>
-          );
-        })}
+    <>
+      {label && <Label>{label}</Label>}
+      <Select defaultValue={defaultValue} onValueChange={onChange}>
+        <SelectTrigger className={cn("w-[180px]", className)}>
+          <SelectValue />
+        </SelectTrigger>
+        <SelectContent>
+          {entities?.map((entity) => {
+            const id = entity.id;
+            const displayName = entity.title || entity.name || entity.username;
+            return (
+              <SelectItem key={id} value={String(id)}>
+                {displayName}
+              </SelectItem>
+            );
+          })}
+        </SelectContent>
       </Select>
-    </FormControl>
+    </>
   );
 }

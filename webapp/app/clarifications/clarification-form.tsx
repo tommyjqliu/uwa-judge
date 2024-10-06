@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"; // Import custom Button compone
 import { Textarea } from "@/components/ui/textarea"; // Import custom Textarea component
 import EntitySelector from "@/components/entity-selector"; // Import EntitySelector component
 import ClientContext from "@/components/client-context"; // Import ClientContext
+import getAssignments from "@/services/assignment/get-assignments";
 
 // Define the interface type for Assignment
 interface Assignment {
@@ -68,12 +69,7 @@ export default function ClarificationForm({ initialAssignments }: { initialAssig
             render={({ field }) => (
               <EntitySelector
                 label="Select Assignment"
-                entityQuery={{
-                  entity: "assignment", // Replace this with the appropriate entity type if different
-                  action: "findMany", // Assuming this fetches all assignments
-                }}
-                {...field}
-                multiple={false} // Adjust as necessary
+                queryAction={getAssignments}
               />
             )}
           />
@@ -86,11 +82,11 @@ export default function ClarificationForm({ initialAssignments }: { initialAssig
               control={control}
               render={({ field }) => (
                 <Textarea id="clarification-text"
-              
-                className="text-lg"  // Set larger text size
-                rows={2}  //
-                
-                {...field} />
+
+                  className="text-lg"  // Set larger text size
+                  rows={2}  //
+
+                  {...field} />
               )}
             />
           </div>

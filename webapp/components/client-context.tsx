@@ -1,4 +1,5 @@
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClient, QueryClientProvider} from "@tanstack/react-query";
+
 const queryClient = new QueryClient();
 
 export default function ClientContext({
@@ -10,3 +11,4 @@ export default function ClientContext({
     <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
   );
 }
+

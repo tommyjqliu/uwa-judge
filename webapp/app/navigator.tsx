@@ -22,7 +22,6 @@ export default function TopNavigator() {
             <Link href="/assignments" className={cn("transition-colors hover:text-foreground/80", isActive("assignments") ? "text-foreground" : "text-foreground/60")}>Assignment</Link>
             <Link href="/clarifications" className={cn("transition-colors hover:text-foreground/80", isActive("clarifications") ? "text-foreground" : "text-foreground/60")}>Clarification</Link>
             <Link href="/problem-versions" className={cn("transition-colors hover:text-foreground/80", isActive("problem-versions") ? "text-foreground" : "text-foreground/60")}>Problem</Link>
-            <Link href="/code" className={cn("transition-colors hover:text-foreground/80", isActive("code") ? "text-foreground" : "text-foreground/60")}>Code</Link>
         </nav>
     )
 }

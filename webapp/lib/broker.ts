@@ -52,6 +52,17 @@ export function sendMessage(queue: string, message: string, options: amqp.Option
     });
 }
 
+export function sendMessages(queue: string, messages: string[], options: amqp.Options.AssertQueue = {
+    durable: true
+}): Promise<void> {
+    return withQueue(queue, options)(async (channel) => {
+        for (const message of messages) {
+            channel.sendToQueue(queue, Buffer.from(message), {
+                persistent: true // Make sure that RabbitMQ will never lose the message if it crashes
+            });
+        }
+    });
+}
 
 export function waitMessage(queue: string): Promise<void> {
     return withQueue(queue, {

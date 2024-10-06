@@ -1,30 +1,34 @@
-export class ParamsInvalidError extends Error {
-    static errorName: string = 'ParamsInvalidError';
-    constructor(message?: string) {
-        super(message);
-        this.name = ParamsInvalidError.errorName;
-    }
+export enum ErrorType {
+    ParamsInvalidError = 'ParamsInvalidError',
+    PermissionError = 'PermissionError'
 }
 
-export class PermissionError extends Error {
-    static errorName: string = 'PermissionError';
-    constructor(message?: string) {
-        super(message);
-        this.name = PermissionError.errorName;
-    }
-}
+// remove later
+export const ParamsInvalidError = ErrorType.ParamsInvalidError
+export const PermissionError = ErrorType.PermissionError
 
-type ErrorType = typeof ParamsInvalidError | typeof PermissionError;
-
-
-export function assert(condition: unknown, message: string = "Request illegal", Err: ErrorType = ParamsInvalidError): asserts condition {
+// TODO: fix assert
+export function assert(condition: unknown, message: string = "Unnamed error", errorType?: ErrorType): asserts condition {
     if (!condition) {
-        throw new Err(message);
+        const error = new Error(message)
+        if (errorType) {
+            error.name = errorType
+        }
+        throw error
     }
 }
+
+export function assertParams(condition: unknown, message: string = "Params invalid"): asserts condition {
+    assert(condition, message, ErrorType.ParamsInvalidError)
+}
+
+export function assertPermission(condition: unknown, message: string = "Permission denied"): asserts condition {
+    assert(condition, message, ErrorType.PermissionError)
+}
+
 /**
  * Use in client because error thrown in server is only instance of Error
  */
 export function isErr(err: Error, type: ErrorType) {
-    return err.stack?.includes(type.errorName);
+    return err.stack?.includes(type);
 }

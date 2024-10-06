@@ -1,8 +1,10 @@
-import { publishMessage, sendMessage, waitMessage, withQueue } from "@/lib/broker";
+import { publishMessage, sendMessage, waitMessage } from "@/lib/broker";
 import { uwajudgeDB } from "@/lib/database-client";
-import { assert } from "@/lib/error";
+import { assertParams } from "@/lib/error";
+import { isJudgeFinished } from "./utils";
 
-export async function isJudgeFinished(judgeId?: number) {
+
+export async function refreshJudgeResult(judgeId: number) {
     const judge = await uwajudgeDB.judge.findUnique({
         where: {
             id: judgeId
@@ -12,18 +14,9 @@ export async function isJudgeFinished(judgeId?: number) {
         }
     });
 
-    assert(!!judge, "Judge not found");
+    assertParams(!!judge, "Judge not found");
 
-    const hasError = judge.judgeTask.some((task) => task.runResult !== null && task.runResult !== 'correct');
-    const isCompleted = judge.judgeTask.every((task) => task.runResult !== null);
-    if (judge.stopOnError) {
-        return hasError || isCompleted;
-    }
-    return isCompleted;
-}
-
-export async function refreshJudgeResult(judgeId: number) {
-    if (await isJudgeFinished(judgeId)) {
+    if (await isJudgeFinished(judge)) {
         await uwajudgeDB.judge.update({
             where: {
                 id: judgeId
