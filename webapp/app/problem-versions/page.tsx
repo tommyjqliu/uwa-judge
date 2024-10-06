@@ -7,6 +7,7 @@ import ManagementLayout from "@/components/management-layout";
 import { Button } from "@/components/ui/button";
 import { ServerDataTable } from "@/components/ui/server-data-table";
 import { Pencil, Trash2 } from "lucide-react";
+import Link from "next/link";
 
 const columns: ColumnDef<Pick<ProblemVersion, "id" | "name">>[] = [
   {
@@ -16,6 +17,9 @@ const columns: ColumnDef<Pick<ProblemVersion, "id" | "name">>[] = [
   {
     accessorKey: "name",
     header: "Name",
+    cell: ({ row }) => {
+      return <Link href={`/code?problemVersionId=${row.original.id}`} className="hover:underline">{row.original.name}</Link>
+    },
   },
   {
     header: "Action",
