@@ -1,2 +1,6 @@
 .env*
 /temp
+next-env.d.ts
+.next/
+package-lock.json
+node_modules/
