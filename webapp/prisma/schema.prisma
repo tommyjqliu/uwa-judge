@@ -1,0 +1,272 @@
+generator client {
+  provider = "prisma-client-js"
+  binaryTargets = ["native", "debian-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Permission {
+  developAdmin
+  manageUsers
+}
+
+model User {
+  id               Int               @id @default(autoincrement())
+  email            String            @unique
+  username         String // Display name
+  active           Boolean           @default(false)
+  password         String?
+  externalAccounts ExternalAccount[]
+
+  // Management
+  permissions         Permission[]
+  groups              UserGroup[]
+  // Business
+  submission          Submission[]
+  assignments         StudentsOnAssignments[]
+  AdminsOnAssignments AdminsOnAssignments[]
+  TutorsOnAssignments TutorsOnAssignments[]
+
+  @@index([email])
+}
+
+model UserGroup {
+  id          Int          @id @default(autoincrement())
+  name        String       @unique
+  description String?
+  permissions Permission[]
+  users       User[]
+
+  @@index([name])
+}
+
+model ExternalAccount {
+  id         Int    @id @default(autoincrement())
+  userId     Int
+  provider   String
+  providerId String
+  user       User   @relation(fields: [userId], references: [id])
+
+  @@unique([provider, userId])
+  @@unique([provider, providerId])
+  @@index([userId])
+}
+
+model Assignment {
+  id          Int                     @id @default(autoincrement())
+  title       String
+  description String?
+  publishDate DateTime?
+  dueDate     DateTime?
+  admins      AdminsOnAssignments[]
+  problems    Problem[]
+  students    StudentsOnAssignments[]
+  tutors      TutorsOnAssignments[]
+  clarifications Clarification[]
+}
+
+model AdminsOnAssignments {
+  assignmentId Int
+  userId       Int
+  assignment   Assignment @relation(fields: [assignmentId], references: [id])
+  user         User       @relation(fields: [userId], references: [id])
+
+  @@id([assignmentId, userId])
+  @@index([userId])
+}
+
+model TutorsOnAssignments {
+  assignmentId Int
+  userId       Int
+  assignment   Assignment @relation(fields: [assignmentId], references: [id])
+  user         User       @relation(fields: [userId], references: [id])
+
+  @@id([assignmentId, userId])
+  @@index([userId])
+}
+
+model StudentsOnAssignments {
+  assignmentId Int
+  userId       Int
+  assignment   Assignment @relation(fields: [assignmentId], references: [id])
+  user         User       @relation(fields: [userId], references: [id])
+
+  @@id([assignmentId, userId])
+  @@index([userId])
+}
+
+// Business layer problem
+model Problem {
+  id         Int          @id @default(autoincrement())
+  submission Submission[]
+
+  assignment       Assignment     @relation(fields: [assignmentId], references: [id])
+  assignmentId     Int
+  problemVersion   ProblemVersion @relation(fields: [problemVersionId], references: [id])
+  problemVersionId Int
+}
+
+// Different versions of the same problem
+model ProblemVersion {
+  id        Int      @id @default(autoincrement())
+  name      String
+  createdAt DateTime @default(now())
+  hash      String   @unique
+  file      Bytes
+  metadata  Json
+
+  combinedRunCompare Boolean     @default(false) // For a custom interactive problem, two stages are combined into one
+  outputValidator    Executable?
+
+  testcase             Testcase[]
+  problem              Problem[]
+  submission           Submission[]
+  judge                Judge[]
+  problemStatement     ProblemStatement @relation(fields: [problemStatementHash], references: [hash])
+  problemStatementHash String
+
+  @@index([hash])
+}
+
+model ProblemStatement {
+  hash           String           @id
+  problemVersion ProblemVersion[]
+  file           Bytes
+}
+
+enum TestCaseType {
+  sample
+  secret
+}
+
+model Testcase {
+  id     Int          @id @default(autoincrement())
+  type   TestCaseType
+  name   String
+  input  String
+  output String
+
+  problemVersionId Int
+  problemVersion   ProblemVersion @relation(fields: [problemVersionId], references: [id], onDelete: Cascade)
+  JudgeTask        JudgeTask[]
+}
+
+model Submission {
+  id       Int      @id @default(autoincrement())
+  dateTime DateTime @default(now())
+  code     String
+  mark     String?
+  comment  String?
+  judge    Judge[]
+
+  languageId String
+  language   Language @relation(fields: [languageId], references: [id])
+
+  // A submission can be a system submission so not user connected
+  userId Int?
+  user   User? @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // A submission is either for a problem or a problem version directly
+  problemVersionId Int?
+  problemVersion   ProblemVersion? @relation(fields: [problemVersionId], references: [id], onDelete: Cascade)
+  problemId        Int?
+  problem          Problem?        @relation(fields: [problemId], references: [id])
+
+  @@index([problemVersionId])
+  @@index([userId])
+}
+
+model Judge {
+  id          Int     @id @default(autoincrement())
+  stopOnError Boolean @default(true)
+  finished    Boolean @default(false)
+
+  submissionId Int
+  score        Int?
+  time         Int?
+  memory       Int?
+
+  submission       Submission     @relation(fields: [submissionId], references: [id])
+  problemVersionId Int
+  problemVersion   ProblemVersion @relation(fields: [problemVersionId], references: [id], onDelete: Cascade)
+  judgeTask        JudgeTask[]
+}
+
+model JudgeTask {
+  id         Int      @id @default(autoincrement())
+  judgeId    Int
+  testcaseId Int
+  testcase   Testcase @relation(fields: [testcaseId], references: [id], onDelete: Cascade)
+  judge      Judge    @relation(fields: [judgeId], references: [id], onDelete: Cascade)
+
+  compileSuccess  Boolean?
+  compileOutput   String?
+  compileMetadata String?
+
+  runResult   String?
+  runTime     Float?
+  runOutput   String?
+  runError    String?
+  runSystem   String?
+  runMetadata String?
+  runDiff     String?
+}
+
+model Language {
+  id                     String   @id @default(uuid())
+  externalId             String
+  name                   String
+  extensions             String[]
+  requireEntryPoint      Boolean
+  entryPointDescription  String?
+  allowSubmit            Boolean
+  allowJudge             Boolean
+  timeFactor             Float
+  compilerVersionCommand String?
+  runnerVersionCommand   String?
+
+  submission   Submission[]
+  executableId String       @unique
+  executable   Executable   @relation(fields: [executableId], references: [id])
+}
+
+model Executable {
+  id          String           @id
+  description String
+  type        String
+  files       ExecutableFile[]
+
+  languageId String?
+  language   Language?
+
+  problemVersionId Int?            @unique
+  ProblemVersion   ProblemVersion? @relation(fields: [problemVersionId], references: [id], onDelete: Cascade)
+}
+
+model ExecutableFile {
+  id           String  @id @default(uuid())
+  name         String
+  content      Bytes
+  isExecutable Boolean
+
+  executable   Executable? @relation(fields: [executableId], references: [id])
+  executableId String?
+}
+
+model Cache {
+  key   String @id
+  value Json
+}
+
+model Clarification {
+  id           Int        @id @default(autoincrement())
+  text         String
+  assignment   Assignment @relation(fields: [assignmentId], references: [id])
+  assignmentId Int
+
+  @@index([assignmentId])
+}
+
