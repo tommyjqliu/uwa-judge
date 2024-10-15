@@ -17,6 +17,8 @@ import {
 import { CircleUser } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { Toaster } from "@/components/ui/toaster";
+
 
 const firaCode = Fira_Code({ weight: "400", subsets: ["latin"] });
 
@@ -70,6 +72,7 @@ export default async function RootLayout({
         </header>
         {children}
         <SessionInjector session={JSON.parse(JSON.stringify(session))} />
+        <Toaster />
       </body>
     </html>
   );
