@@ -29,6 +29,7 @@ model User {
   studentOnAssignments StudentsOnAssignments[]
   adminOnAssignments   AdminsOnAssignments[]
   tutorOnAssignments   TutorsOnAssignments[]
+  Assessment           Assessment[]
 
   @@index([email])
 }
@@ -66,6 +67,7 @@ model Assignment {
   students       StudentsOnAssignments[]
   tutors         TutorsOnAssignments[]
   clarifications Clarification[]
+  Assessment     Assessment[]
 }
 
 model AdminsOnAssignments {
@@ -267,5 +269,18 @@ model Clarification {
   assignment   Assignment @relation(fields: [assignmentId], references: [id])
   assignmentId Int
 
+  @@index([assignmentId])
+}
+
+model Assessment {
+  id           Int        @id @default(autoincrement())
+  mark         Int
+  comment      String?
+
+  assignment   Assignment @relation(fields: [assignmentId], references: [id])
+  assignmentId Int
+
+  studentId Int
+  student   User @relation(fields: [studentId], references: [id])
   @@index([assignmentId])
 }
