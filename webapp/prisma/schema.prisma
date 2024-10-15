@@ -103,7 +103,7 @@ model Problem {
   id         Int          @id @default(autoincrement())
   submission Submission[]
 
-  assignment       Assignment     @relation(fields: [assignmentId], references: [id])
+  assignment       Assignment     @relation(fields: [assignmentId], references: [id], onDelete: Cascade)
   assignmentId     Int
   problemVersion   ProblemVersion @relation(fields: [problemVersionId], references: [id])
   problemVersionId Int

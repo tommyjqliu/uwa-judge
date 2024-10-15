@@ -11,7 +11,7 @@ import seedUser from './seeding/user';
 readEnvs()
 
 async function main() {
-  // await seedUser();
+  await seedUser();
   await importJudgeBasic();
   await importLanguage();
   await importProblemVersions()

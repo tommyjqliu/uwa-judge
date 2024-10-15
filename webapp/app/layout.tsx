@@ -35,7 +35,7 @@ export default async function RootLayout({
   return (
     <html lang="en" className="h-full">
       <body className={`${firaCode.className} flex flex-col min-h-full`}>
-        <header className="sticky top-0 z-50 w-full flex justify-between px-4 py-3 items-center border-border/40 bg-background/10 backdrop-blur supports-[backdrop-filter]:bg-background/60 shadow-sm">
+        <header className="sticky top-0 z-50 w-full flex justify-between px-6 py-3 items-center border-border/40 bg-background/10 backdrop-blur supports-[backdrop-filter]:bg-background/60 shadow-sm">
           <div className="flex gap-6 items-center">
             <TopNavigator />
           </div>
