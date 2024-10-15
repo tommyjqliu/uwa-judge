@@ -2,11 +2,14 @@ import { uwajudgeDB } from "@/lib/database-client";
 import { assertNotFound } from "@/lib/error";
 import ManagementLayout from "@/components/management-layout";
 import Link from "next/link";
+import getAssessment from "@/services/assessment/get-assessments";
 
 export default async function Page({ params }: { params: { assignmentId: string } }) {
-    // Fetch the assignment along with its students, submissions, admins, and tutors
+    const { assignmentId } = params;
+
+    // Fetch assignment data with related entities
     const assignment = await uwajudgeDB.assignment.findUnique({
-        where: { id: +params.assignmentId },
+        where: { id: +assignmentId },
         include: {
             students: {
                 include: {
@@ -15,7 +18,7 @@ export default async function Page({ params }: { params: { assignmentId: string 
                             submission: {
                                 where: {
                                     problem: {
-                                        assignmentId: +params.assignmentId // Fetch submissions for this assignment
+                                        assignmentId: +assignmentId
                                     }
                                 }
                             }
@@ -25,37 +28,44 @@ export default async function Page({ params }: { params: { assignmentId: string 
             },
             admins: {
                 include: {
-                    user: true // Fetch details of admins assigned to the assignment
+                    user: true
                 }
             },
             tutors: {
                 include: {
-                    user: true // Fetch details of tutors assigned to the assignment
+                    user: true
                 }
             }
         }
     });
 
-    // If the assignment is not found, throw a 404 error
     assertNotFound(assignment, "Assignment not found");
+
+    // Fetch assessments for each student
+    const studentGrades = await Promise.all(
+        assignment.students.map(async (studentAssignment) => {
+            const assessment = await getAssessment(+assignmentId, studentAssignment.user.id);
+            return {
+                studentId: studentAssignment.user.id,
+                mark: assessment?.mark || null,
+            };
+        })
+    );
 
     return (
         <ManagementLayout title={`Students for Assignment`}>
             <div className="container mx-auto px-4 py-6 max-w-screen-xl">
-
                 {/* Title Section */}
                 <div className="mb-6">
                     <h1 className="text-3xl font-bold text-center">{assignment.title}</h1>
                 </div>
 
-                {/* Info Section with Shadow */}
+                {/* Info Section */}
                 <div className="bg-gray-50 shadow-md rounded-lg p-6 mb-6">
                     <div className="lg:flex lg:justify-between lg:items-start">
-                        {/* Assignment Information */}
+                        {/* Assignment Details */}
                         <div className="lg:w-3/4">
                             <h2 className="text-2xl font-semibold mb-4">Info</h2>
-
-                            {/* Assignment Dates */}
                             <div className="text-gray-700 mb-4">
                                 <p>
                                     <strong>Publish Date:</strong> {assignment.publishDate ? new Date(assignment.publishDate).toLocaleString() : 'Not set'}
@@ -64,14 +74,12 @@ export default async function Page({ params }: { params: { assignmentId: string 
                                     <strong>Due Date:</strong> {assignment.dueDate ? new Date(assignment.dueDate).toLocaleString() : 'Not set'}
                                 </p>
                             </div>
-
-                            {/* Assignment Description */}
                             {assignment.description && (
                                 <p className="text-lg text-gray-700">{assignment.description}</p>
                             )}
                         </div>
 
-                        {/* Admins and Tutors Section */}
+                        {/* Admins and Tutors */}
                         <div className="bg-gray-100 shadow-inner rounded-lg p-4 lg:w-1/4 lg:ml-4">
                             <div className="mb-4">
                                 <strong>Admins:</strong>
@@ -87,7 +95,6 @@ export default async function Page({ params }: { params: { assignmentId: string 
                                     <p className="text-gray-600">No admins assigned</p>
                                 )}
                             </div>
-
                             <div>
                                 <strong>Tutors:</strong>
                                 {assignment.tutors.length > 0 ? (
@@ -108,8 +115,6 @@ export default async function Page({ params }: { params: { assignmentId: string 
 
                 {/* Students Table */}
                 <h2 className="text-2xl font-semibold mb-6 text-left">Assigned Students</h2>
-
-                {/* If there are no students assigned */}
                 {assignment.students.length === 0 ? (
                     <p className="text-center text-gray-600">No students assigned to this assignment.</p>
                 ) : (
@@ -127,19 +132,14 @@ export default async function Page({ params }: { params: { assignmentId: string 
                             </thead>
                             <tbody>
                                 {assignment.students.map((studentAssignment) => {
-                                    // Check if the student has any submissions
                                     const submissions = studentAssignment.user.submission;
                                     const hasSubmission = submissions.length > 0;
-
-                                    // Get the first submission, assuming the latest one is most relevant
                                     const submission = hasSubmission ? submissions[0] : null;
-
-                                    // Check if the submission has been graded (i.e., has a mark)
-                                    const isGraded = submission && submission.mark ? true : false;
-
-                                    // Get the submission time and grade if available
+                                    const studentGrade = studentGrades.find(grade => grade.studentId === studentAssignment.user.id)?.mark;
+                                    const assessment = studentGrades.find(grade => grade.studentId === studentAssignment.user.id);
+                                    const isGraded = assessment?.mark !== null;
                                     const submissionTime = submission ? new Date(submission.dateTime).toLocaleString() : "";
-                                    const grade = isGraded ? submission.mark : "";
+                                    const grade = studentGrade !== null ? studentGrade : "N/A";
 
                                     return (
                                         <tr key={studentAssignment.user.id} className="hover:bg-gray-50">
@@ -154,16 +154,16 @@ export default async function Page({ params }: { params: { assignmentId: string 
                                             </td>
                                             <td className="py-3 px-4 border-b text-center text-gray-700">
                                                 {isGraded ? (
-                                                    <span className="text-green-600 text-lg">✔️</span> // Graded
+                                                    <span className="text-green-600 text-lg">✔️</span>
                                                 ) : (
-                                                    <span className="text-red-600 text-lg">❌</span> // Not graded or no submission
+                                                    <span className="text-red-600 text-lg">❌</span>
                                                 )}
                                             </td>
                                             <td className="py-3 px-4 border-b text-gray-700">
-                                                {grade || "N/A"}
+                                                {grade}
                                             </td>
                                             <td className="py-3 px-4 border-b text-center">
-                                                <Link href={`/assessor/${params.assignmentId}/students/${studentAssignment.user.id}/submission`}>
+                                                <Link href={`/assessor/${assignmentId}/students/${studentAssignment.user.id}/submission`}>
                                                     <button className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
                                                         Grade
                                                     </button>

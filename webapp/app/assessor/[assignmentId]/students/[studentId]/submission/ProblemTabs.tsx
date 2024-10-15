@@ -1,42 +1,30 @@
-"use client"; // This is a client component
+"use client";
 
 import { useState, useEffect } from "react";
 import { Paper, Box, Typography, TextField, Button, Chip, CircularProgress } from "@mui/material";
+import createAssessment from "@/services/assessment/create-assessment";
 
 interface ProblemTabsProps {
     problems: any[];
     studentId: string;
+    initialGrade: number | null;
+    initialComment: string | null;
 }
 
-export default function ProblemTabs({ problems, studentId }: ProblemTabsProps) {
+export default function ProblemTabs({ problems, studentId, initialGrade, initialComment }: ProblemTabsProps) {
     const [selectedProblem, setSelectedProblem] = useState(problems[0]);
-    const [grade, setGrade] = useState('');
-    const [comment, setComment] = useState('');
+    const [grade, setGrade] = useState(initialGrade ? initialGrade.toString() : '');
+    const [comment, setComment] = useState(initialComment || '');
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [lastSubmissionTime, setLastSubmissionTime] = useState<string | null>(null);
-    const [hydrated, setHydrated] = useState(false); // To ensure the client-side rendering
+    const [submissionStatus, setSubmissionStatus] = useState<"success" | "failure" | null>(null);
+    const [hydrated, setHydrated] = useState(false);
 
     useEffect(() => {
-        // Ensure that client-side hydration has completed
         setHydrated(true);
     }, []);
 
-    // Update grade and comment when a new problem is selected
-    useEffect(() => {
-        if (selectedProblem && selectedProblem.submission.length > 0) {
-            const latestSubmission = selectedProblem.submission[0];
-            setGrade(latestSubmission.mark !== null ? latestSubmission.mark : ''); // Pre-fill grade or leave empty
-            setComment(latestSubmission.comment !== null ? latestSubmission.comment : ''); // Pre-fill comment or leave empty
-        } else {
-            setGrade('');
-            setComment('');
-        }
-    }, [selectedProblem]);
-
-    // Get the latest submission code for the selected problem
     const latestSubmission = selectedProblem.submission.length > 0 ? selectedProblem.submission[0] : null;
 
-    // Format dateTime for submission if available
     const formattedSubmissionTime = latestSubmission
         ? new Date(latestSubmission.dateTime).toLocaleString('en-US', {
             hour: 'numeric',
@@ -48,23 +36,37 @@ export default function ProblemTabs({ problems, studentId }: ProblemTabsProps) {
         })
         : null;
 
-    const handleSubmitGrading = () => {
+    const handleSubmitGrading = async () => {
         setIsSubmitting(true);
-        // Mock submitting process (implement actual logic)
-        setTimeout(() => {
+        setSubmissionStatus(null);
+
+        try {
+            const response = await createAssessment(
+                selectedProblem.assignmentId,
+                Number(studentId),
+                Number(grade),
+                comment
+            );
+
+            if (response) {
+                setSubmissionStatus("success");
+            }
+        } catch (error) {
+            console.error("Error submitting grading:", error);
+            setSubmissionStatus("failure");
+        } finally {
             setIsSubmitting(false);
-            setLastSubmissionTime(new Date().toLocaleString());
-        }, 1000);
+        }
     };
 
-    // Prevent rendering issues during hydration
+    // Avoid rendering until hydration is complete
     if (!hydrated) {
-        return null; // Avoid rendering until hydration is done
+        return null;
     }
 
     return (
         <div className="flex flex-col lg:flex-row w-full h-full px-4 py-6 max-w-screen-2xl mx-auto">
-            {/* Tabs on the left - Flexbox-based responsive sizing */}
+            {/* Problem list */}
             <div className="lg:w-1/4 w-full lg:max-h-none max-h-56 lg:overflow-y-auto bg-gray-100 shadow-md rounded-lg p-4 flex-shrink-0">
                 <h2 className="text-xl font-semibold mb-4">Problems</h2>
                 <ul className="space-y-2">
@@ -82,7 +84,7 @@ export default function ProblemTabs({ problems, studentId }: ProblemTabsProps) {
                 </ul>
             </div>
 
-            {/* Problem submission code or fallback message */}
+            {/* Submission display */}
             <div className="flex-grow lg:ml-4 mt-4 lg:mt-0 p-6 bg-white shadow-md rounded-lg">
                 <h3 className="text-2xl font-bold mb-4">{selectedProblem.problemVersion.name}</h3>
                 {latestSubmission ? (
@@ -102,7 +104,7 @@ export default function ProblemTabs({ problems, studentId }: ProblemTabsProps) {
                 )}
             </div>
 
-            {/* Grading box on the right - taller height */}
+            {/* Grading interface */}
             <div className="lg:w-1/4 w-full lg:ml-4 mt-4 lg:mt-0 flex-shrink-0">
                 <Paper sx={{ p: 2, height: '100%', minHeight: '400px' }}>
                     <Typography variant="h6" gutterBottom>Grading</Typography>
@@ -112,7 +114,10 @@ export default function ProblemTabs({ problems, studentId }: ProblemTabsProps) {
                         type="number"
                         value={grade}
                         onChange={(e) => setGrade(e.target.value)}
-                        sx={{ mb: 2 }}
+                        sx={{
+                            mb: 2,
+                            backgroundColor: initialGrade ? '#ccffcc' : 'inherit',
+                        }}
                     />
                     <TextField
                         fullWidth
@@ -121,7 +126,10 @@ export default function ProblemTabs({ problems, studentId }: ProblemTabsProps) {
                         rows={4}
                         value={comment}
                         onChange={(e) => setComment(e.target.value)}
-                        sx={{ mb: 2 }}
+                        sx={{
+                            mb: 2,
+                            backgroundColor: initialComment ? '#e6ffe6' : 'inherit',
+                        }}
                     />
                     <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap' }}>
                         <Button
@@ -133,10 +141,18 @@ export default function ProblemTabs({ problems, studentId }: ProblemTabsProps) {
                         >
                             {isSubmitting ? <CircularProgress size={24} color="inherit" /> : "Submit Grading"}
                         </Button>
-                        {lastSubmissionTime && (
+                        {submissionStatus === "success" && (
                             <Chip
-                                label={`✔ Last submitted: ${lastSubmissionTime}`}
+                                label="✔ Grading Submitted"
                                 color="success"
+                                variant="outlined"
+                                sx={{ mb: 1 }}
+                            />
+                        )}
+                        {submissionStatus === "failure" && (
+                            <Chip
+                                label="❌ Grading Failed"
+                                color="error"
                                 variant="outlined"
                                 sx={{ mb: 1 }}
                             />

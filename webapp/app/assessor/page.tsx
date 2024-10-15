@@ -9,6 +9,7 @@ import Pagination from "@/components/pagination";
 import { z } from "zod";
 import LocalTime from "@/components/local-time";
 
+// Define table columns for assignments
 const columns: ColumnDef<Assignment & { problems: Problem[] }>[] = [
     {
         accessorKey: "id",
@@ -47,10 +48,13 @@ export default async function page({
         perPage?: string;
     };
 }) {
+    // Parse and validate search params
     const { page, perPage } = z.object({
         page: z.string().transform(Number).default("1"),
         perPage: z.string().transform(Number).default("15"),
     }).parse(searchParams);
+
+    // Fetch assignment count and data
     const assignmentCount = await uwajudgeDB.assignment.count();
     const assignments = await uwajudgeDB.assignment.findMany({
         orderBy: {
@@ -60,7 +64,7 @@ export default async function page({
         take: perPage,
     });
 
-    // Output assignment list and pagination component
+    // Render assignment list and pagination
     return (
         <ManagementLayout
             title="Assignments"
