@@ -11,12 +11,12 @@ export default async function importLanguage() {
         ['bash', 'bash', 'Bash shell', ['bash'], false, 'Main file', false, true, 1, 'bash'],
         ['c', 'c', 'C', ['c'], false, null, true, true, 1, 'c'],
         ['cpp', 'cpp', 'C++', ['cpp', 'cc', 'cxx', 'c++'], false, null, true, true, 1, 'cpp'],
-        ['csharp', 'csharp', 'C#', ['csharp', 'cs'], false, null, false, true, 1, 'csharp'],
+        // ['csharp', 'csharp', 'C#', ['csharp', 'cs'], false, null, false, true, 1, 'csharp'],  // Not supported by default judgehost
         ['java', 'java', 'Java', ['java'], false, 'Main class', true, true, 1, 'java_javac_detect'],
-        ['js', 'javascript', 'JavaScript', ['js'], false, 'Main file', false, true, 1, 'js'],
+        // ['js', 'javascript', 'JavaScript', ['js'], false, 'Main file', false, true, 1, 'js'], // Not supported by default judgehost
         ['python', 'python3', 'Python 3', ['py'], false, 'Main file', true, true, 1, 'py3'],
         ['r', 'r', 'R', ['R'], false, 'Main file', false, true, 1, 'r'],
-        ['rs', 'rust', 'Rust', ['rs'], false, null, false, true, 1, 'rs'],
+        // ['rs', 'rust', 'Rust', ['rs'], false, null, false, true, 1, 'rs'], // Not supported by default judgehost
 
         // ['adb', 'ada', 'Ada', ['adb', 'ads'], false, null, false, true, 1, 'adb'],
         // ['awk', 'awk', 'AWK', ['awk'], false, null, false, true, 1, 'awk'],
