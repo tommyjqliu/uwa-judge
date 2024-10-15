@@ -1,5 +1,6 @@
 import { uwajudgeDB } from "@/lib/database-client";
 import { assert, ParamsInvalidError } from "@/lib/error";
+import getCurrentUser from "../user/get-current-user";
 
 // Todo: improve relationship between problem and problemVersion
 export interface SubmissionOptions {
@@ -16,14 +17,7 @@ export async function createSubmission(options: SubmissionOptions) {
         problemVersionId,
         problemId,
     } = options;
-
-    // const userId = (await getUser())?.userId; // temp setting
-    // const user = await uwajudgeDB.user.findUnique({
-    //     where: {
-    //         id: userId,
-    //     },
-    // });
-    // assert(!userId || !!user, "Invalid user id", ParamsInvalidError); // After writing user mock for test
+    const userId = await getCurrentUser();
 
     const language = await uwajudgeDB.language.findUnique({
         where: {
@@ -43,6 +37,7 @@ export async function createSubmission(options: SubmissionOptions) {
         },
     });
 
+    assert(!!userId, "Login required", ParamsInvalidError);
     assert(!!language, "Language not found", ParamsInvalidError);
     assert([problemVersion, problem].filter(i => i).length == 1, "Submission is either connect with a problemVersion or a problem", ParamsInvalidError);
 
@@ -50,7 +45,7 @@ export async function createSubmission(options: SubmissionOptions) {
         data: {
             code,
             languageId,
-            // userId,
+            userId,
             problemVersionId,
         },
     });
