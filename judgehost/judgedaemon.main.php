@@ -1394,8 +1394,13 @@ function compile(
         return true;
     }
     if ($uwajudge_bit) {
+        $filename = "Main"; // For Java
+        if ( $compile_config['language_extensions'][0] === "java" ) {
+            $filename = findClassName(base64_decode($judgeTask['code'])) ?? "Main";
+            logmsg(LOG_ERR, "  🔍 Detected main class: $filename");
+        }
         $sources = [[
-            'filename' => "main." . $compile_config['language_extensions'][0],
+            'filename' => $filename . "." . $compile_config['language_extensions'][0],
             'content' => $judgeTask['code'],
         ]];
     } else {
@@ -1837,4 +1842,12 @@ function fetchTestcase(string $workdirpath, string $testcase_id, int $judgetaski
 
     logmsg(LOG_INFO, "  💾 Fetched new testcase $testcase_id.");
     return $tcfile;
+}
+
+function findClassName($code) {
+    $pattern = '/^\s*public\s+class\s+([A-Za-z_][A-Za-z0-9_]*)\s*/m';
+    if (preg_match($pattern, $code, $matches)) {
+        return $matches[1]; // The class name is captured in the first group.
+    }
+    return null; // Return null if no class is found.
 }
