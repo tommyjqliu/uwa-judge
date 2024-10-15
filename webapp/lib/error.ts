@@ -1,12 +1,13 @@
 export enum ErrorType {
     ParamsInvalidError = 'ParamsInvalidError',
-    PermissionError = 'PermissionError'
+    PermissionError = 'PermissionError',
+    NotFoundError = 'NotFoundError'
 }
 
 // remove later
 export const ParamsInvalidError = ErrorType.ParamsInvalidError
 export const PermissionError = ErrorType.PermissionError
-
+export const NotFoundError = ErrorType.NotFoundError
 // TODO: fix assert
 export function assert(condition: unknown, message: string = "Unnamed error", errorType?: ErrorType): asserts condition {
     if (!condition) {
@@ -24,6 +25,10 @@ export function assertParams(condition: unknown, message: string = "Params inval
 
 export function assertPermission(condition: unknown, message: string = "Permission denied"): asserts condition {
     assert(condition, message, ErrorType.PermissionError)
+}
+
+export function assertNotFound(condition: unknown, message: string = "Not found"): asserts condition {
+    assert(condition, message, ErrorType.NotFoundError)
 }
 
 /**

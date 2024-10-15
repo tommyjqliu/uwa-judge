@@ -1,26 +1,15 @@
+"use server"
+
 import { z } from "zod";
-import { zfd } from "zod-form-data";
 import { uwajudgeDB } from "@/lib/database-client";
 import { createProblemVersions } from "../problem-version/create-problem-version";
-import { assert } from "@/lib/error";
+import getOrInsertEmails from "../user/get-or-insert-emails";
+import assignmentFormData from "./assignment-form-schema";
 
-export const assignmentSchema = zfd.formData({
-    title: z.string(),
-    description: z.string().optional(),
-    publishDate: z.coerce.date().optional(),
-    dueDate: z.coerce.date().optional(),
-    students: zfd.repeatable(z.coerce.number().array().default([])).optional(),
-    tutors: zfd.repeatable(z.coerce.number().array().default([])).optional(),
-    admins: zfd.repeatable(z.coerce.number().array().default([])).optional(),
-    problems: zfd.repeatable(z.array(zfd.file())), // repearable is nessary for parsing signle file
-});
-
-export async function createAssignment(data: z.infer<typeof assignmentSchema>) {
+export async function createAssignment(data: z.infer<typeof assignmentFormData>) {
     const { title, description, publishDate, dueDate, students, tutors, admins, problems } = data;
-    
-    const problemVersion = await createProblemVersions(problems);
-    assert(!!problemVersion.length, 'Assignment must have problems');
 
+    const problemVersion = await createProblemVersions(problems);
     const assignment = await uwajudgeDB.assignment.create({
         data: {
             title,
@@ -37,42 +26,38 @@ export async function createAssignment(data: z.infer<typeof assignmentSchema>) {
         }
     });
 
-    let assignmentId = assignment.id;
+    const assignmentId = assignment.id;
 
     if (students) {
-        //process with students
-        const dataStudent = students.map(userId => ({
-            assignmentId,
-            userId,
-        }));
-        const st = await uwajudgeDB.studentsOnAssignments.createMany({
-            data: dataStudent
+        const users = await getOrInsertEmails(students);
+        await uwajudgeDB.studentsOnAssignments.createMany({
+            data: users.map(user => ({
+                assignmentId,
+                userId: user.id,
+            }))
         });
     }
 
-    //process with admins
-    if (admins) {
-        const data_admins = admins.map(userId => ({
-            assignmentId,
-            userId,
-        }));
-        const ad = await uwajudgeDB.adminsOnAssignments.createMany({
-            data: data_admins
-        });
-    }
 
-    //process with tutors
+
     if (tutors) {
-        const data_tutors = tutors.map(userId => ({
-            assignmentId,
-            userId,
-        }));
-        const tu = await uwajudgeDB.tutorsOnAssignments.createMany({
-            data: data_tutors
+        const users = await getOrInsertEmails(tutors);
+        await uwajudgeDB.tutorsOnAssignments.createMany({
+            data: users.map(user => ({
+                assignmentId,
+                userId: user.id,
+            }))
         });
     }
 
-
+    if (admins) {
+        const users = await getOrInsertEmails(admins);
+        await uwajudgeDB.adminsOnAssignments.createMany({
+            data: users.map(user => ({
+                assignmentId,
+                userId: user.id,
+            }))
+        });
+    }
     return assignment
-
 }
