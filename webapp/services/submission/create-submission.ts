@@ -17,6 +17,7 @@ export async function createSubmission(options: SubmissionOptions) {
         problemVersionId,
         problemId,
     } = options;
+
     const userId = await getCurrentUser();
 
     const language = await uwajudgeDB.language.findUnique({
@@ -47,6 +48,7 @@ export async function createSubmission(options: SubmissionOptions) {
             languageId,
             userId,
             problemVersionId,
+            problemId
         },
     });
 
