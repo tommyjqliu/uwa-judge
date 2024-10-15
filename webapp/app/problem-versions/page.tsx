@@ -2,12 +2,13 @@
 import { uwajudgeDB } from "@/lib/database-client";
 import { ProblemVersion } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
-import ProblemVersionOperation from "./operation";
+
 import ManagementLayout from "@/components/management-layout";
 import { Button } from "@/components/ui/button";
 import { ServerDataTable } from "@/components/ui/server-data-table";
 import { Pencil, Trash2 } from "lucide-react";
 import Link from "next/link";
+import { DeleteProblem, HeaderOperation } from "./operations";
 
 const columns: ColumnDef<Pick<ProblemVersion, "id" | "name">>[] = [
   {
@@ -24,9 +25,7 @@ const columns: ColumnDef<Pick<ProblemVersion, "id" | "name">>[] = [
   {
     header: "Action",
     cell: ({ row }) => {
-      return <Button variant="ghost" size="icon" >
-        <Trash2 className="w-4 h-4" />
-      </Button>
+      return <DeleteProblem id={row.original.id} />
     }
   }
 ];
@@ -42,12 +41,11 @@ export default async function Page() {
   return (
     <ManagementLayout
       title="Problems"
-      operation={<ProblemVersionOperation />}
+      operation={<HeaderOperation />}
     >
       <div className="w-full">
         <ServerDataTable columns={columns} data={problemVersions} />
       </div>
     </ManagementLayout>
-
   );
 }

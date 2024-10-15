@@ -1,9 +1,34 @@
-import { AssignmentList } from "@/app/assignments/assignment-list";
+import ManagementLayout from "@/components/management-layout";
 import Pagination from "@/components/pagination";
 import { uwajudgeDB } from "@/lib/database-client";
 import Link from "next/link";
+import { Assignment, Problem } from "@prisma/client";
+import { ColumnDef } from "@tanstack/react-table";
+import { ServerDataTable } from "@/components/ui/server-data-table";
+import { Button } from "@/components/ui/button";
 
-export const dynamic = "force-dynamic";
+const columns: ColumnDef<Assignment & { problems: Problem[] }>[] = [
+  {
+    accessorKey: "id",
+    header: "ID",
+  },
+  {
+    accessorKey: "title",
+    header: "Title",
+    cell: ({ row }) => {
+      return <Link href={`/assignments/${row.original.id}`} className="hover:underline">{row.original.title}</Link>
+    }
+  },
+  {
+    accessorKey: "description",
+    header: "Description",
+  },
+  {
+    accessorKey: "publishDate",
+    header: "Publish Date",
+  },
+
+];
 
 export default async function page({
   searchParams,
@@ -14,7 +39,11 @@ export default async function page({
   };
 }) {
   // Read all assignments
-  const allAssignments = await uwajudgeDB.assignment.findMany();
+  const allAssignments = await uwajudgeDB.assignment.findMany({
+    include: {
+      problems: true
+    }
+  });
   console.log("Total assignments:", allAssignments.length);
 
   // Set number of assignments per page
@@ -36,13 +65,13 @@ export default async function page({
 
   // Output assignment list and pagination component
   return (
-    <main className="p-8">
-      <div className="flex justify-between">
-        <h2 className="mb-4">Assignments</h2>
-        <Link href="/assignments/create">Create Assignment</Link>
+    <ManagementLayout
+      title="Assignments"
+      operation={<Link href="/assignments/create"><Button>Create Assignment</Button></Link>}
+    >
+      <div className="w-full">
+        <ServerDataTable columns={columns} data={assignments} />
       </div>
-      <AssignmentList assignments={assignments} />
-      {/* <Pagination totalPage={totalPage} className="mt-4"/> */}
-    </main>
+    </ManagementLayout>
   );
 }

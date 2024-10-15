@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import yaml from 'js-yaml';
-import { ParamsInvalidError } from '@/lib/error';
+import { ErrorType, ParamsInvalidError } from '@/lib/error';
 
 const limitsSchema = z.object({
     time_multiplier: z.number().optional().default(5),
@@ -40,8 +40,10 @@ export const legacySchema = z.object({
 export function parseLegacyMetadata(yamlString: string): LegacyMetadata {
     try {
         return legacySchema.parse(yaml.load(yamlString));
-    } catch (e) {
-        throw new ParamsInvalidError(`problem.yaml is invalid: ${yamlString} ${e.message}`);
+    } catch (e: any) {
+        const error = new Error(`problem.yaml is invalid: ${yamlString} ${e.message}`)
+        error.name = ErrorType.ParamsInvalidError
+        throw error;
     }
 }
 

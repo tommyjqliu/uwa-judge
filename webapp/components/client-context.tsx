@@ -1,4 +1,5 @@
-import { QueryClient, QueryClientProvider} from "@tanstack/react-query";
+import { AssertClientContext } from "@/lib/hooks/use-assert-context";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const queryClient = new QueryClient();
 
@@ -8,7 +9,9 @@ export default function ClientContext({
   children: React.ReactNode;
 }) {
   return (
-    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+    <AssertClientContext.Provider value={true}>
+      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+    </AssertClientContext.Provider>
   );
 }
 

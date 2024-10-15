@@ -1,92 +1,120 @@
-"use client";
+"use client"
 
-import axios from "@/lib/axios";
-import ClientContext from "@/components/client-context";
-import EntitySelector from "@/components/entity-selector";
-import FileUploader from "@/components/file-uploader";
+
+import { useForm } from "react-hook-form"
 import { Button } from "@/components/ui/button"
-import { Textarea } from "@/components/ui/textarea";
-import { DateTimePicker, LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { useRouter } from "next/navigation";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod"
+import EntitySelector from "@/components/entity-selector"
+import { getUsers } from "@/services/user/get-users"
+import ClientContext from "@/components/client-context"
+import { MultiSelect } from "@/components/ui/multi-select"
+import FileUploader from "@/components/file-uploader"
 
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
+const assignmentSchema = z.object({
+  title: z.string(),
+  description: z.string().optional(),
+  publishDate: z.coerce.date().optional(),
+  dueDate: z.coerce.date().optional(),
+});
 
 export default function AssignmentForm() {
-  const router = useRouter();
-  const { control, handleSubmit } = useForm({
-    defaultValues: {
-      title: "",
-      description: "",
-      publishDate: null,
-      dueDate: null,
-      students: [],
-      problems: [],
-    },
-  });
+  const form = useForm<z.infer<typeof assignmentSchema>>({
+    resolver: zodResolver(assignmentSchema),
+  })
 
-  const onSubmit: SubmitHandler<any> = async (data) => {
-    await axios.postForm("/api/assignments", data);
-    router.push("/assignments");
-  };
+  function onSubmit(values: z.infer<typeof assignmentSchema>) {
+    console.log(values)
+  }
 
   return (
     <ClientContext>
-      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
-        <Controller
-          name="title"
-          control={control}
-          render={({ field }) => <Textarea {...field} />}
-        />
-        <Controller
-          name="description"
-          control={control}
-          render={({ field }) => (
-            <Textarea {...field} />
-          )}
-        />
-        <Controller
-          name="publishDate"
-          control={control}
-          render={({ field }) => (
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DateTimePicker label="Publish Date" {...field} />
-            </LocalizationProvider>
-          )}
-        />
-        <Controller
-          name="dueDate"
-          control={control}
-          render={({ field }) => (
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DateTimePicker label="Due Date" {...field} />
-            </LocalizationProvider>
-          )}
-        />
-        <Controller
-          name="students"
-          control={control}
-          render={({ field }) => (
-            <EntitySelector
-              label="Students"
-              entityQuery={{ entity: "user", action: "findMany" }}
-              {...field}
-              multiple
-            />
-          )}
-        />
-        <Controller
-          name="problems"
-          control={control}
-          render={({ field }) => (
-            <div>
-              <div className="pb-2">Problems</div>
-              <FileUploader {...field} />
-            </div>
-          )}
-        />
-        <Button type="submit">Create</Button>
-      </form>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <FormField
+            control={form.control}
+            name="title"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Title</FormLabel>
+                <FormControl>
+                  <Input placeholder="shadcn" {...field} />
+                </FormControl>
+                <FormDescription>
+                  This is your public display name.
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="description"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Description</FormLabel>
+                <FormControl>
+                  <Input placeholder="shadcn" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="publishDate"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Publish Date</FormLabel>
+                <FormControl>
+                  <Input type="time" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="students"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Students</FormLabel>
+                <FormControl>
+                  <MultiSelect options={[{
+                    value: "1",
+                    label: "Student 1"
+                  }]} {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="problems"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Problems</FormLabel>
+                <FormControl>
+                  <FileUploader {...field} value={[]} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <Button type="submit">Submit</Button>
+        </form>
+      </Form>
     </ClientContext>
-  );
+  )
 }
