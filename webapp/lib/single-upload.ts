@@ -3,7 +3,7 @@ interface uploadOptions<M extends boolean> {
     multiple?: M;
 }
 
-export default function triggerUpload<M extends boolean>(options: uploadOptions<M> = {}) {
+export default function triggerUpload<M extends boolean = false>(options: uploadOptions<M> = {}) {
     return new Promise<(M extends true ? FileList : File) | null>((resolve) => {
         // Create a file input element
         const fileInput = document.createElement('input');

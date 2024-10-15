@@ -10,7 +10,7 @@ export default function ManagementLayout({
     children: React.ReactNode;
 }) {
     return (
-        <main className="flex-grow h-0 flex flex-col gap-4 px-6 py-4 overflow-hidden relative">
+        <main className="flex-grow h-0 flex flex-col gap-4 px-6 py-4 overflow-y-auto relative">
             <header className="flex justify-between">
                 <h1 className="text-3xl font-bold">{header}</h1>
                 {operation}

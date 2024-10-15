@@ -1,66 +1,75 @@
-import React, { useState } from "react";
-import axios from "../lib/axios";
+import React from 'react';
+import { Button } from '@/components/ui/button';
+import { X } from 'lucide-react';
+import triggerUpload from '@/lib/single-upload';
 
 interface FileUploaderProps {
-  value: File[];
-  onChange: (files: File[]) => void;
+  value?: File[];
+  onChange?: (files: File[]) => void;
 }
 
-const FileUploader: React.FC<FileUploaderProps> = ({ value, onChange }) => {
-  const [files, setFiles] = useState<File[]>(value);
-
+const FileUploader: React.FC<FileUploaderProps> = ({ value = [], onChange }) => {
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
   };
-
+  const appendFiles = (files: FileList | File[]) => {
+    const newFiles = [...value];
+    for (const file of files) {
+      if (!newFiles.some(existingFile => existingFile.name === file.name)) {
+        newFiles.push(file);
+      }
+    }
+    onChange?.(newFiles);
+  }
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     const droppedFiles = Array.from(e.dataTransfer.files);
-    const newFiles = [...files, ...droppedFiles];
-    setFiles(newFiles);
-    onChange(newFiles);
+    appendFiles(droppedFiles);
   };
 
-  const handleFileInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFiles = Array.from(e.target.files || []);
-    const newFiles = [...files, ...selectedFiles];
-    setFiles(newFiles);
-    onChange(newFiles);
-  };
-
-  const handleRemoveFile = (index: number) => {
-    const updatedFiles = [...files];
-    updatedFiles.splice(index, 1);
-    setFiles(updatedFiles);
-    onChange(updatedFiles);
+  const removeFile = (index: number) => {
+    const newFiles = [...value];
+    newFiles.splice(index, 1);
+    onChange?.(newFiles);
   };
 
   return (
-    <div>
+    <div className="space-y-4">
       <div
         onDragOver={handleDragOver}
         onDrop={handleDrop}
-        style={{
-          border: "2px dashed #ccc",
-          padding: "20px",
-          textAlign: "center",
+        className="border-2 border-dashed border-gray-300 p-6 text-center cursor-pointer transition-colors hover:border-primary hover:bg-primary/10"
+        onClick={async () => {
+          const file = await triggerUpload({ multiple: true });
+          if (file) {
+            appendFiles(file);
+          }
         }}
       >
-        <input type="file" multiple onChange={handleFileInput} />
-        <p>Drag and drop files here, or click to select files.</p>
+        <label htmlFor="file-input" className="cursor-pointer">
+          Drag and drop files here, or click to select files
+        </label>
       </div>
-      <div>
-        <ul>
-          {files.map((file, index) => (
-            <li key={index}>
-              {file.name}
-              <button onClick={() => handleRemoveFile(index)}>Remove</button>
+      {value.length > 0 && (
+        <ul className="space-y-2">
+          {value.map((file, index) => (
+            <li key={index} className="flex items-center justify-between bg-gray-100 p-2 rounded">
+              <span className="truncate">{file.name}</span>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => removeFile(index)}
+                className="text-red-500 hover:text-red-700"
+              >
+                <X size={16} />
+              </Button>
             </li>
           ))}
         </ul>
-      </div>
+      )}
     </div>
   );
 };
 
 export default FileUploader;
+
