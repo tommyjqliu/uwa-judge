@@ -5,8 +5,9 @@ import { uwajudgeDB } from "@/lib/database-client";
 import { createProblemVersions } from "../problem-version/create-problem-version";
 import getOrInsertEmails from "../user/get-or-insert-emails";
 import assignmentFormData from "./assignment-form-schema";
+import { ToOptional } from "@/lib/type";
 
-export async function createAssignment(data: z.infer<typeof assignmentFormData>) {
+export async function createAssignment(data: ToOptional<z.infer<typeof assignmentFormData>>) {
     const { title, description, publishDate, dueDate, students, tutors, admins, problems } = data;
 
     const problemVersion = await createProblemVersions(problems);

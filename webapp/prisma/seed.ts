@@ -26,7 +26,6 @@ async function main() {
   }
 }
 
-
 main()
   .then(async () => {
     await Promise.all([
