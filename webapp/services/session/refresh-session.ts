@@ -1,8 +1,9 @@
-import { getSession } from "@/lib/auth";
+import { getSession } from "@/services/session/get-session";
 import { uwajudgeDB } from "@/lib/database-client";
 import { assert } from "@/lib/error";
 import { $Enums, User, UserGroup } from "@prisma/client";
 
+// TODO: Refactor auth into a module
 export default async function refreshProfile(
   user?: (User & { groups: UserGroup[] }) | null,
 ) {

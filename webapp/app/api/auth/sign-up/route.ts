@@ -1,4 +1,4 @@
-import { getSession } from "@/lib/auth";
+import { getSession } from "@/services/session/get-session";
 import { sendEmail } from "@/services/email/send-email";
 import { signUpSchema } from "@/services/user/sign-up-user";
 import { generateRandomString, alphabet } from "oslo/crypto";

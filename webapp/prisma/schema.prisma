@@ -10,7 +10,9 @@ datasource db {
 
 enum Permission {
   developAdmin
-  manageUsers
+  userManagement
+  problemManagement
+  createAssignment
 }
 
 model User {

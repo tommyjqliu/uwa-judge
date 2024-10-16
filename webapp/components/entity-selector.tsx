@@ -13,9 +13,9 @@ import { useAssertClientContext } from "@/lib/hooks/use-assert-context";
 
 interface Entity {
   id: string | number;
-  title?: string;
-  name?: string;
-  username?: string;
+  title?: string | null;
+  name?: string | null;
+  username?: string | null;
 }
 
 export type EntitySelectorProps<A extends () => Promise<Entity[]>> = {

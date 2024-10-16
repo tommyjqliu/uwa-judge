@@ -2,7 +2,7 @@ import { signInSchema, signUpSchema } from "@/services/user/sign-up-user";
 import argon2 from "@node-rs/argon2";
 import { uwajudgeDB } from "@/lib/database-client";
 import { assert } from "@/lib/error";
-import refreshProfile from "@/services/user/refresh-profile";
+import refreshProfile from "@/services/session/refresh-session";
 
 export async function POST(request: Request) {
   const body = await request.json();

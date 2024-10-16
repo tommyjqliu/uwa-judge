@@ -1,8 +1,8 @@
-import { getSession } from "@/lib/auth";
+import { getSession } from "@/services/session/get-session";
 import { uwajudgeDB } from "@/lib/database-client";
 import { assert } from "@/lib/error";
 import errorHandler from "@/lib/error-handler";
-import refreshProfile from "@/services/user/refresh-profile";
+import refreshProfile from "@/services/session/refresh-session";
 import argon2 from "@node-rs/argon2";
 
 export const POST = errorHandler(async (request: Request) => {
