@@ -22,7 +22,9 @@ require(LIBDIR . '/lib.misc.php');
 
 $endpoints = [];
 $domjudge_config = [];
-$uwajudge_bit = true; // The bit is to control the result for domjudge or uwajudge
+$uwajudge_bit = true; 
+// The bit is to control the result for domjudge or uwajudge
+// Original code is kept for reference
 
 function judging_directory(string $workdirpath, array $judgeTask): string
 {
