@@ -4,8 +4,8 @@ import ManagementLayout from "@/components/management-layout";
 import Link from "next/link";
 import getAssessment from "@/services/assessment/get-assessments";
 
-export default async function Page({ params }: { params: { assignmentId: string } }) {
-    const { assignmentId } = params;
+export default async function Page({ params }: { params: { id: string } }) {
+    const { id: assignmentId } = params;
 
     // Fetch assignment data with related entities
     const assignment = await uwajudgeDB.assignment.findUnique({

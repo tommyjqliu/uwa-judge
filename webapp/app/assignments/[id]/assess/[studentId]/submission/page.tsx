@@ -1,11 +1,11 @@
 import { uwajudgeDB } from "@/lib/database-client";
 import { assertNotFound } from "@/lib/error";
 import ManagementLayout from "@/components/management-layout";
-import ProblemTabs from "./ProblemTabs"; // Client component
+import ProblemTabs from "./problem-tabs"; // Client component
 import getAssessment from "@/services/assessment/get-assessments";
 
-export default async function Page({ params }: { params: { assignmentId: string; studentId: string } }) {
-    const { assignmentId, studentId } = params;
+export default async function Page({ params }: { params: { id: string; studentId: string } }) {
+    const { id: assignmentId, studentId } = params;
 
     // Fetch assignment with problems and student's submissions
     const assignment = await uwajudgeDB.assignment.findUnique({

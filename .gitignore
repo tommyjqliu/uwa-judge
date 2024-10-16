@@ -1,6 +1,2 @@
 .env*
 /temp
-.next/
-node_modules/
-next-env.d.ts
-.gitignore
