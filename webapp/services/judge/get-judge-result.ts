@@ -5,43 +5,44 @@ import { isJudgeTaskCorrect, isJudgeTaskError } from "./utils";
 export type JudgeResult = Awaited<ReturnType<typeof getJudgeResult>>;
 
 export async function getJudgeResult(judgeId: number) {
-    const judge = await uwajudgeDB.judge.findUnique({
-        where: {
-            id: judgeId
-        },
+  const judge = await uwajudgeDB.judge.findUnique({
+    where: {
+      id: judgeId,
+    },
+    include: {
+      judgeTask: {
         include: {
-            judgeTask: {
-                include: {
-                    testcase: true
-                }
-            }
-        }
-    })
+          testcase: true,
+        },
+      },
+    },
+  });
 
-    assertParams(!!judge, "Judge not found");
-    const correctTasks = judge.judgeTask.filter(isJudgeTaskCorrect);
-    const pass = correctTasks.length;
-    const total = judge.judgeTask.length;
-    let errorMessage = "";
-    let errorDiff = "";
+  assertParams(!!judge, "Judge not found");
+  const correctTasks = judge.judgeTask.filter(isJudgeTaskCorrect);
+  const pass = correctTasks.length;
+  const total = judge.judgeTask.length;
+  let errorMessage = "";
+  let errorDiff = "";
 
-    const errorTasks = judge.judgeTask.filter(isJudgeTaskError);
-    const firstErrorTask = errorTasks[0];
-    if (firstErrorTask) {
-        errorMessage = "compile-fail";
-        if (firstErrorTask?.runResult) {
-            errorMessage = firstErrorTask.runResult;
-        }
-
-        if (firstErrorTask?.testcase.type === 'sample') {
-            errorDiff = firstErrorTask.runDiff || "";
-        }
+  const errorTasks = judge.judgeTask.filter(isJudgeTaskError);
+  const firstErrorTask = errorTasks[0];
+  if (firstErrorTask) {
+    errorMessage = "compile-fail";
+    if (firstErrorTask?.runResult) {
+      errorMessage = firstErrorTask.runResult;
     }
 
-    return {
-        pass,
-        total,
-        errorMessage,
-        errorDiff
+    if (firstErrorTask?.testcase.type === "sample") {
+      errorDiff = firstErrorTask.runDiff || "";
     }
+  }
+
+  return {
+    judgeId,
+    pass,
+    total,
+    errorMessage,
+    errorDiff,
+  };
 }

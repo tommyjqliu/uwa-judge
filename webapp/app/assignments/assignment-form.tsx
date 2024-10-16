@@ -1,7 +1,7 @@
-"use client"
+"use client";
 
-import { useForm } from "react-hook-form"
-import { Button } from "@/components/ui/button"
+import { useForm } from "react-hook-form";
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -10,33 +10,39 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod"
-import ClientContext from "@/components/client-context"
-import FileUploader from "@/components/file-uploader"
-import { DatetimePicker } from "@/components/ui/datetime-picker"
-import { Textarea } from "@/components/ui/textarea"
-import toFormData from "@/lib/to-formdata"
-import { createAssignmentForm } from "@/services/assignment/create-assignment-form"
-import { useRouter } from "next/navigation"
-import { useToast } from "@/lib/hooks/use-toast"
-import { useState } from "react"
+import { zodResolver } from "@hookform/resolvers/zod";
+import ClientContext from "@/components/client-context";
+import FileUploader from "@/components/file-uploader";
+import { DatetimePicker } from "@/components/ui/datetime-picker";
+import { Textarea } from "@/components/ui/textarea";
+import toFormData from "@/lib/to-formdata";
+import { createAssignmentForm } from "@/services/assignment/create-assignment-form";
+import { useRouter } from "next/navigation";
+import { useToast } from "@/lib/hooks/use-toast";
+import { useState } from "react";
 
 const emailsRefine = (value: string) => {
   const emails = value.split(/[\s,]+/);
-  return emails.every(email => z.string().email().safeParse(email).success)
-}
+  return emails.every((email) => z.string().email().safeParse(email).success);
+};
 
 const assignmentSchema = z.object({
   title: z.string().min(1),
   description: z.string().optional().default(""),
   publishDate: z.coerce.date().optional(),
   dueDate: z.coerce.date().optional(),
-  students: z.string().refine(emailsRefine, { message: "Invalid email" }).optional(),
-  tutors: z.string().refine(emailsRefine, { message: "Invalid email" }).optional(),
-  problems: z.array(z.instanceof(File)).optional()
+  students: z
+    .string()
+    .refine(emailsRefine, { message: "Invalid email" })
+    .optional(),
+  tutors: z
+    .string()
+    .refine(emailsRefine, { message: "Invalid email" })
+    .optional(),
+  problems: z.array(z.instanceof(File)).optional(),
 });
 
 export default function AssignmentForm() {
@@ -45,7 +51,7 @@ export default function AssignmentForm() {
   const [loading, setLoading] = useState(false);
   const form = useForm<z.infer<typeof assignmentSchema>>({
     resolver: zodResolver(assignmentSchema),
-  })
+  });
 
   async function onSubmit(values: z.infer<typeof assignmentSchema>) {
     setLoading(true);
@@ -68,7 +74,6 @@ export default function AssignmentForm() {
       setLoading(false);
     }
   }
-
 
   return (
     <ClientContext>
@@ -107,7 +112,10 @@ export default function AssignmentForm() {
               <FormItem>
                 <FormLabel>Publish Date</FormLabel>
                 <FormControl>
-                  <DatetimePicker value={field.value} onChange={field.onChange} />
+                  <DatetimePicker
+                    value={field.value}
+                    onChange={field.onChange}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -120,7 +128,10 @@ export default function AssignmentForm() {
               <FormItem className="flex flex-col">
                 <FormLabel>Due Date</FormLabel>
                 <FormControl>
-                  <DatetimePicker value={field.value} onChange={field.onChange} />
+                  <DatetimePicker
+                    value={field.value}
+                    onChange={field.onChange}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -171,10 +182,11 @@ export default function AssignmentForm() {
               </FormItem>
             )}
           />
-          <Button type="submit" loading={loading}>Submit</Button>
+          <Button type="submit" loading={loading}>
+            Submit
+          </Button>
         </form>
       </Form>
-
     </ClientContext>
-  )
+  );
 }

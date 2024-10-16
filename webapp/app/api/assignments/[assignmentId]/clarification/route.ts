@@ -14,20 +14,22 @@ export const GET = errorHandler(async function (
   // Find clarifications based on assignmentId
   const clarifications = await prisma.clarification.findMany({
     where: {
-      assignmentId: assignmentId123
-    }
+      assignmentId: assignmentId123,
+    },
   });
 
   // Check if any clarifications were found
   if (!clarifications || clarifications.length === 0) {
     return new Response(
-      JSON.stringify({ message: 'No clarifications found for the given assignmentId' }),
+      JSON.stringify({
+        message: "No clarifications found for the given assignmentId",
+      }),
       {
         status: 404,
         headers: {
           "Content-Type": "application/json",
         },
-      }
+      },
     );
   }
 
@@ -37,7 +39,7 @@ export const GET = errorHandler(async function (
     headers: {
       "Content-Type": "application/json",
     },
-  }); 
+  });
 });
 
 // POST a new clarification
@@ -55,15 +57,15 @@ export const POST = errorHandler(async function (
   const { text } = body;
 
   // Validate the text data
-  if (!text || typeof text !== 'string') {
+  if (!text || typeof text !== "string") {
     return new Response(
-      JSON.stringify({ message: 'Invalid clarification data' }),
+      JSON.stringify({ message: "Invalid clarification data" }),
       {
         status: 400,
         headers: {
           "Content-Type": "application/json",
         },
-      }
+      },
     );
   }
 
@@ -76,13 +78,13 @@ export const POST = errorHandler(async function (
 
   if (!assignmentExists) {
     return new Response(
-      JSON.stringify({ message: 'Assignment ID does not exist' }),
+      JSON.stringify({ message: "Assignment ID does not exist" }),
       {
         status: 404,
         headers: {
           "Content-Type": "application/json",
         },
-      }
+      },
     );
   }
 
@@ -95,13 +97,10 @@ export const POST = errorHandler(async function (
   });
 
   // Return a success response
-  return new Response(
-    JSON.stringify(newClarification),
-    {
-      status: 201,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }
-  );
+  return new Response(JSON.stringify(newClarification), {
+    status: 201,
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
 });

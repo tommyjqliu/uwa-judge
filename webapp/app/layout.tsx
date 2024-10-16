@@ -19,7 +19,6 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Toaster } from "@/components/ui/toaster";
 
-
 const firaCode = Fira_Code({ weight: "400", subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -61,7 +60,9 @@ export default async function RootLayout({
               </DropdownMenuTrigger>
               <DropdownMenuContent>
                 <DropdownMenuLabel>{profile.username}</DropdownMenuLabel>
-                <DropdownMenuLabel className="font-normal text-foreground/80">{profile.email}</DropdownMenuLabel>
+                <DropdownMenuLabel className="font-normal text-foreground/80">
+                  {profile.email}
+                </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <Link href="/api/auth/sign-out">
                   <DropdownMenuItem>Logout</DropdownMenuItem>

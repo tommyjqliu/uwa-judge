@@ -6,10 +6,15 @@ import triggerUpload from "@/lib/single-upload";
 export default function UserOperation() {
   return (
     <div className="flex justify-end gap-2">
-      <Button variant="secondary" onClick={() => downloadCSV("test", ["1", "2"])}>
+      <Button
+        variant="secondary"
+        onClick={() => downloadCSV("test", ["1", "2"])}
+      >
         Download template
       </Button>
-      <Button onClick={() => triggerUpload({ accept: ".csv" })}>Batch Update</Button>
+      <Button onClick={() => triggerUpload({ accept: ".csv" })}>
+        Batch Update
+      </Button>
     </div>
   );
 }

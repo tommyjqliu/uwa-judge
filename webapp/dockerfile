@@ -36,6 +36,9 @@ RUN \
 
 # Production image, copy all the files and run next
 FROM base AS runner
+
+RUN apk --no-cache add postgresql-client
+
 WORKDIR /app
 
 ENV NODE_ENV=production
@@ -46,6 +49,9 @@ RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
 COPY --from=builder /app/public ./public
+COPY --from=builder /app/prisma/initial_data.dump ./initial_data.dump
+COPY --from=builder /app/prisma/prod-reset-db.sh /app/scripts/prod-reset-db.sh
+RUN chmod +x /app/scripts/prod-reset-db.sh
 
 # Set the correct permission for prerender cache
 RUN mkdir .next

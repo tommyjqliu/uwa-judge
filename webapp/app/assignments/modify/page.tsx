@@ -1,4 +1,3 @@
-import { AssignmentList } from "@/app/assignments/assignment-list";
 import Pagination from "@/components/pagination";
 import { uwajudgeDB } from "@/lib/database-client";
 import Link from "next/link";

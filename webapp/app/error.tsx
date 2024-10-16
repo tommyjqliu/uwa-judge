@@ -13,7 +13,9 @@ export default function Error({
   reset: () => void;
 }) {
   const [message, setMessage] = useState("An unexpected error occurred.");
-  const [description, setDescription] = useState("We're sorry for the inconvenience. Our team has been notified and is working on a solution.");
+  const [description, setDescription] = useState(
+    "We're sorry for the inconvenience. Our team has been notified and is working on a solution.",
+  );
 
   useEffect(() => {
     if (isErr(error, ErrorType.PermissionError)) {

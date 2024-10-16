@@ -1,4 +1,3 @@
-
 import { uwajudgeDB } from "@/lib/database-client";
 import { ProblemVersion } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
@@ -19,30 +18,34 @@ const columns: ColumnDef<Pick<ProblemVersion, "id" | "name">>[] = [
     accessorKey: "name",
     header: "Name",
     cell: ({ row }) => {
-      return <Link href={`/code?problemVersionId=${row.original.id}`} className="hover:underline">{row.original.name}</Link>
+      return (
+        <Link
+          href={`/code?problemVersionId=${row.original.id}`}
+          className="hover:underline"
+        >
+          {row.original.name}
+        </Link>
+      );
     },
   },
   {
     header: "Action",
     cell: ({ row }) => {
-      return <DeleteProblem id={row.original.id} />
-    }
-  }
+      return <DeleteProblem id={row.original.id} />;
+    },
+  },
 ];
 
 export default async function Page() {
   const problemVersions = await uwajudgeDB.problemVersion.findMany({
     select: {
       id: true,
-      name: true
-    }
+      name: true,
+    },
   });
 
   return (
-    <ManagementLayout
-      title="Problems"
-      operation={<HeaderOperation />}
-    >
+    <ManagementLayout title="Problems" operation={<HeaderOperation />}>
       <div className="w-full">
         <ServerDataTable columns={columns} data={problemVersions} />
       </div>
