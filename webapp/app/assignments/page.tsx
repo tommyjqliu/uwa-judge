@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import Pagination from "@/components/pagination";
 import { z } from "zod";
 import LocalTime from "@/components/local-time";
+import { FilePen } from "lucide-react";
 
 const columns: ColumnDef<Assignment & { problems: Problem[] }>[] = [
   {
@@ -44,6 +45,18 @@ const columns: ColumnDef<Assignment & { problems: Problem[] }>[] = [
       return <LocalTime date={row.original.dueDate} />;
     },
   },
+  {
+    header: "Operations",
+    cell: ({ row }) => {
+      return <div>
+        <Link href={`/assignments/${row.original.id}/assess`}>
+          <Button variant="ghost" size="icon" title="Assess assignment">
+            <FilePen className="w-4 h-4" />
+          </Button>
+        </Link>
+      </div>
+    }
+  }
 ];
 
 export default async function page({
