@@ -18,7 +18,7 @@ interface ProblemSolverProps {
 
 export default function ProblemSolver({ problemVersionId, problemId }: ProblemSolverProps) {
   assertParams(!!problemVersionId || !!problemId, "Problem version or problem id is required");
-  const [language, setLanguage] = useState("py3");
+  const [language, setLanguage] = useState("python");
   const [code, setCode] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [judgeResult, setJudgeResult] = useState<JudgeResult>();
