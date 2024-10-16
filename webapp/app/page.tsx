@@ -14,6 +14,5 @@ export default async function Home() {
         <CodeAnimation />
       </main>
     </main>
-
   );
 }

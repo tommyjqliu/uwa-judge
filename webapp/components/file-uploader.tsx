@@ -1,26 +1,29 @@
-import React from 'react';
-import { Button } from '@/components/ui/button';
-import { X } from 'lucide-react';
-import triggerUpload from '@/lib/single-upload';
+import React from "react";
+import { Button } from "@/components/ui/button";
+import { X } from "lucide-react";
+import triggerUpload from "@/lib/single-upload";
 
 interface FileUploaderProps {
   value?: File[];
   onChange?: (files: File[]) => void;
 }
 
-const FileUploader: React.FC<FileUploaderProps> = ({ value = [], onChange }) => {
+const FileUploader: React.FC<FileUploaderProps> = ({
+  value = [],
+  onChange,
+}) => {
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
   };
   const appendFiles = (files: FileList | File[]) => {
     const newFiles = [...value];
     for (const file of files) {
-      if (!newFiles.some(existingFile => existingFile.name === file.name)) {
+      if (!newFiles.some((existingFile) => existingFile.name === file.name)) {
         newFiles.push(file);
       }
     }
     onChange?.(newFiles);
-  }
+  };
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     const droppedFiles = Array.from(e.dataTransfer.files);
@@ -53,7 +56,10 @@ const FileUploader: React.FC<FileUploaderProps> = ({ value = [], onChange }) => 
       {value.length > 0 && (
         <ul className="space-y-2">
           {value.map((file, index) => (
-            <li key={index} className="flex items-center justify-between bg-gray-100 p-2 rounded">
+            <li
+              key={index}
+              className="flex items-center justify-between bg-gray-100 p-2 rounded"
+            >
               <span className="truncate">{file.name}</span>
               <Button
                 variant="ghost"
@@ -72,4 +78,3 @@ const FileUploader: React.FC<FileUploaderProps> = ({ value = [], onChange }) => 
 };
 
 export default FileUploader;
-

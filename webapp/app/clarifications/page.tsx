@@ -1,6 +1,6 @@
 "use client"; // Marks this file as a client-side component
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import { ClarificationList } from "./clarification-list"; // Import the ClarificationList component
 import {
   Pagination,
@@ -22,13 +22,13 @@ type Clarification = {
 
 export default function Page({
   searchParams,
-  fetchData = true,  // Add fetchData parameter to determine if API should be used as default data source
+  fetchData = true, // Add fetchData parameter to determine if API should be used as default data source
 }: {
   searchParams?: {
     query?: string;
     page?: string;
   };
-  fetchData?: boolean;  // New optional parameter, defaults to true
+  fetchData?: boolean; // New optional parameter, defaults to true
 }) {
   const [clarifications, setClarifications] = useState<Clarification[]>([]);
   const clarificationsPerPage = 10;
@@ -37,17 +37,17 @@ export default function Page({
 
   // Function to fetch clarifications data
   const fetchClarifications = async () => {
-    const response = await fetch('/api/clarificationall'); // Call the API route
+    const response = await fetch("/api/clarificationall"); // Call the API route
     if (!response.ok) {
-      console.error('Failed to fetch clarifications');
+      console.error("Failed to fetch clarifications");
       return;
     }
     const allClarifications = await response.json();
     console.log("Total clarifications:", allClarifications.length);
-    
+
     // Update total page count and set the clarifications for the current page
     setTotalPage(Math.ceil(allClarifications.length / clarificationsPerPage));
-    
+
     const startIndex = (page - 1) * clarificationsPerPage;
     const endIndex = startIndex + clarificationsPerPage;
     setClarifications(allClarifications.slice(startIndex, endIndex));
@@ -56,13 +56,13 @@ export default function Page({
   useEffect(() => {
     // Fetch data if fetchData is true
     if (fetchData) {
-      fetchClarifications(); 
+      fetchClarifications();
     }
   }, [fetchData]); // Empty dependency array ensures it only runs on mount or when fetchData changes
 
   // Handle data updates after save or delete operations
   const handleDataUpdate = () => {
-    fetchClarifications();  // Re-fetch data after an update
+    fetchClarifications(); // Re-fetch data after an update
   };
 
   return (
@@ -72,7 +72,10 @@ export default function Page({
         <Link href="/clarifications/create">Create Clarification</Link>
       </div>
       {/* Pass handleDataUpdate to ClarificationList */}
-      <ClarificationList clarifications={clarifications} onDataUpdate={handleDataUpdate} />
+      <ClarificationList
+        clarifications={clarifications}
+        onDataUpdate={handleDataUpdate}
+      />
       <Pagination className="mt-4">
         <PaginationContent>
           <PaginationItem>
@@ -91,7 +94,9 @@ export default function Page({
             </PaginationItem>
           )}
           <PaginationItem>
-            <PaginationNext href={page < totalPage ? `?page=${page + 1}` : "#"} />
+            <PaginationNext
+              href={page < totalPage ? `?page=${page + 1}` : "#"}
+            />
           </PaginationItem>
         </PaginationContent>
       </Pagination>

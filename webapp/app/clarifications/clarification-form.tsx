@@ -25,7 +25,11 @@ interface ClarificationFormInput {
 }
 
 // Accept initialAssignments as props
-export default function ClarificationForm({ initialAssignments }: { initialAssignments: Assignment[] }) {
+export default function ClarificationForm({
+  initialAssignments,
+}: {
+  initialAssignments: Assignment[];
+}) {
   const [assignments] = useState<Assignment[]>(initialAssignments); // Initialize assignments with data from the server
   const { control, handleSubmit } = useForm<ClarificationFormInput>({
     defaultValues: {
@@ -40,11 +44,14 @@ export default function ClarificationForm({ initialAssignments }: { initialAssig
     try {
       // Dynamically generate the API path including assignmentId
       const assignmentId = data.assignmentId;
-      const response = await fetch(`/api/assignments/${assignmentId}/clarification`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text: data.text }), // Only send the clarification text
-      });
+      const response = await fetch(
+        `/api/assignments/${assignmentId}/clarification`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ text: data.text }), // Only send the clarification text
+        },
+      );
 
       if (response.ok) {
         router.refresh(); // Refresh data before navigating
@@ -58,7 +65,9 @@ export default function ClarificationForm({ initialAssignments }: { initialAssig
   };
 
   return (
-    <ClientContext> {/* Wrap everything in ClientContext */}
+    <ClientContext>
+      {" "}
+      {/* Wrap everything in ClientContext */}
       <div>
         {/*<h2>Create Clarification</h2>*/}
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
@@ -81,12 +90,12 @@ export default function ClarificationForm({ initialAssignments }: { initialAssig
               name="text"
               control={control}
               render={({ field }) => (
-                <Textarea id="clarification-text"
-
-                  className="text-lg"  // Set larger text size
-                  rows={2}  //
-
-                  {...field} />
+                <Textarea
+                  id="clarification-text"
+                  className="text-lg" // Set larger text size
+                  rows={2} //
+                  {...field}
+                />
               )}
             />
           </div>

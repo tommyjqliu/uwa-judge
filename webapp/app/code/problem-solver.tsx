@@ -1,8 +1,12 @@
-"use client"
+"use client";
 import ClientContext from "@/components/client-context";
 import EntitySelector from "@/components/entity-selector";
 import { Button } from "@/components/ui/button";
-import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "@/components/ui/resizable";
 import { assertParams } from "@/lib/error";
 import type { JudgeResult } from "@/services/judge/get-judge-result";
 import getLanguages from "@/services/language/get-languages";
@@ -16,8 +20,14 @@ interface ProblemSolverProps {
   problemId?: number;
 }
 
-export default function ProblemSolver({ problemVersionId, problemId }: ProblemSolverProps) {
-  assertParams(!!problemVersionId || !!problemId, "Problem version or problem id is required");
+export default function ProblemSolver({
+  problemVersionId,
+  problemId,
+}: ProblemSolverProps) {
+  assertParams(
+    !!problemVersionId || !!problemId,
+    "Problem version or problem id is required",
+  );
   const [language, setLanguage] = useState("python");
   const [code, setCode] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -46,10 +56,15 @@ export default function ProblemSolver({ problemVersionId, problemId }: ProblemSo
       <ResizablePanel defaultSize={50} id="code">
         <ResizablePanelGroup direction="vertical">
           <ResizablePanel defaultSize={300}>
-            <EntitySelector queryAction={getLanguages} defaultValue={language} onChange={(v) => setLanguage(v)} className="h-6 border-none" />
+            <EntitySelector
+              queryAction={getLanguages}
+              defaultValue={language}
+              onChange={(v) => setLanguage(v)}
+              className="h-6 border-none"
+            />
             <Editor
               language={language}
-              theme='vs-light'
+              theme="vs-light"
               value={code}
               onChange={(newValue) => setCode(newValue || "")}
               options={{
@@ -72,5 +87,5 @@ export default function ProblemSolver({ problemVersionId, problemId }: ProblemSo
         </ResizablePanelGroup>
       </ResizablePanel>
     </ClientContext>
-  )
+  );
 }

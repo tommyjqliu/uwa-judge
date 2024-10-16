@@ -1,11 +1,7 @@
 {
   "compilerOptions": {
     "baseUrl": "./",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -23,9 +19,7 @@
       }
     ],
     "paths": {
-      "@/*": [
-        "./*"
-      ]
+      "@/*": ["./*"]
     },
     "target": "ES2017"
   },
@@ -33,16 +27,13 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.ts"
-, "lib/server.mts"  ],
-  "exclude": [
-    "node_modules"
+    ".next/types/**/*.ts",
+    "lib/server.mts"
   ],
+  "exclude": ["node_modules"],
   "ts-node": {
     // Let ts-node support parsing module path aliases in paths
-    "require": [
-      "tsconfig-paths/register"
-    ],
+    "require": ["tsconfig-paths/register"],
     "compilerOptions": {
       "module": "ESNext",
       "moduleResolution": "Node"
