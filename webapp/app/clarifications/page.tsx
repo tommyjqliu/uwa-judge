@@ -22,14 +22,13 @@ type Clarification = {
 
 export default function Page({
   searchParams,
-  fetchData = true, // Add fetchData parameter to determine if API should be used as default data source
 }: {
   searchParams?: {
     query?: string;
     page?: string;
-  };
-  fetchData?: boolean; // New optional parameter, defaults to true
+  }
 }) {
+  const fetchData = true; // Add fetchData parameter to determine if API should be used as default data source
   const [clarifications, setClarifications] = useState<Clarification[]>([]);
   const clarificationsPerPage = 10;
   const page = searchParams?.page ? parseInt(searchParams.page) : 1;
