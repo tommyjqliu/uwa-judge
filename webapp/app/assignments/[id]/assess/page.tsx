@@ -163,7 +163,7 @@ export default async function Page({ params }: { params: { id: string } }) {
                                                 {grade}
                                             </td>
                                             <td className="py-3 px-4 border-b text-center">
-                                                <Link href={`/assessor/${assignmentId}/students/${studentAssignment.user.id}/submission`}>
+                                                <Link href={`/assignments/${assignmentId}/assess/${studentAssignment.user.id}/submission`}>
                                                     <button className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
                                                         Grade
                                                     </button>
