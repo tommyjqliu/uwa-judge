@@ -3,7 +3,7 @@ import {
   createTable,
   flexRender,
   getCoreRowModel,
-} from "@tanstack/react-table"
+} from "@tanstack/react-table";
 
 import {
   Table,
@@ -12,11 +12,11 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
+} from "@/components/ui/table";
 
 interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[]
-  data: TData[]
+  columns: ColumnDef<TData, TValue>[];
+  data: TData[];
 }
 /**
  * Server-side rendered data table
@@ -34,9 +34,9 @@ export function ServerDataTable<TData, TValue>({
       columnPinning: {},
       rowSelection: {},
     },
-    onStateChange: () => { },
-    renderFallbackValue: null
-  })
+    onStateChange: () => {},
+    renderFallbackValue: null,
+  });
 
   return (
     <Table>
@@ -49,11 +49,11 @@ export function ServerDataTable<TData, TValue>({
                   {header.isPlaceholder
                     ? null
                     : flexRender(
-                      header.column.columnDef.header,
-                      header.getContext()
-                    )}
+                        header.column.columnDef.header,
+                        header.getContext(),
+                      )}
                 </TableHead>
-              )
+              );
             })}
           </TableRow>
         ))}
@@ -81,5 +81,5 @@ export function ServerDataTable<TData, TValue>({
         )}
       </TableBody>
     </Table>
-  )
+  );
 }

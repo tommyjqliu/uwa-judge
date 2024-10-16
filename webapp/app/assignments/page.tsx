@@ -18,8 +18,15 @@ const columns: ColumnDef<Assignment & { problems: Problem[] }>[] = [
     accessorKey: "title",
     header: "Title",
     cell: ({ row }) => {
-      return <Link href={`/assignments/${row.original.id}`} className="hover:underline">{row.original.title}</Link>
-    }
+      return (
+        <Link
+          href={`/assignments/${row.original.id}`}
+          className="hover:underline"
+        >
+          {row.original.title}
+        </Link>
+      );
+    },
   },
   {
     accessorKey: "description",
@@ -28,14 +35,14 @@ const columns: ColumnDef<Assignment & { problems: Problem[] }>[] = [
   {
     header: "Publish Date",
     cell: ({ row }) => {
-      return <LocalTime date={row.original.publishDate} />
-    }
+      return <LocalTime date={row.original.publishDate} />;
+    },
   },
   {
     header: "Due Date",
     cell: ({ row }) => {
-      return <LocalTime date={row.original.dueDate} />
-    }
+      return <LocalTime date={row.original.dueDate} />;
+    },
   },
 ];
 
@@ -47,14 +54,16 @@ export default async function page({
     perPage?: string;
   };
 }) {
-  const { page, perPage } = z.object({
-    page: z.string().transform(Number).default("1"),
-    perPage: z.string().transform(Number).default("15"),
-  }).parse(searchParams);
+  const { page, perPage } = z
+    .object({
+      page: z.string().transform(Number).default("1"),
+      perPage: z.string().transform(Number).default("15"),
+    })
+    .parse(searchParams);
   const assignmentCount = await uwajudgeDB.assignment.count();
   const assignments = await uwajudgeDB.assignment.findMany({
     orderBy: {
-      id: 'desc'
+      id: "desc",
     },
     skip: (page - 1) * perPage,
     take: perPage,
@@ -64,11 +73,20 @@ export default async function page({
   return (
     <ManagementLayout
       title="Assignments"
-      operation={<Link href="/assignments/create"><Button>Create Assignment</Button></Link>}
+      operation={
+        <Link href="/assignments/create">
+          <Button>Create Assignment</Button>
+        </Link>
+      }
     >
       <div className="flex-1 h-full flex flex-col">
         <ServerDataTable columns={columns} data={assignments as []} />
-        <Pagination totalCount={assignmentCount} page={page} perPage={perPage} className="mt-4" />
+        <Pagination
+          totalCount={assignmentCount}
+          page={page}
+          perPage={perPage}
+          className="mt-4"
+        />
       </div>
     </ManagementLayout>
   );

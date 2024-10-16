@@ -36,16 +36,25 @@ interface ClarificationListProps {
   onDataUpdate: () => void; // Add a callback function to notify the Page component of data updates
 }
 
-export function ClarificationList({ clarifications, onDataUpdate }: ClarificationListProps) {
+export function ClarificationList({
+  clarifications,
+  onDataUpdate,
+}: ClarificationListProps) {
   const router = useRouter(); // Initialize router
   const [editId, setEditId] = useState<number | null>(null);
   const [editText, setEditText] = useState<string>("");
-  const [currentAssignmentId, setCurrentAssignmentId] = useState<number | null>(null);
+  const [currentAssignmentId, setCurrentAssignmentId] = useState<number | null>(
+    null,
+  );
   const [deleteId, setDeleteId] = useState<number | null>(null);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
   // Handle editing clarification
-  const handleEdit = (clarificationId: number, text: string, assignmentId: number) => {
+  const handleEdit = (
+    clarificationId: number,
+    text: string,
+    assignmentId: number,
+  ) => {
     setEditId(clarificationId);
     setEditText(text);
     setCurrentAssignmentId(assignmentId);
@@ -62,7 +71,7 @@ export function ClarificationList({ clarifications, onDataUpdate }: Clarificatio
             "Content-Type": "application/json",
           },
           body: JSON.stringify({ text: editText }),
-        }
+        },
       );
 
       if (response.ok) {
@@ -78,12 +87,15 @@ export function ClarificationList({ clarifications, onDataUpdate }: Clarificatio
   };
 
   // Handle deleting clarification
-  const handleDelete = async (clarificationId: number, assignmentId: number) => {
+  const handleDelete = async (
+    clarificationId: number,
+    assignmentId: number,
+  ) => {
     const response = await fetch(
       `/api/assignments/${assignmentId}/clarification/${clarificationId}`,
       {
         method: "DELETE",
-      }
+      },
     );
 
     if (response.ok) {
@@ -131,7 +143,11 @@ export function ClarificationList({ clarifications, onDataUpdate }: Clarificatio
                   <DropdownMenuLabel>Options</DropdownMenuLabel>
                   <DropdownMenuItem
                     onClick={() =>
-                      handleEdit(clarification.id, clarification.text, clarification.assignmentId)
+                      handleEdit(
+                        clarification.id,
+                        clarification.text,
+                        clarification.assignmentId,
+                      )
                     }
                   >
                     Edit
@@ -163,7 +179,9 @@ export function ClarificationList({ clarifications, onDataUpdate }: Clarificatio
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Edit Clarification</DialogTitle>
-            <DialogDescription>Edit the clarification text below:</DialogDescription>
+            <DialogDescription>
+              Edit the clarification text below:
+            </DialogDescription>
           </DialogHeader>
           <Textarea
             value={editText}
@@ -188,7 +206,10 @@ export function ClarificationList({ clarifications, onDataUpdate }: Clarificatio
       </Dialog>
 
       {/* Delete Confirmation Dialog */}
-      <Dialog open={isDeleteDialogOpen} onOpenChange={() => setIsDeleteDialogOpen(false)}>
+      <Dialog
+        open={isDeleteDialogOpen}
+        onOpenChange={() => setIsDeleteDialogOpen(false)}
+      >
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Confirm Deletion</DialogTitle>

@@ -21,20 +21,26 @@ export const DELETE = errorHandler(async function (
   });
 
   if (!deletedClarification || deletedClarification.count === 0) {
-    return new Response(JSON.stringify({ message: "No clarification found or deletion failed" }), {
-      status: 404,
+    return new Response(
+      JSON.stringify({ message: "No clarification found or deletion failed" }),
+      {
+        status: 404,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
+    );
+  }
+
+  return new Response(
+    JSON.stringify({ message: "Clarification deleted successfully" }),
+    {
+      status: 200,
       headers: {
         "Content-Type": "application/json",
       },
-    });
-  }
-
-  return new Response(JSON.stringify({ message: "Clarification deleted successfully" }), {
-    status: 200,
-    headers: {
-      "Content-Type": "application/json",
     },
-  });
+  );
 });
 
 // GET clarification
@@ -57,13 +63,15 @@ export const GET = errorHandler(async function (
 
   if (!clarifications || clarifications.length === 0) {
     return new Response(
-      JSON.stringify({ message: 'No clarifications found for the given assignmentId' }),
+      JSON.stringify({
+        message: "No clarifications found for the given assignmentId",
+      }),
       {
         status: 404,
         headers: {
           "Content-Type": "application/json",
         },
-      }
+      },
     );
   }
 
@@ -92,15 +100,15 @@ export const PUT = errorHandler(async function (
   const { text } = body;
 
   // Validate the text from the request body
-  if (!text || typeof text !== 'string') {
+  if (!text || typeof text !== "string") {
     return new Response(
-      JSON.stringify({ message: 'Invalid clarification text' }),
+      JSON.stringify({ message: "Invalid clarification text" }),
       {
         status: 400,
         headers: {
           "Content-Type": "application/json",
         },
-      }
+      },
     );
   }
 
@@ -114,13 +122,13 @@ export const PUT = errorHandler(async function (
 
   if (!clarificationExists) {
     return new Response(
-      JSON.stringify({ message: 'Clarification ID does not exist' }),
+      JSON.stringify({ message: "Clarification ID does not exist" }),
       {
         status: 404,
         headers: {
           "Content-Type": "application/json",
         },
-      }
+      },
     );
   }
 
@@ -135,13 +143,10 @@ export const PUT = errorHandler(async function (
   });
 
   // Return the updated clarification
-  return new Response(
-    JSON.stringify(updatedClarification),
-    {
-      status: 200,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }
-  );
+  return new Response(JSON.stringify(updatedClarification), {
+    status: 200,
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
 });

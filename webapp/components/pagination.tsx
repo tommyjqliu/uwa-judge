@@ -6,7 +6,7 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from "@/components/ui/pagination"
+} from "@/components/ui/pagination";
 import React from "react";
 
 export interface PaginationProps {
@@ -34,16 +34,28 @@ export default function Pagination({
     const rightSide = maxVisiblePages - leftSide - 1;
 
     if (page <= leftSide) {
-      return [...Array.from({ length: maxVisiblePages - 1 }, (_, i) => i + 1), totalPages];
+      return [
+        ...Array.from({ length: maxVisiblePages - 1 }, (_, i) => i + 1),
+        totalPages,
+      ];
     }
 
     if (page > totalPages - rightSide) {
-      return [1, ...Array.from({ length: maxVisiblePages - 1 }, (_, i) => totalPages - maxVisiblePages + i + 2)];
+      return [
+        1,
+        ...Array.from(
+          { length: maxVisiblePages - 1 },
+          (_, i) => totalPages - maxVisiblePages + i + 2,
+        ),
+      ];
     }
 
     return [
       1,
-      ...Array.from({ length: maxVisiblePages - 2 }, (_, i) => page - leftSide + i + 1),
+      ...Array.from(
+        { length: maxVisiblePages - 2 },
+        (_, i) => page - leftSide + i + 1,
+      ),
       totalPages,
     ];
   };

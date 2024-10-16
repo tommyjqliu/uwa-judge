@@ -1,4 +1,3 @@
-
 // declare module "axios" {
 //     /**
 //      * @deprecated
@@ -8,21 +7,21 @@
 // }
 
 declare module "next/router" {
-    /**
-     * @deprecated
-     * Use next/navigation instead
-     */
-    export function useRouter(): void;
+  /**
+   * @deprecated
+   * Use next/navigation instead
+   */
+  export function useRouter(): void;
 }
 
 // import * as axios from "axios";
-import 'node';
+import "node";
 
 declare global {
-    namespace NodeJS {
-      interface ProcessEnv {
-        ADMIN_PASSWORD: string;
-        JUDGEDAEMON_PASSWORD: string;
-      }
+  namespace NodeJS {
+    interface ProcessEnv {
+      ADMIN_PASSWORD: string;
+      JUDGEDAEMON_PASSWORD: string;
     }
   }
+}
