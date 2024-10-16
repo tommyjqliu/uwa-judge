@@ -66,8 +66,8 @@ export default async function page({
       title="Assignments"
       operation={<Link href="/assignments/create"><Button>Create Assignment</Button></Link>}
     >
-      <div className="w-full">
-        <ServerDataTable columns={columns} data={assignments} />
+      <div className="flex-1 h-full flex flex-col">
+        <ServerDataTable columns={columns} data={assignments as []} />
         <Pagination totalCount={assignmentCount} page={page} perPage={perPage} className="mt-4" />
       </div>
     </ManagementLayout>
