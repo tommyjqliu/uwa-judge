@@ -1,3 +1,4 @@
+'use server'
 import { uwajudgeDB } from "@/lib/database-client";
 import { assertParams } from "@/lib/error";
 import { isJudgeTaskCorrect, isJudgeTaskError } from "./utils";

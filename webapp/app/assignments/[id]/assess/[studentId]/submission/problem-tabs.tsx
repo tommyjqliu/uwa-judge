@@ -6,8 +6,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
-import { Loader2 } from "lucide-react";
+import { Loader2, CheckCircle, XCircle } from "lucide-react"; // Icons for pass and fail
 import createAssessment from "@/services/assessment/create-assessment";
+import { getJudgeResult } from "@/services/judge/get-judge-result"; // Import getJudgeResult to fetch judge results
 
 interface ProblemTabsProps {
     problems: any[];
@@ -24,9 +25,28 @@ export default function ProblemTabs({ problems, studentId, initialGrade, initial
     const [submissionStatus, setSubmissionStatus] = useState<"success" | "failure" | null>(null);
     const [hydrated, setHydrated] = useState(false);
 
+    // New state to hold the number of successful and failed judge tasks
+    const [judgeResults, setJudgeResults] = useState<{ pass: number; total: number } | null>(null);
+
     useEffect(() => {
         setHydrated(true);
-    }, []);
+        if (selectedProblem.submission.length > 0) {
+            fetchJudgeResults(selectedProblem.submission[0].id); // Fetch judge results for the latest submission
+        }
+    }, [selectedProblem]);
+
+    // Function to fetch judge results using the latest submission's judgeId
+    const fetchJudgeResults = async (submissionId: number) => {
+        try {
+            const judgeResult = await getJudgeResult(submissionId);
+            setJudgeResults({
+                pass: judgeResult.pass,
+                total: judgeResult.total,
+            });
+        } catch (error) {
+            console.error("Error fetching judge results:", error);
+        }
+    };
 
     const latestSubmission = selectedProblem.submission.length > 0 ? selectedProblem.submission[0] : null;
 
@@ -99,6 +119,35 @@ export default function ProblemTabs({ problems, studentId, initialGrade, initial
                     <CardTitle>{selectedProblem.problemVersion.name}</CardTitle>
                 </CardHeader>
                 <CardContent>
+                    {judgeResults && (
+                        <div className="mb-4 text-sm">
+                            <h4 className="text-lg font-semibold mb-2">Results</h4>
+                            <p className="mb-4">
+                                <span className="font-semibold">Number of Tests:</span> {judgeResults.total}
+                            </p>
+                            <div className="mb-2">
+                                <div className="border border-green-500 rounded-md p-2 inline-block">
+                                    <p className="text-green-600">
+                                        <CheckCircle className="inline-block h-4 w-4 mr-1 text-green-500" />
+                                        <span className="font-semibold">Pass:</span> {judgeResults.pass}
+                                    </p>
+                                </div>
+                            </div>
+                            {judgeResults.total - judgeResults.pass > 0 && (
+                                <div className="mb-2">
+                                    <div className="border border-red-500 rounded-md p-2 inline-block">
+                                        <p className="text-red-600">
+                                            <XCircle className="inline-block h-4 w-4 mr-1 text-red-500" />
+                                            <span className="font-semibold">Fail:</span> {judgeResults.total - judgeResults.pass}
+                                        </p>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    )}
+
+
+
                     {latestSubmission ? (
                         <div>
                             <h4 className="text-lg font-semibold mb-2">Latest Submission:</h4>
