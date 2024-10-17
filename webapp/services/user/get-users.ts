@@ -56,6 +56,7 @@ export async function getUsers(args?: GetUsersArgs) {
       id: true,
       email: true,
       permissions: true,
+      username: true,
     },
     where,
     ...(args?.pagination && {
