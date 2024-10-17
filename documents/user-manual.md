@@ -110,7 +110,7 @@ In code editor, user can write code and test the problem. The code will be judge
 - SMTP server
 - HTTPS certificate
 
-To install the system please copy `docker-compose.prod.yml`, `nginx.conf` and `example.env` to the root directory of the system. Then rename `example.env` to `.env` and fill in the environment variables. To enable all features, Azure AD, SMTP server and https certificate are required.
+To install the system please copy `docker-compose.prod.yml`, `nginx.conf` and `example.env` from the [repository](https://github.com/tommyjqliu/uwa-judge) to the root directory of the system. Then rename `example.env` to `.env` and fill in the environment variables. To enable all features, Azure AD, SMTP server and https certificate are required.
 
 **Install**
 
