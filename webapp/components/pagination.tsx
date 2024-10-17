@@ -8,7 +8,12 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import React from "react";
+import { z } from "zod";
 
+export const paginationSchema = z.object({
+  page: z.string().transform(Number).default("1"),
+  perPage: z.string().transform(Number).default("15"),
+});
 export interface PaginationProps {
   totalCount: number;
   page: number;

@@ -1,11 +1,10 @@
-import { getSession } from "@/lib/auth";
+import { getSession } from "@/services/session/get-session";
 import { uwajudgeDB } from "@/lib/database-client";
 import { assert } from "@/lib/error";
-import { $Enums, User, UserGroup } from "@prisma/client";
+import { $Enums, User } from "@prisma/client";
 
-export default async function refreshProfile(
-  user?: (User & { groups: UserGroup[] }) | null,
-) {
+// TODO: Refactor auth into a module
+export default async function refreshProfile(user?: User | null) {
   const session = await getSession();
   const { profile } = session;
 
@@ -16,19 +15,11 @@ export default async function refreshProfile(
       where: {
         id,
       },
-      include: {
-        groups: true,
-      },
     });
     assert(user, "User not found");
   }
 
   const permissions = new Set<$Enums.Permission>(user.permissions);
-  for (const group of user.groups) {
-    for (const permission of group.permissions) {
-      permissions.add(permission);
-    }
-  }
 
   session.profile = {
     ...user,

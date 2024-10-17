@@ -1,10 +1,10 @@
 import { cookies } from "next/headers";
 import { OAuth2RequestError } from "arctic";
-import { azureAD } from "@/lib/auth";
 import { z } from "zod";
 import { uwajudgeDB } from "@/lib/database-client";
-import refreshProfile from "@/services/user/refresh-profile";
+import refreshProfile from "@/services/session/refresh-session";
 import { redirect } from "next/navigation";
+import { azureAD } from "@/lib/azure-ad-provider";
 
 export async function GET(request: Request) {
   const url = new URL(request.url);
@@ -57,9 +57,6 @@ export async function GET(request: Request) {
       where: {
         email,
       },
-      include: {
-        groups: true,
-      },
     });
 
     if (!user || !user.active) {
@@ -76,9 +73,6 @@ export async function GET(request: Request) {
           email,
           username: profile.displayName,
           active: true,
-        },
-        include: {
-          groups: true,
         },
       });
     }

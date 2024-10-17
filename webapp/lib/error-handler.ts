@@ -9,7 +9,10 @@ export default function errorHandler(endpoint: (...args: any[]) => any) {
     } catch (error) {
       console.error("error!", error);
 
-      if (error instanceof ZodError || error instanceof Error && isErr(error, ParamsInvalidError)) {
+      if (
+        error instanceof ZodError ||
+        (error instanceof Error && isErr(error, ParamsInvalidError))
+      ) {
         return new Response(error.message, {
           status: 400,
         });

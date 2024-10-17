@@ -3,13 +3,17 @@
 import { z } from "zod";
 import { uwajudgeDB } from "@/lib/database-client";
 import { createProblemVersions } from "../problem-version/create-problem-version";
-import getOrInsertEmails from "../user/get-or-insert-emails";
+import getOrInsertEmails from "../user/insert-or-get-emails";
 import assignmentFormData from "./assignment-form-schema";
 import { ToOptional } from "@/lib/type";
+import { Permission } from "@prisma/client";
+import { assertPermission } from "@/lib/error";
 
 export async function createAssignment(
   data: ToOptional<z.infer<typeof assignmentFormData>>,
 ) {
+  await assertPermission([Permission.createAssignment]);
+
   const {
     title,
     description,

@@ -2,10 +2,8 @@ import type { Metadata } from "next";
 import { Fira_Code } from "next/font/google";
 
 import "./globals.css";
-import SessionInjector from "@/components/session-injector";
-
 import TopNavigator from "./navigator";
-import { getSession } from "@/lib/auth";
+import { getSession } from "@/services/session/get-session";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,6 +16,7 @@ import { CircleUser } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Toaster } from "@/components/ui/toaster";
+import AccountSwitch from "@/components/account-switch";
 
 const firaCode = Fira_Code({ weight: "400", subsets: ["latin"] });
 
@@ -33,12 +32,13 @@ export default async function RootLayout({
 }>) {
   const session = await getSession();
   const { profile } = session;
+
   return (
     <html lang="en" className="h-full">
       <body className={`${firaCode.className} flex flex-col min-h-full`}>
         <header className="sticky top-0 z-50 w-full flex justify-between px-6 py-3 items-center border-border/40 bg-background/10 backdrop-blur supports-[backdrop-filter]:bg-background/60 shadow-sm">
           <div className="flex gap-6 items-center">
-            <TopNavigator />
+            <TopNavigator session={JSON.parse(JSON.stringify(session))} />
           </div>
           {!profile ? (
             <div className="flex gap-2">
@@ -72,8 +72,8 @@ export default async function RootLayout({
           )}
         </header>
         {children}
-        <SessionInjector session={JSON.parse(JSON.stringify(session))} />
         <Toaster />
+        {process.env.NODE_ENV !== "production" && <AccountSwitch />}
       </body>
     </html>
   );

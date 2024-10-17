@@ -1,9 +1,12 @@
+"use server";
+
 import { User } from "@prisma/client";
-import { MicrosoftEntraId } from "arctic";
-import { getIronSession } from "iron-session";
+import { getIronSession, IronSession } from "iron-session";
 import { cookies } from "next/headers";
+import { mockSession } from "./mock-session";
 
 export interface Session {
+  profile?: Omit<User, "password">;
   pendingSignUpRequest?: {
     username: string;
     email: string;
@@ -12,19 +15,15 @@ export interface Session {
     expriresAt: string;
     signature: string;
   };
-  profile?: Omit<User, "password">;
 }
 
-export function getSession() {
+export async function getSession() {
+  if (mockSession) {
+    return mockSession;
+  }
+
   return getIronSession<Session>(cookies(), {
     cookieName: "uwajudge-session",
     password: process.env.SESSION_SECRET!,
   });
 }
-
-export const azureAD = new MicrosoftEntraId(
-  process.env.AZURE_AD_TENANT_ID!,
-  process.env.AZURE_AD_CLIENT_ID!,
-  process.env.AZURE_AD_CLIENT_SECRET!,
-  `${process.env.AUTH_CALLBACK}/api/auth/azure-ad/callback`,
-);

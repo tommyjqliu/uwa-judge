@@ -1,14 +1,17 @@
+import { Permission } from "@prisma/client";
+import { getSession } from "../services/session/get-session";
+import { hasPermission, serverHasPermission } from "./permission";
+
 export enum ErrorType {
   ParamsInvalidError = "ParamsInvalidError",
   PermissionError = "PermissionError",
   NotFoundError = "NotFoundError",
 }
 
-// remove later
 export const ParamsInvalidError = ErrorType.ParamsInvalidError;
 export const PermissionError = ErrorType.PermissionError;
 export const NotFoundError = ErrorType.NotFoundError;
-// TODO: fix assert
+
 export function assert(
   condition: unknown,
   message: string = "Unnamed error",
@@ -30,10 +33,11 @@ export function assertParams(
   assert(condition, message, ErrorType.ParamsInvalidError);
 }
 
-export function assertPermission(
-  condition: unknown,
+export async function assertPermission(
+  requires: Permission[] | Permission,
   message: string = "Permission denied",
-): asserts condition {
+) {
+  const condition = await serverHasPermission(requires);
   assert(condition, message, ErrorType.PermissionError);
 }
 
