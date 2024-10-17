@@ -19,7 +19,9 @@ interface Entity {
   username?: string | null;
 }
 
-export type EntitySelectorProps<A extends () => Promise<Entity[]>> = {
+export type EntitySelectorProps<
+  A extends () => Promise<{ rows: Entity[] }>,
+> = {
   queryAction: A;
   label?: string;
   defaultValue?: string;
@@ -27,7 +29,9 @@ export type EntitySelectorProps<A extends () => Promise<Entity[]>> = {
   className?: string;
 };
 
-export default function EntitySelector<A extends () => Promise<Entity[]>>({
+export default function EntitySelector<
+  A extends () => Promise<{ rows: Entity[] }>,
+>({
   queryAction,
   label,
   defaultValue,
@@ -35,11 +39,13 @@ export default function EntitySelector<A extends () => Promise<Entity[]>>({
   className,
 }: EntitySelectorProps<A>) {
   useAssertClientContext();
-  const { data: entities } = useQuery({
+  const { data } = useQuery({
     queryKey: ["test"],
     queryFn: () => queryAction(), // In next.js, server action need to be called in our code instead of in dependency lib
   });
 
+  const entities = data?.rows;
+  
   return (
     <>
       {label && <Label>{label}</Label>}
@@ -50,7 +56,8 @@ export default function EntitySelector<A extends () => Promise<Entity[]>>({
         <SelectContent>
           {entities?.map((entity) => {
             const id = entity.id;
-            const displayName = entity.title || entity.name || entity.username || entity.email;
+            const displayName =
+              entity.title || entity.name || entity.username || entity.email;
             return (
               <SelectItem key={id} value={String(id)}>
                 {displayName}

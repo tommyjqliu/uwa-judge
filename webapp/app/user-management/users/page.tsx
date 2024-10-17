@@ -7,6 +7,7 @@ import UserManagementNavigator from "../navigator";
 import { ServerDataTable } from "@/components/ui/server-data-table";
 import { assertPermission } from "@/lib/error";
 import { getUsers } from "@/services/user/get-users";
+import Pagination, { paginationSchema } from "@/components/pagination";
 
 const columns: ColumnDef<Awaited<ReturnType<typeof getUsers>>[number]>[] = [
   {
@@ -27,11 +28,26 @@ const columns: ColumnDef<Awaited<ReturnType<typeof getUsers>>[number]>[] = [
   },
 ];
 
-export default async function page() {
+export default async function page({
+  searchParams,
+}: {
+  searchParams?: {
+    page?: string;
+    perPage?: string;
+    search?: string;
+  };
+}) {
   await assertPermission(Permission.userManagement);
+  const { page, perPage } = paginationSchema.parse(searchParams);
+  const { rows, count } = await getUsers({
+    pagination: {
+      page,
+      perPage,
+    },
+    search: searchParams?.search,
+  });
 
-  const users = await getUsers();
-  const userTableData = users.map((user) => ({
+  const userTableData = rows.map((user) => ({
     ...user,
     displayPermissions: user.permissions.map((perm) => perm).join(", "),
   }));
@@ -39,11 +55,17 @@ export default async function page() {
   return (
     <ManagementLayout
       title="User"
-      operation={<UserOperation />}
+      operation={<UserOperation search={searchParams?.search} />}
       navigator={<UserManagementNavigator />}
     >
-      <main className="flex-1 h-full flex flex-col">
+      <main className="flex-1 overflow-x-auto h-full flex flex-col">
         <ServerDataTable columns={columns} data={userTableData} />
+        <Pagination
+          totalCount={count}
+          page={page}
+          perPage={perPage}
+          className="mt-4"
+        />
       </main>
     </ManagementLayout>
   );
