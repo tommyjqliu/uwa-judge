@@ -46,10 +46,7 @@ export const POST = errorHandler(async (request: Request) => {
       username,
       password: passwordHash,
       active: true,
-    },
-    include: {
-      groups: true,
-    },
+    }
   });
 
   session.pendingSignUpRequest = undefined;

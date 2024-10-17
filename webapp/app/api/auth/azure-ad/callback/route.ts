@@ -56,10 +56,7 @@ export async function GET(request: Request) {
     let user = await uwajudgeDB.user.findUnique({
       where: {
         email,
-      },
-      include: {
-        groups: true,
-      },
+      }
     });
 
     if (!user || !user.active) {
@@ -76,10 +73,7 @@ export async function GET(request: Request) {
           email,
           username: profile.displayName,
           active: true,
-        },
-        include: {
-          groups: true,
-        },
+        }
       });
     }
 

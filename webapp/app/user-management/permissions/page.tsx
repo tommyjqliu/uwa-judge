@@ -1,5 +1,4 @@
-import { uwajudgeDB } from "@/lib/database-client";
-import { Permission, User } from "@prisma/client";
+import { Permission } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
 import ManagementLayout from "@/components/management-layout";
 import UserManagementNavigator from "../navigator";

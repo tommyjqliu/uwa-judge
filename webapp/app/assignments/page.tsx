@@ -6,7 +6,6 @@ import { ColumnDef } from "@tanstack/react-table";
 import { ServerDataTable } from "@/components/ui/server-data-table";
 import { Button } from "@/components/ui/button";
 import Pagination, { paginationSchema } from "@/components/pagination";
-import { z } from "zod";
 import LocalTime from "@/components/local-time";
 import { FilePen } from "lucide-react";
 import { serverHasPermission } from "@/lib/permission";

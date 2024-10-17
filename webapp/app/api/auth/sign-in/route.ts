@@ -11,10 +11,7 @@ export async function POST(request: Request) {
     where: {
       email,
       active: true,
-    },
-    include: {
-      groups: true,
-    },
+    }
   });
 
   assert(user && user.password);
