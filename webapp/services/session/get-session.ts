@@ -1,10 +1,12 @@
 "use server";
 
 import { User } from "@prisma/client";
-import { getIronSession } from "iron-session";
+import { getIronSession, IronSession } from "iron-session";
 import { cookies } from "next/headers";
+import { mockSession } from "./mock-session";
 
 export interface Session {
+  profile?: Omit<User, "password">;
   pendingSignUpRequest?: {
     username: string;
     email: string;
@@ -13,10 +15,13 @@ export interface Session {
     expriresAt: string;
     signature: string;
   };
-  profile?: Omit<User, "password">;
 }
 
 export async function getSession() {
+  if (mockSession) {
+    return mockSession;
+  }
+
   return getIronSession<Session>(cookies(), {
     cookieName: "uwajudge-session",
     password: process.env.SESSION_SECRET!,

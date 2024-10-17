@@ -25,7 +25,7 @@ model User {
 
   // Management
   permissions          Permission[]
-  groups               UserGroup[]
+
   // Business
   submission           Submission[]
   studentOnAssignments StudentsOnAssignments[]
@@ -36,15 +36,6 @@ model User {
   @@index([email])
 }
 
-model UserGroup {
-  id          Int          @id @default(autoincrement())
-  name        String       @unique
-  description String?
-  permissions Permission[]
-  users       User[]
-
-  @@index([name])
-}
 
 model ExternalAccount {
   id         Int    @id @default(autoincrement())

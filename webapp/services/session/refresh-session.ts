@@ -5,7 +5,7 @@ import { $Enums, User, UserGroup } from "@prisma/client";
 
 // TODO: Refactor auth into a module
 export default async function refreshProfile(
-  user?: (User & { groups: UserGroup[] }) | null,
+  user?: User | null,
 ) {
   const session = await getSession();
   const { profile } = session;
@@ -16,20 +16,12 @@ export default async function refreshProfile(
     user = await uwajudgeDB.user.findUnique({
       where: {
         id,
-      },
-      include: {
-        groups: true,
-      },
+      }
     });
     assert(user, "User not found");
   }
 
   const permissions = new Set<$Enums.Permission>(user.permissions);
-  for (const group of user.groups) {
-    for (const permission of group.permissions) {
-      permissions.add(permission);
-    }
-  }
 
   session.profile = {
     ...user,

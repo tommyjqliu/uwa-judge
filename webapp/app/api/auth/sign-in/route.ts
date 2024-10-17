@@ -1,4 +1,4 @@
-import { signInSchema, signUpSchema } from "@/services/user/sign-up-user";
+import { signInSchema } from "@/services/user/sign-up-schema";
 import argon2 from "@node-rs/argon2";
 import { uwajudgeDB } from "@/lib/database-client";
 import { assert } from "@/lib/error";

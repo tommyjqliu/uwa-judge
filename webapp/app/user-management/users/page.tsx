@@ -1,12 +1,14 @@
 import { uwajudgeDB } from "@/lib/database-client";
-import { User } from "@prisma/client";
+import { Permission, User } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
 import UserOperation from "./operation";
 import ManagementLayout from "@/components/management-layout";
 import UserManagementNavigator from "../navigator";
 import { ServerDataTable } from "@/components/ui/server-data-table";
+import { assertPermission } from "@/lib/error";
+import { getUsers } from "@/services/user/get-users";
 
-const columns: ColumnDef<User>[] = [
+const columns: ColumnDef<Awaited<ReturnType<typeof getUsers>>[number]>[] = [
   {
     accessorKey: "id",
     header: "ID",
@@ -23,28 +25,20 @@ const columns: ColumnDef<User>[] = [
     accessorKey: "displayPermissions",
     header: "Permissions",
   },
-  {
-    accessorKey: "groups",
-    header: "Groups",
-  },
 ];
 
 export default async function page() {
-  const users = await uwajudgeDB.user.findMany({
-    include: {
-      groups: true,
-    },
-  });
+  await assertPermission(Permission.userManagement);
 
+  const users = await getUsers();
   const userTableData = users.map((user) => ({
     ...user,
-    groups: user.groups.map((group) => group.name).join(", "),
     displayPermissions: user.permissions.map((perm) => perm).join(", "),
   }));
 
   return (
     <ManagementLayout
-      title="Users"
+      title="User"
       operation={<UserOperation />}
       navigator={<UserManagementNavigator />}
     >

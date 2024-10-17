@@ -6,10 +6,22 @@ import importProblemVersions from "./seeding/problem-version";
 import { createAssignment } from "@/services/assignment/create-assignment";
 import { readEnvs } from "@/lib/server-utils";
 import seedUser from "./seeding/user";
+import { Permission } from "@prisma/client";
+import { setMockSession } from "@/services/session/mock-session";
 
 readEnvs();
 
 async function main() {
+  setMockSession({
+    profile: {
+      id: 1,
+      username: "test",
+      email: "test@example.com",
+      active: true,
+      permissions: [Permission.developAdmin],
+    },
+  });
+
   await seedUser();
   await importJudgeBasic();
   await importLanguage();

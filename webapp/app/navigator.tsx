@@ -8,18 +8,29 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Permission } from "@prisma/client";
 import { hasPermission } from "@/lib/permission";
+import { Session } from "@/services/session/get-session";
 
 const inter = Fira_Code({ weight: "500", subsets: ["latin"] });
 
 const navItems = [
   {
-    href: "/user-management/user",
+    href: "/user-management/users",
     label: "User",
     path: "user-management",
     requires: [Permission.userManagement],
   },
-  { href: "/assignments", label: "Assignment", path: "assignments" },
-  { href: "/clarifications", label: "Clarification", path: "clarifications" },
+  {
+    href: "/assignments",
+    label: "Assignment",
+    path: "assignments",
+    requires: [],
+  },
+  {
+    href: "/clarifications",
+    label: "Clarification",
+    path: "clarifications",
+    requires: [],
+  },
   {
     href: "/problem-versions",
     label: "Problem",
@@ -28,9 +39,11 @@ const navItems = [
   },
 ];
 
-export default function TopNavigator({ permissions }: { permissions: Permission[] }) {
+export default function TopNavigator({ session }: { session: Session }) {
   const pathname = usePathname();
   const isActive = (path: string) => pathname.includes(path);
+  const loggedIn = !!session.profile;
+  const permissions = session.profile?.permissions || [];
 
   return (
     <nav className="flex gap-6">
@@ -39,9 +52,15 @@ export default function TopNavigator({ permissions }: { permissions: Permission[
         <span className={inter.className}>UWAjudge</span>
       </Link>
       {navItems
-        .filter(({ requires }) =>
-          requires ? hasPermission(requires, permissions) : true,
-        )
+        .filter(({ requires }) => {
+          if (requires) {
+            if (requires.length) {
+              return hasPermission(requires, permissions);
+            }
+            return loggedIn;
+          }
+          return true;
+        })
         .map(({ href, label, path }) => (
           <Link
             key={href}

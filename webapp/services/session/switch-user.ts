@@ -8,9 +8,6 @@ export default async function switchUser(userId: string) {
         where: {
             id: +userId,
         },
-        include: {
-            groups: true,
-        },
     });
 
     assert(user, "User not found");

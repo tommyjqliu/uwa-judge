@@ -13,6 +13,7 @@ import { useAssertClientContext } from "@/lib/hooks/use-assert-context";
 
 interface Entity {
   id: string | number;
+  email?: string | null;
   title?: string | null;
   name?: string | null;
   username?: string | null;
@@ -49,7 +50,7 @@ export default function EntitySelector<A extends () => Promise<Entity[]>>({
         <SelectContent>
           {entities?.map((entity) => {
             const id = entity.id;
-            const displayName = entity.title || entity.name || entity.username;
+            const displayName = entity.title || entity.name || entity.username || entity.email;
             return (
               <SelectItem key={id} value={String(id)}>
                 {displayName}
