@@ -17,8 +17,10 @@ export async function getUsers(args?: GetUsersArgs) {
     // In development, allow account switch
     await assertPermission(Permission.userManagement);
   }
-  
-  const isPermission = args?.search && Object.values(Permission).includes(args.search as Permission);
+
+  const isPermission =
+    args?.search &&
+    Object.values(Permission).includes(args.search as Permission);
   const where = {
     ...(args?.search && {
       OR: [
@@ -35,11 +37,12 @@ export async function getUsers(args?: GetUsersArgs) {
       ],
     }),
     ...(isPermission && {
-      OR: [{
-        permissions: {
-          has: args.search as Permission,
+      OR: [
+        {
+          permissions: {
+            has: args.search as Permission,
+          },
         },
-      },
       ],
     }),
   };

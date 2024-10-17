@@ -5,7 +5,7 @@ import { Permission } from "@prisma/client";
 
 export default async function Page() {
   await assertPermission([Permission.createAssignment]);
-  
+
   return (
     <ManagementLayout title="Create Assignment">
       <AssignmentForm />

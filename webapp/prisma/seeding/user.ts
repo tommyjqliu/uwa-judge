@@ -3,18 +3,13 @@ import argon2 from "@node-rs/argon2";
 import { Permission } from "@prisma/client";
 export default async function seedUser() {
   const password = await argon2.hash("password");
-  
-  const insertData = Array.from(
-    { length: 20 },
-    (_, i) => (
-      {
-        email: `student${i + 1}@example.com`,
-        username: `student${i + 1}`,
-        password,
-        active: true,
-      }
-    ),
-  );
+
+  const insertData = Array.from({ length: 20 }, (_, i) => ({
+    email: `student${i + 1}@example.com`,
+    username: `student${i + 1}`,
+    password,
+    active: true,
+  }));
 
   await uwajudgeDB.user.createMany({
     data: [

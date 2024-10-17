@@ -19,9 +19,7 @@ interface Entity {
   username?: string | null;
 }
 
-export type EntitySelectorProps<
-  A extends () => Promise<{ rows: Entity[] }>,
-> = {
+export type EntitySelectorProps<A extends () => Promise<{ rows: Entity[] }>> = {
   queryAction: A;
   label?: string;
   defaultValue?: string;
@@ -45,7 +43,7 @@ export default function EntitySelector<
   });
 
   const entities = data?.rows;
-  
+
   return (
     <>
       {label && <Label>{label}</Label>}

@@ -4,13 +4,14 @@ import { hasPermission } from "../permission";
 import { Permission } from "@prisma/client";
 
 export function usePermission() {
-    const { data: permissions = [] } = useQuery({
-        queryKey: ["permission"],
-        queryFn: () => getPermissions(),
-    });
+  const { data: permissions = [] } = useQuery({
+    queryKey: ["permission"],
+    queryFn: () => getPermissions(),
+  });
 
-    return {
-        permissions,
-        hasPermission: (requires: Permission[] | Permission) => hasPermission(requires, permissions),
-    };
+  return {
+    permissions,
+    hasPermission: (requires: Permission[] | Permission) =>
+      hasPermission(requires, permissions),
+  };
 }

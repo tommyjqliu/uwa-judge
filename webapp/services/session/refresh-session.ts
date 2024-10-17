@@ -4,9 +4,7 @@ import { assert } from "@/lib/error";
 import { $Enums, User } from "@prisma/client";
 
 // TODO: Refactor auth into a module
-export default async function refreshProfile(
-  user?: User | null,
-) {
+export default async function refreshProfile(user?: User | null) {
   const session = await getSession();
   const { profile } = session;
 
@@ -16,7 +14,7 @@ export default async function refreshProfile(
     user = await uwajudgeDB.user.findUnique({
       where: {
         id,
-      }
+      },
     });
     assert(user, "User not found");
   }

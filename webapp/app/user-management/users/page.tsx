@@ -9,7 +9,9 @@ import { assertPermission } from "@/lib/error";
 import { getUsers } from "@/services/user/get-users";
 import Pagination, { paginationSchema } from "@/components/pagination";
 
-const columns: ColumnDef<Awaited<ReturnType<typeof getUsers>>["rows"][number]>[] = [
+const columns: ColumnDef<
+  Awaited<ReturnType<typeof getUsers>>["rows"][number]
+>[] = [
   {
     accessorKey: "id",
     header: "ID",

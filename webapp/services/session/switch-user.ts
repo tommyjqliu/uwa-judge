@@ -4,12 +4,12 @@ import { assert } from "@/lib/error";
 import refreshProfile from "./refresh-session";
 
 export default async function switchUser(userId: string) {
-    const user = await uwajudgeDB.user.findUnique({
-        where: {
-            id: +userId,
-        },
-    });
+  const user = await uwajudgeDB.user.findUnique({
+    where: {
+      id: +userId,
+    },
+  });
 
-    assert(user, "User not found");
-    await refreshProfile(user);
+  assert(user, "User not found");
+  await refreshProfile(user);
 }

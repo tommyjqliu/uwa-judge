@@ -26,7 +26,7 @@ export default function Page({
   searchParams?: {
     query?: string;
     page?: string;
-  }
+  };
 }) {
   const fetchData = true; // Add fetchData parameter to determine if API should be used as default data source
   const [clarifications, setClarifications] = useState<Clarification[]>([]);

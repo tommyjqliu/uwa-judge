@@ -6,8 +6,8 @@ export let mockSession: IronSession<Session> | undefined = undefined;
 export function setMockSession(session: Session) {
   mockSession = {
     ...session,
-    destroy: () => { },
-    save: async () => { },
-    updateConfig: () => { },
+    destroy: () => {},
+    save: async () => {},
+    updateConfig: () => {},
   };
 }
