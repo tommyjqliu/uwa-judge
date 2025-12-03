@@ -1,5 +1,73 @@
-#  dev compose file
-include:
-  - path:
-      - ./docker-compose.prod.yml
-      - ./docker-compose.override.yml
+services:
+  postgres:
+    image: postgres:18.1
+    env_file:
+      - .env
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/18/docker
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 3s
+      timeout: 3s
+      retries: 5
+    
+  rabbitmq:
+    image: "rabbitmq:3-management"
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: user
+      RABBITMQ_DEFAULT_PASS: password
+
+  judgehost:
+    image: tommyjqliu/uwajudge-judgehost:latest
+    privileged: true
+    restart: always
+    environment:
+      - JUDGEDAEMON_PASSWORD=yourpassword
+      - JUDGEDAEMON_READ_ONLY_PASSWORD=yourreadonlypassword
+      - DOMSERVER_BASEURL=http://webapp:3000/
+      - JUDGEDAEMON_NAME=judgehost
+    depends_on:
+      - rabbitmq
+
+  problemtools:
+    image: tommyjqliu/uwajudge-problemtools:latest
+    ports:
+      - "5000:5000"
+
+  webapp-prod:
+    hostname: webapp
+    image: tommyjqliu/uwajudge-webapp:latest
+    env_file:
+      - .env
+    ports:
+      - "3000:3000"
+      - "5555:5555"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_started
+    profiles:
+      - prod
+  
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+      - ${CERTIFICATE_DIR}/fullchain.pem:/etc/fullchain.pem
+      - ${CERTIFICATE_DIR}/privkey.pem:/etc/privkey.pem
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - webapp-prod
+    profiles:
+      - prod
+
+volumes:
+  postgres-data:
