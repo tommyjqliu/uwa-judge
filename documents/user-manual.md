@@ -127,7 +127,7 @@ Now the system is ready to use.
 ### 4.2 Maintain Operation
 If any thing goes wrong, one can reset the database by running the following command.
 ```bash
-docker compose exec webapp sh /app/scripts/prod-reset-db.sh
+docker compose exec webapp-prod sh /app/scripts/prod-reset-db.sh
 ```
 
 ### 4.3 Terminate and Restart Operations
